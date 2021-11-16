@@ -2,6 +2,7 @@ import React from "react";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import LandingPage from "./pages/LandingPage";
 import Home from "./pages/Home";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
@@ -15,8 +16,9 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/">
-          <Container style={{ marginTop: "20px" }}>
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/home">
+            <Container style={{ marginTop: "20px" }}>
             <Home />
           </Container>
         </Route>
