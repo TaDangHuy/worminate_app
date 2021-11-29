@@ -15,7 +15,7 @@ function Main() {
 
       <Box sx={{ width: "100%", height: "100%" }}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link underline="hover" color="inherit" href="/">
+          <Link underline="hover" color="inherit" href="/home">
             Homepage
           </Link>
           <Link

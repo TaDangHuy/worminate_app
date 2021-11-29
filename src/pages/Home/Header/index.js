@@ -48,11 +48,18 @@ function Navigation() {
 
       <Box sx={{ flexGrow: 1 }} />
       <Button variant="contained" startIcon={<ShoppingCartIcon />}>
-        <Link to="/main">Shop now!!</Link>
+        <Link to="/main" style={{ textDecoration: "none", color: "white" }}>
+          Shop now!!
+        </Link>
       </Button>
       <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
       <User />
+      <Button variant="contained">
+        <Link to="/login" style={{ textDecoration: "none", color: "white" }}>
+          Log in
+        </Link>
+      </Button>
     </>
   );
 }

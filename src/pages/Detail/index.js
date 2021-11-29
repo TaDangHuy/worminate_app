@@ -23,7 +23,7 @@ function Detail() {
       <CssBaseline />
       <Header />
       <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="inherit" href="/">
+        <Link underline="hover" color="inherit" href="/home">
           Homepage
         </Link>
         <Link

@@ -10,4 +10,8 @@ export const theme = createTheme({
       main: "#2979ff",
     },
   },
+  typography: {
+    fontFamily: "Itim",
+    fontSize: 16,
+  },
 });

@@ -1,42 +1,29 @@
 import React from "react";
-import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-
 import BackToTop from "./BackToTop";
 
 function Navbar(props) {
-  const [state, setState] = useState(0);
-
-  const handleClickTab = (e, newState) => {
-    setState(newState);
-  };
-
   return (
     <>
       <CssBaseline />
       <AppBar color="primary">
         <Toolbar>
-          <Typography>WORMIMATE</Typography>
-          <Tabs
-            onChange={handleClickTab}
-            textColor="inherit"
-            value={state}
-            TabIndicatorProps={{
-              style: {
-                backgroundColor: "#fff",
-              },
-            }}
-          >
-            <Tab label="Home" />
-            <Tab label="Features" />
-            <Tab label="Token" />
-            <Tab label="Team" />
-            <Tab label="Technologies" />
+          <Typography sx={{ mr: 3.5 }}>WORMIMATE</Typography>
+          <Tabs>
+            <Tab sx={{ color: "#f5f5f5" }} label="Home" href="#hero" />
+            <Tab sx={{ color: "#f5f5f5" }} label="Features" href="#features" />
+            <Tab sx={{ color: "#f5f5f5" }} label="Token" href="#token" />
+            <Tab sx={{ color: "#f5f5f5" }} label="Team" href="#team" />
+            <Tab
+              sx={{ color: "#f5f5f5" }}
+              label="Technologies"
+              href="#technologies"
+            />
           </Tabs>
         </Toolbar>
       </AppBar>
