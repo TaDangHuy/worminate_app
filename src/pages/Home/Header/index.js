@@ -55,11 +55,12 @@ function Navigation() {
       <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
       <User />
-      <Button variant="contained">
+
+      {/* <Button variant="contained">
         <Link to="/login" style={{ textDecoration: "none", color: "white" }}>
           Log in
         </Link>
-      </Button>
+      </Button> */}
     </>
   );
 }

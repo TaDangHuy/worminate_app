@@ -23,7 +23,7 @@ function TokenSection() {
           </Grid>
           <Grid sm={12} md={7} item>
             <Typography variant="h4" sx={{ mb: 1 }}>
-              It's awesome!
+              Our Worminate Token
             </Typography>
             <Typography variant="subtitle">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam
