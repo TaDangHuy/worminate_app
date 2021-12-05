@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -13,7 +14,11 @@ function Header() {
         alignItems: "center",
       }}
     >
-      <Typography variant="h6">Worminate</Typography>
+      <Typography variant="h6">
+        <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+          Worminate
+        </Link>
+      </Typography>
       <Typography variant="h6">Search box</Typography>
       <Typography variant="h6">User part</Typography>
     </Box>
