@@ -15,7 +15,7 @@ const MainRoutes = {
       element: <Main />,
     },
     {
-      path: "/detail",
+      path: "/post/:idPost",
       element: <Detail />,
     },
   ],

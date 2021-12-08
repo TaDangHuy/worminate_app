@@ -36,7 +36,10 @@ function FormikForm() {
 
   const onSubmit = (values) => {
     console.log(values);
+    //gui data
     // xu li
+    // tra ve isSuccess
+    // neu true
     navigate("/");
   };
   return (
