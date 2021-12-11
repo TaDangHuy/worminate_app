@@ -1,17 +1,16 @@
-import { ThemeProvider } from "@mui/material";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./app/App";
-import { theme } from "./theme/theme";
+import { BrowserRouter } from "react-router-dom";
 
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 
 ReactDOM.render(
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
+    <BrowserRouter>
       <App />
-    </ThemeProvider>
+    </BrowserRouter>
   </Provider>,
   document.getElementById("root")
 );
