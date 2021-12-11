@@ -11,12 +11,12 @@ import { setPosts } from "../../../features/posts/postsSlice";
 import { useState, useEffect } from "react";
 
 function RightContent() {
-  const [index, setIndex] = useState(0);
+  const [pageIndex, setPageIndex] = useState(1);
   const dispatch = useDispatch();
   const { data, isLoading } = useGetPostsQuery();
 
   useEffect(() => {
-    if (data) dispatch(setPosts(data));
+    if (data) dispatch(setPosts(data.posts.docs));
     //eslint-disable-next-line
   }, [data]);
 
@@ -26,13 +26,16 @@ function RightContent() {
         <Grid item>
           <IconButton
             color="primary"
-            onClick={() => setIndex(index === 0 ? 0 : index - 3)}
+            onClick={() => setPageIndex(pageIndex === 1 ? 1 : pageIndex - 1)}
           >
             <ArrowBackIosIcon />
           </IconButton>
         </Grid>
         <Grid item>
-          <IconButton color="primary" onClick={() => setIndex(index + 3)}>
+          <IconButton
+            color="primary"
+            onClick={() => setPageIndex(pageIndex === 60 ? 60 : pageIndex + 1)}
+          >
             <ArrowForwardIosIcon />
           </IconButton>
         </Grid>
@@ -40,34 +43,34 @@ function RightContent() {
       <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={0} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={1} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={2} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={3} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={4} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={5} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={6} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={7} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={8} isLoading={isLoading} />
           </Grid>
           <Grid item xs={12}>
-            <ProductCard />
+            <ProductCard index={9} isLoading={isLoading} />
           </Grid>
         </Grid>
       </Scrollbars>

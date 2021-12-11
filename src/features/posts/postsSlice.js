@@ -1,22 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: [
-    {
-      _id: {},
-      properties: {},
-      reviews: [],
-      avgRating: 5,
-      title: "",
-      description: "",
-      location: "",
-      geometry: {},
-      price: 0,
-      author: {},
-      images: [],
-      __v: 0,
-    },
-  ],
+  value: [{}],
 };
 
 export const postsSlice = createSlice({

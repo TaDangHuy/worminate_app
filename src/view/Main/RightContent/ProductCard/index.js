@@ -17,15 +17,17 @@ import { useSelector } from "react-redux";
 
 function ProductCard({ index, isLoading }) {
   const post = useSelector((state) => state.posts.value[index]) ?? [];
+  const images = isLoading ? [{ path: "", _id: "" }] : post.images;
 
   return (
     <Card>
+      {console.log(images)}
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <CardMedia
             component="img"
             height="220"
-            image="/static/images/cards/contemplative-reptile.jpg"
+            imageUrl=""
             alt="img"
             sx={{ bgcolor: "#F9F9F9" }}
           />
@@ -48,11 +50,11 @@ function ProductCard({ index, isLoading }) {
                 sx={{ display: "inline", fontSize: "18px" }}
                 variant="subtitle2"
               >
-                {isLoading ? "Loading..." : post.avgRating}
+                {/* {isLoading ? "Loading..." : post.avgRating} */}
               </Typography>
-              {!isLoading && (
+              {/* {!isLoading && (
                 <Star sx={{ color: "orange", display: "inline", pt: "8px" }} />
-              )}
+              )} */}
             </div>
 
             <div style={{ height: 100 }}>
@@ -102,7 +104,10 @@ function ProductCard({ index, isLoading }) {
                 }}
                 endIcon={<ArrowForwardIosIcon />}
               >
-                <Link to="/detail" style={{ textDecoration: "none" }}>
+                <Link
+                  to="/detail"
+                  style={{ textDecoration: "none", color: "#fff" }}
+                >
                   Product Details
                 </Link>
               </Button>
