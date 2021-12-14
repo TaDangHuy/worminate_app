@@ -1,12 +1,19 @@
+<<<<<<< HEAD
 import { Breadcrumbs, CssBaseline, Grid, Link, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import * as React from "react";
 import Header from "../../components/Header";
+=======
+import { Grid, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import * as React from "react";
+>>>>>>> 861d87ae921a6a6952fc2cfddeded166fd580ee5
 import LeftContent from "./LeftContent";
 import RightContent from "./RightContent";
 
 function Main() {
   return (
+<<<<<<< HEAD
     <Box
       sx={{
         display: "flex",
@@ -25,6 +32,9 @@ function Main() {
         </Link>
       </Breadcrumbs>
       <Box sx={{ width: "100%", height: "100%" }}>
+=======
+    <Box sx={{ width: "100%", height: "100%" }}>
+>>>>>>> 861d87ae921a6a6952fc2cfddeded166fd580ee5
       <Box
         sx={{
           display: "flex",
@@ -56,9 +66,12 @@ function Main() {
         </Grid>
       </Grid>
     </Box>
+<<<<<<< HEAD
     </Box>
     //
     
+=======
+>>>>>>> 861d87ae921a6a6952fc2cfddeded166fd580ee5
   );
 }
 

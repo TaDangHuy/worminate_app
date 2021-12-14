@@ -9,7 +9,7 @@ import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { accountService } from '../../../_services';
+import { accountService } from "../../../_services";
 
 const useStyle = makeStyles((theme) => ({
   container: {

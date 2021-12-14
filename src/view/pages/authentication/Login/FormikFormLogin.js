@@ -12,7 +12,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 // import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 
 const useStyles = makeStyles({
   link2: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   submitButton: {},
 });
 
-function FormikForm({history}) {
+function FormikForm({ history }) {
   const classes = useStyles();
 
   const intitialValues = {
@@ -36,18 +36,17 @@ function FormikForm({history}) {
 
   const onSubmit = (values) => {
     axios({
-      method: 'post',
-      url: 'http://localhost:3000/api/login',
-      data: values
+      method: "post",
+      url: "http://localhost:3000/api/login",
+      data: values,
     })
-    .then((res)=> {
-      console.log(res.status);
-      if(res) history.history.push("/"); 
-    })
-    .catch((error) => {
-      console.log({error})
-    })
-
+      .then((res) => {
+        console.log(res.status);
+        if (res) history.history.push("/");
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
   };
   return (
     <Formik

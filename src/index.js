@@ -6,12 +6,15 @@ import App from "./App.js";
 import "./index.js";
 import { store } from "./app/store.js";
 
-
-
-import { initFacebookSdk, jwtInterceptor, errorInterceptor, history } from './_helpers';
+import {
+  initFacebookSdk,
+  jwtInterceptor,
+  errorInterceptor,
+  history,
+} from "./_helpers";
 
 // setup fake backend
-import { fakeBackend } from './_helpers';
+import { fakeBackend } from "./_helpers";
 fakeBackend();
 
 jwtInterceptor();
@@ -28,15 +31,13 @@ initFacebookSdk().then(startApp);
 //   document.getElementById("root")
 // );
 
-
 function startApp() {
   ReactDOM.render(
     <Provider store={store}>
       <Router history={history}>
         <App />
-        </Router>
+      </Router>
     </Provider>,
     document.getElementById("root")
   );
-  
 }

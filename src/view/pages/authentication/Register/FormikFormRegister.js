@@ -11,7 +11,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios"
+import axios from "axios";
 
 function FormikFormRegister() {
   const initialValues = {
@@ -26,17 +26,17 @@ function FormikFormRegister() {
   });
   const onSubmit = (values) => {
     axios({
-      method: 'post',
-      url: 'http://localhost:3000/api/user',
-      data: {...values}
+      method: "post",
+      url: "http://localhost:3000/api/user",
+      data: { ...values },
     })
-    .then((res)=> {
-      console.log({res});
-      // if(res) history.history.push("/"); 
-    })
-    .catch((error) => {
-      console.log({error})
-    })
+      .then((res) => {
+        console.log({ res });
+        // if(res) history.history.push("/");
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
   };
   return (
     <Formik

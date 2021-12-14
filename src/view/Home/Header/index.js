@@ -42,13 +42,15 @@ function Navigation() {
   return (
     <>
       <Typography variant="h6" component="div" sx={{ mr: "20px" }}>
-        LogoIcon, Logo
+        WORMINATE
       </Typography>
       <CustomInput aria-label="Demo input" placeholder="Search..." />
 
       <Box sx={{ flexGrow: 1 }} />
       <Button variant="contained" startIcon={<ShoppingCartIcon />}>
-        <Link to="/main">Shop now!!</Link>
+        <Link to="/main" style={{ textDecoration: "none", color: "white" }}>
+          Shop now!!
+        </Link>
       </Button>
       <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
