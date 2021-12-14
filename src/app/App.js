@@ -7,6 +7,7 @@ import { PrivateRoute } from "../components/PrivateRoute";
 import { lazy } from "react";
 import Loadable from "../ui-component/Loadable";
 
+const LandingPage = Loadable(lazy(() => import("../view/LandingPage")));
 const Home = Loadable(lazy(() => import("../view/Home")));
 const Profile = Loadable(lazy(() => import("../view/Profile")));
 const ForgotPassword = Loadable(lazy(() => import("../view/ForgotPassword")));
@@ -28,7 +29,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <Switch>
         <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
-        <PrivateRoute exact path="/" component={Home} />
+        <Route exact path="/" component={LandingPage} />
+        <PrivateRoute path="/home" component={Home} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/main" component={Main} />
         <PrivateRoute path="/post/:idPost" component={Detail} />

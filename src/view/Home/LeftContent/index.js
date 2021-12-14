@@ -2,7 +2,7 @@ import { Grid, ListItemText, Switch } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import Scrollbars from "react-custom-scrollbars";
-import ProductCard from "./ProductCart";
+import ProductCard from "./ProductCard";
 
 function LeftContent() {
   return (
