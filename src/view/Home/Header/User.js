@@ -9,6 +9,8 @@ import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { accountService } from '../../../_services';
+
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -40,7 +42,7 @@ function User() {
 
   return (
     <div className={classes.container}>
-      <Link to="/pages/login">
+      <Link to="/login">
         <Avatar src="C:\Users\ADMIN\OneDrive\Desktop\WebProject\client\src\pages\Login\idol.png" />
       </Link>
 
@@ -54,7 +56,7 @@ function User() {
           </Link>
         </Typography>
         <Typography variant="subtitle1" className={classes.typography}>
-          User
+          <button onClick={accountService.logout}>User</button>
         </Typography>
       </div>
 

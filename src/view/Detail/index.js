@@ -10,9 +10,13 @@ import {
   ImageList,
   ImageListItem,
   Rating,
+  CssBaseline,
+  Breadcrumbs,
+  Link,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
+import Header from "../../components/Header";
 
 const useStyles = makeStyles({
   container: {
@@ -37,7 +41,24 @@ const useStyles = makeStyles({
 function Detail() {
   const classes = useStyles();
   return (
-    <Box className={classes.container} sx={{ mt: 2, mx: 10, p: 2, pt: 3.5 }}>
+    <Box
+      sx={{
+        display: "flex",
+        bgcolor: "rgb(247,250,252)",
+        flexDirection: "column",
+      }}
+    >
+      <CssBaseline />
+      <Header />
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" color="inherit" href="/main">
+          Homepage
+        </Link>
+        <Link underline="hover" color="inherit" href="/main">
+          Fruit and vegetables
+        </Link>
+      </Breadcrumbs>
+      <Box className={classes.container} sx={{ mt: 2, mx: 10, p: 2, pt: 3.5 }}>
       <Typography
         className={classes.big_title}
         variant="h5"
@@ -160,6 +181,9 @@ function Detail() {
         Phan va cac san phan lien quan (de xuat)
       </Box>
     </Box>
+    </Box>
+    //
+    
   );
 }
 

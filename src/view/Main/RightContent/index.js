@@ -12,10 +12,10 @@ function RightContent() {
 
   const { data, isLoading, isSuccess, isError } = useGetPostsQuery();
 
-  if (isSuccess) {
-    dispatch(deletePost("61b05e7c96a8e24058e44b64"));
-    console.log("success");
-  }
+  // if (isSuccess) {
+  //   dispatch(deletePost("61b05e7c96a8e24058e44b64"));
+  //   console.log("success");
+  // }
   return (
     <Box sx={{ px: 4, py: 2.5, height: 800 }}>
       {isLoading && <h1>Loading...</h1>}

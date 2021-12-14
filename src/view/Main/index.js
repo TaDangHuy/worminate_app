@@ -1,12 +1,30 @@
-import { Grid, Typography } from "@mui/material";
+import { Breadcrumbs, CssBaseline, Grid, Link, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import * as React from "react";
+import Header from "../../components/Header";
 import LeftContent from "./LeftContent";
 import RightContent from "./RightContent";
 
 function Main() {
   return (
-    <Box sx={{ width: "100%", height: "100%" }}>
+    <Box
+      sx={{
+        display: "flex",
+        bgcolor: "rgb(247,250,252)",
+        flexDirection: "column",
+      }}
+    >
+      <CssBaseline />
+      <Header />
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" color="inherit" href="/main">
+          Homepage
+        </Link>
+        <Link underline="hover" color="inherit" href="/main">
+          Fruit and vegetables
+        </Link>
+      </Breadcrumbs>
+      <Box sx={{ width: "100%", height: "100%" }}>
       <Box
         sx={{
           display: "flex",
@@ -38,6 +56,9 @@ function Main() {
         </Grid>
       </Grid>
     </Box>
+    </Box>
+    //
+    
   );
 }
 

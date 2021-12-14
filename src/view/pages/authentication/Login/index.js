@@ -1,134 +1,3 @@
-// import * as React from "react";
-// import Button from "@mui/material/Button";
-// import CssBaseline from "@mui/material/CssBaseline";
-// import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
-// import Link from "@mui/material/Link";
-// import Grid from "@mui/material/Grid";
-// import Box from "@mui/material/Box";
-// import Typography from "@mui/material/Typography";
-// import Container from "@mui/material/Container";
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import CopyRight from "../../../../components/CoppyRight";
-
-// const theme = createTheme();
-
-// export default function Login() {
-//   const handleSubmit = (event) => {
-//     console.log(event);
-//     event.preventDefault();
-//     const data = new FormData(event.currentTarget);
-//     // eslint-disable-next-line no-console
-//     console.log({
-//       email: data.get("email"),
-//       password: data.get("password"),
-//     });
-//   };
-
-//   return (
-//     <ThemeProvider theme={theme}>
-//       <Container component="main" maxWidth="xs">
-//         <CssBaseline />
-//         <Box
-//           sx={{
-//             marginTop: 5,
-//             display: "flex",
-//             flexDirection: "column",
-//             alignItems: "center",
-//           }}
-//         >
-//           <Typography component="h1" variant="h5">
-//             Logo
-//           </Typography>
-
-//           <Typography variant="h5" sx={{ mt: 2 }}>
-//             Hi, Welcome Back
-//           </Typography>
-
-//           <Typography variant="subtitle1" sx={{ mt: 0.5 }}>
-//             Enter your credentials to continue
-//           </Typography>
-
-//           <Button
-//             type="submit"
-//             fullWidth
-//             variant="contained"
-//             sx={{ mt: 3, mb: 2 }}
-//           >
-//             Sign In with Google
-//           </Button>
-
-//           <Button type="submit" fullWidth variant="contained" sx={{ mb: 2 }}>
-//             Sign In with FaceBook
-//           </Button>
-
-//           <Typography variant="h5" sx={{ mt: 1 }}>
-//             OR
-//           </Typography>
-
-//           <Typography variant="subtitle1" sx={{ mt: 2 }}>
-//             Sign In with Email Address
-//           </Typography>
-
-//           <Box
-//             component="form"
-//             onSubmit={handleSubmit}
-//             noValidate
-//             sx={{ mt: 1 }}
-//           >
-//             <TextField
-//               margin="normal"
-//               required
-//               fullWidth
-//               id="email"
-//               label="Email"
-//               name="email"
-//               autoComplete="email"
-//               autoFocus
-//             />
-//             <TextField
-//               margin="normal"
-//               required
-//               fullWidth
-//               name="password"
-//               label="Password"
-//               type="password"
-//               id="password"
-//               autoComplete="current-password"
-//             />
-//             <FormControlLabel
-//               control={<Checkbox value="remember" color="primary" />}
-//               label="Remember me"
-//             />
-//             <Button
-//               type="submit"
-//               fullWidth
-//               variant="contained"
-//               sx={{ mt: 3, mb: 2 }}
-//             >
-//               Sign In
-//             </Button>
-//             <Grid container>
-//               <Grid item xs>
-//                 <Link href="#" variant="body2">
-//                   Forgot password?
-//                 </Link>
-//               </Grid>
-//               <Grid item>
-//                 <Link href="#" variant="body2">
-//                   {"Don't have an account? Sign Up"}
-//                 </Link>
-//               </Grid>
-//             </Grid>
-//           </Box>
-//         </Box>
-
-//         <CopyRight sx={{ mt: 8, mb: 4 }} />
-//       </Container>
-//     </ThemeProvider>
-//   );
-// }
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -136,11 +5,20 @@ import { Button, Card, Stack, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import FormikFormLogin from "./FormikFormLogin";
 
+import { accountService } from '../../../../_services';
+
 const useStyles = makeStyles({
+  container: {
+    padding: "20px 20px",
+    color: "white",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
   banner: {
     height: "450px",
     width: "100%",
@@ -190,10 +68,19 @@ const useStyles = makeStyles({
   },
 });
 
-const Login = () => {
+const Login = (history) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log({history})
+    // redirect to home if already logged in
+    if (accountService.accountValue) {
+        history.push('/');
+    }        
+}, [history]);
+
   return (
-    <>
+    <Box className={classes.container}>
       <Box className={classes.banner}>
         <Typography
           variant="h5"
@@ -231,7 +118,7 @@ const Login = () => {
               <GitHubIcon />
             </Button>
 
-            <Button className={classes.signInWithButton} variant="outlined">
+            <Button className={classes.signInWithButton} variant="outlined" onClick={accountService.login}>
               <FacebookIcon />
             </Button>
           </Stack>
@@ -242,10 +129,10 @@ const Login = () => {
             Sign In with Email Address
           </Typography>
 
-          <FormikFormLogin />
+          <FormikFormLogin history={history} />
         </Card>
       </Box>
-    </>
+    </Box>
   );
 };
 

@@ -7,7 +7,7 @@ export const postSlice = createSlice({
   initialState,
   reducer: {
     setPost: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       //   state.value = action.payload;
     },
     deletePost: (state, action) => {

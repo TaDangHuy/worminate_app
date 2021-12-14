@@ -11,6 +11,8 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { Link } from "react-router-dom";
 
+import axios from "axios"
+
 function FormikFormRegister() {
   const initialValues = {
     fullName: "",
@@ -23,7 +25,22 @@ function FormikFormRegister() {
     password: Yup.string().required("Required"),
   });
   const onSubmit = (values) => {
-    console.log(values);
+    // const data = {
+      
+    // }
+    // console.log(data)
+    axios({
+      method: 'post',
+      url: 'http://localhost:3000/api/user',
+      data: {...values}
+    })
+    .then((res)=> {
+      console.log({res});
+      // if(res) history.history.push("/"); 
+    })
+    .catch((error) => {
+      console.log({error})
+    })
   };
   return (
     <Formik
@@ -101,7 +118,7 @@ function FormikFormRegister() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link
-                  to="/pages/login"
+                  to="/login"
                   style={{ textDecoration: "none", color: "blue" }}
                 >
                   Already have an account? Sign in

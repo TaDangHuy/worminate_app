@@ -10,8 +10,9 @@ import {
 import { makeStyles } from "@mui/styles";
 import { Form, Formik } from "formik";
 import React from "react";
-import { useNavigate } from "react-router";
+// import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import axios from "axios"
 
 const useStyles = makeStyles({
   link2: {
@@ -21,8 +22,7 @@ const useStyles = makeStyles({
   submitButton: {},
 });
 
-function FormikForm() {
-  const navigate = useNavigate();
+function FormikForm({history}) {
   const classes = useStyles();
 
   const intitialValues = {
@@ -36,11 +36,20 @@ function FormikForm() {
 
   const onSubmit = (values) => {
     console.log(values);
-    //gui data
-    // xu li
-    // tra ve isSuccess
-    // neu true
-    navigate("/");
+    axios({
+      method: 'post',
+      url: 'http://localhost:3000/api/login',
+      data: values
+    })
+    .then((res)=> {
+      console.log({res});
+      if(res) history.history.push("/"); 
+    })
+    .catch((error) => {
+      console.log({error})
+    })
+
+    // navigate("/");
   };
   return (
     <Formik
@@ -104,7 +113,7 @@ function FormikForm() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link to="/pages/register" className={classes.link2}>
+                <Link to="/register" className={classes.link2}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
