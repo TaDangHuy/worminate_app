@@ -41,14 +41,17 @@ function FormikForm({history}) {
       data: values
     })
     .then((res)=> {
-      console.log(res.status);
       if(res) history.history.push("/"); 
     })
     .catch((error) => {
-      console.log({error})
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      }
     })
-
   };
+
   return (
     <Formik
       initialValues={intitialValues}

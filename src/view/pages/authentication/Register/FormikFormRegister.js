@@ -12,8 +12,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios"
+import { useModal } from "react-hooks-use-modal";
+
 
 function FormikFormRegister() {
+  const [Modal, open, close, isOpen] = useModal('root', {
+    preventScroll: true,
+    closeOnOverlayClick: false
+  });
+
   const initialValues = {
     fullName: "",
     email: "",
@@ -32,6 +39,7 @@ function FormikFormRegister() {
     })
     .then((res)=> {
       console.log({res});
+      open();
       // if(res) history.history.push("/"); 
     })
     .catch((error) => {
@@ -121,6 +129,14 @@ function FormikFormRegister() {
                 </Link>
               </Grid>
             </Grid>
+
+            {/* Modal */}
+            <Modal>
+                <div style={{backgroundColor: "white", height: "300px", width: "450px", borderRadius:"20px", padding:"20px"}}>
+                  <p>Please check your email and click <Link to="/login">here</Link> to login</p>
+                  {/* <button onClick={close}>CLOSE</button> */}
+                </div>
+            </Modal>
           </Form>
         );
       }}

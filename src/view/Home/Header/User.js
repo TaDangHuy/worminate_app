@@ -34,7 +34,6 @@ function User() {
   const classes = useStyle();
 
   const [value, setValue] = useState("En");
-  console.log(value);
 
   const handleChange = (event) => {
     setValue(event.target.value);
