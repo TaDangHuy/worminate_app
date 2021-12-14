@@ -25,10 +25,6 @@ function FormikFormRegister() {
     password: Yup.string().required("Required"),
   });
   const onSubmit = (values) => {
-    // const data = {
-      
-    // }
-    // console.log(data)
     axios({
       method: 'post',
       url: 'http://localhost:3000/api/user',

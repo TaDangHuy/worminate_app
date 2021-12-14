@@ -35,21 +35,19 @@ function FormikForm({history}) {
   });
 
   const onSubmit = (values) => {
-    console.log(values);
     axios({
       method: 'post',
       url: 'http://localhost:3000/api/login',
       data: values
     })
     .then((res)=> {
-      console.log({res});
+      console.log(res.status);
       if(res) history.history.push("/"); 
     })
     .catch((error) => {
       console.log({error})
     })
 
-    // navigate("/");
   };
   return (
     <Formik
