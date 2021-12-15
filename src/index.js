@@ -1,42 +1,38 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { Router } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import App from "./app/App.js";
 import { store } from "./app/store.js";
+import 'mapbox-gl/dist/mapbox-gl.css';
 
-import {
-  initFacebookSdk,
-  jwtInterceptor,
-  errorInterceptor,
-  history,
-} from "./_helpers";
+import axios from "axios"
 
-// setup fake backend
-import { fakeBackend } from "./_helpers";
-fakeBackend();
+axios.defaults.baseURL="https://shielded-sands-12116.herokuapp.com/api"
+// import {
+//   initFacebookSdk,
+//   jwtInterceptor,
+//   errorInterceptor,
+//   history,
+// } from "./_helpers";
 
-jwtInterceptor();
-errorInterceptor();
+// // setup fake backend
+// import { fakeBackend } from "./_helpers";
 
-initFacebookSdk().then(startApp);
+// fakeBackend();
 
-// ReactDOM.render(
-//   <Provider store={store}>
-//     <BrowserRouter>
-//       <App />
-//     </BrowserRouter>
-//   </Provider>,
-//   document.getElementById("root")
-// );
+// jwtInterceptor();
+// errorInterceptor();
 
-function startApp() {
+// initFacebookSdk().then(startApp);
+
+// function startApp() {
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={history}>
+      <Router>
         <App />
       </Router>
     </Provider>,
     document.getElementById("root")
   );
-}
+// }

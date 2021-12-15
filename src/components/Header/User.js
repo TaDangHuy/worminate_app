@@ -1,15 +1,9 @@
-import {
-  Avatar,
-  FormControl,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import { Avatar, Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { accountService } from "../../_services";
+// import { accountService } from "../../../_services";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -30,20 +24,19 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-function User() {
+function User({ userName, isAdmin }) {
   const classes = useStyle();
 
-  const [value, setValue] = useState("En");
-  console.log(value);
+  const [isLoggedIn, setisLoggedIn] = useState(false);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  useEffect(() => {
+    if (userName !== "") setisLoggedIn(true);
+  }, [userName]);
 
   return (
     <div className={classes.container}>
       <Link to="/login">
-        <Avatar src="../../assets/images/avatar.jpg" />
+        <Avatar />
       </Link>
 
       <div className={classes.user}>
@@ -52,26 +45,22 @@ function User() {
             to="/profile"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            Name
+            {userName ? userName : "Anonymous"}
           </Link>
         </Typography>
         <Typography variant="subtitle1" className={classes.typography}>
-          <button onClick={accountService.logout}>User</button>
+          {!isAdmin ? "admin" : "user"}
         </Typography>
       </div>
 
-      <FormControl sx={{ m: 1, minWidth: 70 }}>
-        <Select
-          value={value}
-          onChange={handleChange}
-          inputProps={{ "aria-label": "Without label" }}
-          sx={{ borderRadius: "20px" }}
-        >
-          <MenuItem value={"En"}>EN</MenuItem>
-          <MenuItem value={"Vn"}>VI</MenuItem>
-          <MenuItem value={"Jp"}>JA</MenuItem>
-        </Select>
-      </FormControl>
+      {!isLoggedIn ? (
+        <Button>
+          {" "}
+          <Link to="/login">Login</Link>
+        </Button>
+      ) : (
+        <Button>Logout</Button>
+      )}
     </div>
   );
 }

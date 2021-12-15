@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Box, styled } from "@mui/system";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import User from "./User";
 import Categories from "./Categories";
@@ -50,6 +50,14 @@ const CustomInput = React.forwardRef(function CustomInput(props, ref) {
 });
 
 function Navigation() {
+  const [userName, setUserName] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    setUserName(localStorage.getItem("UserName"));
+    setIsAdmin(localStorage.getItem("isAdmin"));
+    console.log(userName, isAdmin);
+  }, [userName]);
+
   return (
     <AppBar
       position="fixed"
@@ -101,7 +109,7 @@ function Navigation() {
         )}
         {/* <Divider orientation="vertical" flexItem sx={{ mx: 2 }} /> */}
 
-        <User />
+        <User userName={userName} isAdmin={isAdmin} />
       </Toolbar>
     </AppBar>
   );

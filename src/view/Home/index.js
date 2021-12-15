@@ -12,10 +12,10 @@ function Home() {
       <CssBaseline />
       <Header />
       <Grid container>
-        <Grid item xs={5}>
+        <Grid item xs={6}>
           <LeftContent />
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={6}>
           <RightContent />
         </Grid>
       </Grid>
