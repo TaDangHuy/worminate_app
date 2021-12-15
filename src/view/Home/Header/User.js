@@ -4,7 +4,7 @@ import {
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 // import { accountService } from "../../../_services";
@@ -28,14 +28,14 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-function User() {
+function User({userName, isAdmin}) {
   const classes = useStyle();
 
   const [isLoggedIn, setisLoggedIn] = useState(false);
 
-  // const handleChange = (event) => {
-  //   setValue(event.target.value);
-  // };
+  useEffect(() => {
+    if(userName!=="") setisLoggedIn(true);
+  },[userName])
 
   return (
     <div className={classes.container}>
@@ -49,11 +49,11 @@ function User() {
             to="/profile"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            Name
+            {userName ? userName : "Anonymous"}
           </Link>
         </Typography>
         <Typography variant="subtitle1" className={classes.typography}>
-          User
+          {!isAdmin ? "admin": "user"}
         </Typography>
       </div>
 

@@ -501,7 +501,7 @@ function LeftContent() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        p: 2,
+        p: 2 ,
       }}
     >
       <Card sx={{ width: "90%"}}>

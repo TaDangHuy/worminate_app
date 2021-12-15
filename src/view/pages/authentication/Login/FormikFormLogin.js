@@ -43,6 +43,8 @@ function FormikForm({ history }) {
       if(res) {
         console.log(res)
         localStorage.setItem("token", res.data.token);
+        localStorage.setItem("UserName", res.data.user.fullName);
+        localStorage.setItem("isAdmin", res.data.user.admin);
         history.history.push("/home")
       }; 
     })
