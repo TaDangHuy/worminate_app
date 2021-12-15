@@ -103,7 +103,7 @@ function ProductCard({ index, isLoading }) {
                 endIcon={<ArrowForwardIosIcon />}
               >
                 <Link
-                  to="/post/:idPost"
+                  to="/post/12344"
                   style={{ textDecoration: "none", color: "#fff" }}
                 >
                   Details

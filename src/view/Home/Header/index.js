@@ -44,7 +44,7 @@ function Navigation() {
   useEffect(()=> {
     setUserName(localStorage.getItem("UserName"));
     setIsAdmin(localStorage.getItem("isAdmin"));
-    console.log(userName, isAdmin);
+    console.log({userName, isAdmin});
   },[userName])
 
   return (
@@ -62,7 +62,7 @@ function Navigation() {
       </Button>
       <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
-      <User userName={userName} isAdmin={isAdmin}/>
+      <User userName={userName} setUserName={(x)=> {setUserName(x)}} isAdmin={isAdmin}/>
     </>
   );
 }

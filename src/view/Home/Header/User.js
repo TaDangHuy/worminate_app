@@ -28,15 +28,22 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-function User({userName, isAdmin}) {
+function User({userName, isAdmin, setUserName}) {
   const classes = useStyle();
 
   const [isLoggedIn, setisLoggedIn] = useState(false);
 
   useEffect(() => {
-    if(userName!=="") setisLoggedIn(true);
+    console.log({userName});
+    if(userName) setisLoggedIn(true);
   },[userName])
 
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setUserName("");
+    setisLoggedIn(false)
+  }
   return (
     <div className={classes.container}>
       <Link to="/login">
@@ -57,7 +64,7 @@ function User({userName, isAdmin}) {
         </Typography>
       </div>
 
-      {!isLoggedIn? (<Button> <Link to="/login">Login</Link></Button>): (<Button>Logout</Button>) }
+      {!isLoggedIn? (<Button> <Link to="/login">Login</Link></Button>): (<Button onClick={handleLogout}>Logout</Button>) }
 
     </div>
   );
