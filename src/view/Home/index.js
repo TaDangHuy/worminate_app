@@ -4,23 +4,13 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LeftContent from "./LeftContent";
 import RightContent from "./RightContent";
-import Header from "./Header";
+import Header from "../../components/Header";
 
 function Home() {
   return (
-    <Box xs={{ display: "flex" }}>
+    <Box xs={{ display: "flex" }} sx={{ mt: 10 }}>
       <CssBaseline />
-      <AppBar
-        position="static"
-        color="inherit"
-        elevation={1}
-        sx={{ bgcolor: "#fff", mb: 2 }}
-      >
-        <Toolbar>
-          <Header />
-        </Toolbar>
-      </AppBar>
-
+      <Header />
       <Grid container>
         <Grid item xs={5}>
           <LeftContent />

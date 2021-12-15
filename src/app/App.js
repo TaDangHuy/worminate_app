@@ -1,11 +1,13 @@
 import React from "react";
 
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 import { PrivateRoute } from "../components/PrivateRoute";
 import { lazy } from "react";
 import Loadable from "../ui-component/Loadable";
+
+import { theme } from "../theme/theme";
 
 const LandingPage = Loadable(lazy(() => import("../view/LandingPage")));
 const Home = Loadable(lazy(() => import("../view/Home")));
@@ -20,8 +22,6 @@ const Register = Loadable(
   lazy(() => import("../view/pages/authentication/Register"))
 );
 
-const theme = createTheme();
-
 function App() {
   const pathname = useLocation().pathname || "";
 
@@ -33,7 +33,7 @@ function App() {
         <PrivateRoute path="/home" component={Home} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/main" component={Main} />
-        <PrivateRoute path="/post/:idPost" component={Detail} />
+        <PrivateRoute path="/posts/:idPost" component={Detail} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/ForgotPassword" component={ForgotPassword} />

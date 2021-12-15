@@ -9,7 +9,7 @@ import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { accountService } from "../../../_services";
+import { accountService } from "../../_services";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -43,7 +43,7 @@ function User() {
   return (
     <div className={classes.container}>
       <Link to="/login">
-        <Avatar src="C:\Users\ADMIN\OneDrive\Desktop\WebProject\client\src\pages\Login\idol.png" />
+        <Avatar src="../../assets/images/avatar.jpg" />
       </Link>
 
       <div className={classes.user}>
@@ -67,9 +67,9 @@ function User() {
           inputProps={{ "aria-label": "Without label" }}
           sx={{ borderRadius: "20px" }}
         >
-          <MenuItem value={"En"}>En</MenuItem>
-          <MenuItem value={"Vn"}>Vn</MenuItem>
-          <MenuItem value={"Jp"}>Jp</MenuItem>
+          <MenuItem value={"En"}>EN</MenuItem>
+          <MenuItem value={"Vn"}>VI</MenuItem>
+          <MenuItem value={"Jp"}>JA</MenuItem>
         </Select>
       </FormControl>
     </div>

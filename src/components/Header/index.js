@@ -1,28 +1,110 @@
-import { Typography } from "@mui/material";
-import Box from "@mui/material/Box";
+import {
+  Divider,
+  Typography,
+  InputUnstyled,
+  Button,
+  AppBar,
+  Toolbar,
+} from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Box, styled } from "@mui/system";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import User from "./User";
+import Categories from "./Categories";
 
-function Header() {
+const StyledInputElement = styled("input")`
+  width: 500px;
+  height: 40px;
+  font-size: 1rem;
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: 400;
+  line-height: 01.4375em;
+  background: rgb(243, 246, 249);
+  border: 1px solid #e5e8ec;
+  border-radius: 10px;
+  padding: 6px 10px;
+  margin-left: 42px;
+  margin-right: 25px;
+  color: #20262d;
+  transition: width 300ms ease;
+
+  &:hover {
+    background: #eaeef3;
+    border-color: #e5e8ec;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const CustomInput = React.forwardRef(function CustomInput(props, ref) {
   return (
-    <Box
-      sx={{
-        height: "70px",
-        bgcolor: "primary.main",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
+    <InputUnstyled
+      components={{ Input: StyledInputElement }}
+      {...props}
+      ref={ref}
+    />
+  );
+});
+
+function Navigation() {
+  return (
+    <AppBar
+      position="fixed"
+      color="inherit"
+      elevation={3}
+      sx={{ bgcolor: "#fff", mb: 2 }}
     >
-      <Typography variant="h6">
-        <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-          Worminate
+      <Toolbar>
+        <Link to="/">
+          <Box
+            component="img"
+            sx={{
+              height: 30,
+              width: 30,
+              marginRight: 2,
+              marginLeft: 2,
+            }}
+            src={require("../../assets/images/logo.png").default}
+            alt="worminate-token"
+          />
         </Link>
-      </Typography>
-      <Typography variant="h6">Search box</Typography>
-      <Typography variant="h6">User part</Typography>
-    </Box>
+
+        <Link to="/home" style={{ textDecoration: "none", color: "black" }}>
+          <Typography variant="h6" component="div" sx={{ mr: "20px" }}>
+            WORMINATE
+          </Typography>
+        </Link>
+
+        <CustomInput aria-label="Demo input" placeholder="Search..." />
+
+        {useLocation().pathname !== "/home" && <Categories />}
+        <Box sx={{ flexGrow: 1 }} />
+        {useLocation().pathname === "/home" && (
+          <Button
+            variant="contained"
+            startIcon={<ShoppingCartIcon />}
+            sx={{ mr: "90px" }}
+          >
+            <Link
+              to="/main"
+              style={{
+                textDecoration: "none",
+                color: "white",
+              }}
+            >
+              Shop now!!
+            </Link>
+          </Button>
+        )}
+        {/* <Divider orientation="vertical" flexItem sx={{ mx: 2 }} /> */}
+
+        <User />
+      </Toolbar>
+    </AppBar>
   );
 }
 
-export default Header;
+export default Navigation;
