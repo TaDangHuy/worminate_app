@@ -1,15 +1,13 @@
 import {
   Avatar,
-  FormControl,
-  MenuItem,
-  Select,
+  Button,
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { accountService } from '../../../_services';
+// import { accountService } from "../../../_services";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -33,16 +31,16 @@ const useStyle = makeStyles((theme) => ({
 function User() {
   const classes = useStyle();
 
-  const [value, setValue] = useState("En");
+  const [isLoggedIn, setisLoggedIn] = useState(false);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setValue(event.target.value);
+  // };
 
   return (
     <div className={classes.container}>
       <Link to="/login">
-        <Avatar src="C:\Users\ADMIN\OneDrive\Desktop\WebProject\client\src\pages\Login\idol.png" />
+        <Avatar/>
       </Link>
 
       <div className={classes.user}>
@@ -55,22 +53,12 @@ function User() {
           </Link>
         </Typography>
         <Typography variant="subtitle1" className={classes.typography}>
-          <button onClick={accountService.logout}>User</button>
+          User
         </Typography>
       </div>
 
-      <FormControl sx={{ m: 1, minWidth: 70 }}>
-        <Select
-          value={value}
-          onChange={handleChange}
-          inputProps={{ "aria-label": "Without label" }}
-          sx={{ borderRadius: "20px" }}
-        >
-          <MenuItem value={"En"}>En</MenuItem>
-          <MenuItem value={"Vn"}>Vn</MenuItem>
-          <MenuItem value={"Jp"}>Jp</MenuItem>
-        </Select>
-      </FormControl>
+      {!isLoggedIn? (<Button> <Link to="/login">Login</Link></Button>): (<Button>Logout</Button>) }
+
     </div>
   );
 }

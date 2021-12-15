@@ -1,14 +1,27 @@
 import { Grid, ListItemText, Switch } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import Scrollbars from "react-custom-scrollbars";
-import ProductCard from "./ProductCart";
+import ProductCard from "./ProductCard";
+
+import { useDispatch } from "react-redux";
+import { useGetPostsQuery } from "../../../api/posts";
+import { setPosts } from "../../../features/posts/postsSlice";
+import { useEffect } from "react";
 
 function LeftContent() {
+  const [pageIndex, setPageIndex] = useState(1);
+  const dispatch = useDispatch();
+  const { data, isLoading } = useGetPostsQuery();
+
+  useEffect(() => {
+    if (data) dispatch(setPosts(data.posts.docs));
+    //eslint-disable-next-line
+  }, [data]);
   return (
     <Box sx={{ p: 2 }}>
       <Grid container direction="column">
-        <Grid item>
+        {/* <Grid item>
           <Grid container justifyContent="space-between">
             <Grid item>
               <ListItemText
@@ -26,10 +39,10 @@ function LeftContent() {
               />
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid item mb={2}>
           <Grid container justifyContent="space-between">
-            <Grid item>price, Apartment, Floor, More</Grid>
+            <Grid item>Top Product</Grid>
             <Grid item>icon, sort by</Grid>
           </Grid>
         </Grid>
@@ -37,19 +50,19 @@ function LeftContent() {
           <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
             <Grid container>
               <Grid item xs={12} mb={2}>
-                <ProductCard />
+                  <ProductCard index={0} isLoading={isLoading} />
               </Grid>
               <Grid item xs={12} mb={2}>
-                <ProductCard />
+                  <ProductCard index={1} isLoading={isLoading} />
               </Grid>
               <Grid item xs={12} mb={2}>
-                <ProductCard />
+                  <ProductCard index={2} isLoading={isLoading} />
               </Grid>
               <Grid item xs={12} mb={2}>
-                <ProductCard />
+                  <ProductCard index={3} isLoading={isLoading} />
               </Grid>
               <Grid item xs={12} mb={2}>
-                <ProductCard />
+                  <ProductCard index={4} isLoading={isLoading} />
               </Grid>
             </Grid>
           </Scrollbars>

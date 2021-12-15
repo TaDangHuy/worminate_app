@@ -4,20 +4,27 @@ import React from "react";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { Box } from "@mui/system";
 import { makeStyles } from "@mui/styles";
+import ProfileCard from "./ProfileCard";
+import BasicInfoCard from "./BasicInfoCard";
 
 const useStyles = makeStyles({
   container: {
-    backgroundColor: "rgb(247,250,252)",
     position: "relative",
   },
   box_left: {
-    backgroundColor: "#ffffff",
-    borderRadius: 4,
-    border: "1px solid red",
+    backgroundColor: "white",
+    borderRadius: 20,
     position: "fixed",
+    width: "250px",
+    height: "420px",
+    boxShadow: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px",
+    top: "150px",
+    left: "100px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   box_right: {
-    backgroundColor: "red",
     width: "830px",
     height: "120vh",
     position: "absolute",
@@ -55,7 +62,8 @@ function Profile() {
           </Stack>
         </Box>
         <Box className={classes.box_right} sx={{ px: 2 }}>
-          right
+          <ProfileCard/>
+          <BasicInfoCard/>
         </Box>
       </Box>
     </div>

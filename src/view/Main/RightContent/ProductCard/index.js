@@ -1,3 +1,5 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -9,19 +11,23 @@ import {
 import { Box } from "@mui/system";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Star from "@mui/icons-material/Star";
+import AttachMoney from "@mui/icons-material/AttachMoney";
+import { useSelector } from "react-redux";
 
-import React from "react";
-import { Link } from "react-router-dom";
+function ProductCard({ index, isLoading }) {
+  const post = useSelector((state) => state.posts.value[index]) ?? [];
+  const images = isLoading ? [{ path: "", _id: "" }] : post.images;
 
-function ProductCard() {
   return (
     <Card>
+      {console.log(images)}
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <CardMedia
             component="img"
             height="220"
-            image="/static/images/cards/contemplative-reptile.jpg"
+            imageUrl=""
             alt="img"
             sx={{ bgcolor: "#F9F9F9" }}
           />
@@ -37,12 +43,24 @@ function ProductCard() {
             }}
           >
             <div>
-              <Typography variant="subtitle1">Product Name</Typography>
-              <Typography variant="subtitle2">Sub title</Typography>
+              <Typography variant="subtitle1">
+                {isLoading ? "Loading..." : post.title}
+              </Typography>
+              <Typography
+                sx={{ display: "inline", fontSize: "18px" }}
+                variant="subtitle2"
+              >
+                {/* {isLoading ? "Loading..." : post.avgRating} */}
+              </Typography>
+              {/* {!isLoading && (
+                <Star sx={{ color: "orange", display: "inline", pt: "8px" }} />
+              )} */}
             </div>
 
             <div style={{ height: 100 }}>
-              <Typography variant="body1">Infomation or Detail</Typography>
+              <Typography variant="body1">
+                {isLoading ? "Loading..." : post.description}
+              </Typography>
             </div>
           </Box>
         </Grid>
@@ -58,12 +76,21 @@ function ProductCard() {
             }}
           >
             <div>
-              <Typography variant="subtitle1">Price</Typography>
-              <Typography variant="subtitle2">Old Price</Typography>
+              <Typography
+                sx={{ display: "inline", fontSize: "20px" }}
+                variant="subtitle1"
+              >
+                {isLoading ? "Loading..." : post.price}
+              </Typography>
+              {!isLoading && (
+                <AttachMoney sx={{ display: "inline", pt: "8px" }} />
+              )}
             </div>
 
             <div>
-              <Typography variant="subtitle1">Some infomation</Typography>
+              <Typography variant="subtitle1">
+                {isLoading ? "Loading..." : post.location}
+              </Typography>
             </div>
 
             <Stack direction="row" spacing={3}>
@@ -77,7 +104,10 @@ function ProductCard() {
                 }}
                 endIcon={<ArrowForwardIosIcon />}
               >
-                <Link to="/detail" style={{ textDecoration: "none" }}>
+                <Link
+                  to="/post/:idPost"
+                  style={{ textDecoration: "none", color: "#fff" }}
+                >
                   Product Details
                 </Link>
               </Button>

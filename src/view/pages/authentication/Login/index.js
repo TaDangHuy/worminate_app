@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import FormikFormLogin from "./FormikFormLogin";
 
-import { accountService } from '../../../../_services';
+import { accountService } from "../../../../_services";
 
 const useStyles = makeStyles({
   container: {
@@ -72,12 +72,12 @@ const Login = (history) => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log({history})
+    console.log({ history });
     // redirect to home if already logged in
     if (accountService.accountValue) {
-        history.push('/');
-    }        
-}, [history]);
+      history.push("/");
+    }
+  }, [history]);
 
   return (
     <Box className={classes.container}>
@@ -118,7 +118,11 @@ const Login = (history) => {
               <GitHubIcon />
             </Button>
 
-            <Button className={classes.signInWithButton} variant="outlined" onClick={accountService.login}>
+            <Button
+              className={classes.signInWithButton}
+              variant="outlined"
+              onClick={accountService.login}
+            >
               <FacebookIcon />
             </Button>
           </Stack>
