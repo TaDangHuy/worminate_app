@@ -13,15 +13,24 @@ import {
   CssBaseline,
   Breadcrumbs,
   Link,
+  Paper,
 } from "@mui/material";
+import Carousel from "react-material-ui-carousel";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import Header from "../../components/Header";
+import { useLocation } from "react-router-dom";
+import { useGetPostQuery } from "../../api/posts";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setPost } from "../../features/posts/postSlice";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const useStyles = makeStyles({
   container: {
     backgroundColor: "#FFFF",
-    borderRadius: 20,
+
     boxShadow:
       "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
   },
@@ -29,17 +38,23 @@ const useStyles = makeStyles({
     textTransform: "capitalize",
     fontWeight: "400",
   },
-  big_image: {
-    width: "600px",
-    height: "500px",
-  },
   item_image: {
-    borderRadius: "30px",
+    height: 150,
+    width: 100,
   },
 });
 
 function Detail() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { data, isLoading } = useGetPostQuery(useLocation().pathname);
+  const images = !isLoading && data.post.images ? data.post.images : [];
+
+  useEffect(() => {
+    if (data) dispatch(setPost(data.post));
+    //eslint-disable-next-line
+  }, [data]);
+
   return (
     <Box
       sx={{
@@ -50,77 +65,59 @@ function Detail() {
     >
       <CssBaseline />
       <Header />
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="inherit" href="/main">
-          Homepage
-        </Link>
-        <Link underline="hover" color="inherit" href="/main">
-          Fruit and vegetables
-        </Link>
-      </Breadcrumbs>
-      <Box className={classes.container} sx={{ mt: 2, mx: 10, p: 2, pt: 3.5 }}>
+      <Box
+        className={classes.container}
+        sx={{ mt: 11, mb: 1.5, mx: 10, p: 2, pt: 3.5 }}
+      >
         <Typography
           className={classes.big_title}
           variant="h5"
-          sx={{ mb: "50px" }}
+          sx={{ mb: "20px" }}
         >
           Product details
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={5}>
-            <Box className={classes.big_image} sx={{ m: "auto", mb: "70px" }}>
-              <img
-                src="https://demos.creative-tim.com/purity-ui-dashboard-pro/static/media/product-page-1.34b20db8.png"
-                alt="{item.title}"
-                loading="lazy"
-              />
-            </Box>
-            <ImageList
-              sx={{ width: 500, height: 150, m: "auto" }}
-              cols={4}
-              rowHeight={64}
-              gap={20}
+          <Grid item xs={6}>
+            <Paper
+              elevation={5}
+              sx={{
+                height: "10%",
+              }}
             >
-              <ImageListItem>
-                <img
-                  className={classes.item_image}
-                  src="https://demos.creative-tim.com/purity-ui-dashboard-pro/static/media/product-page-3.98f1599f.png"
-                  alt="{item.title}"
-                  loading="lazy"
-                />
-              </ImageListItem>
-              <ImageListItem>
-                <img
-                  className={classes.item_image}
-                  src="https://demos.creative-tim.com/purity-ui-dashboard-pro/static/media/product-page-2.db82b35b.png"
-                  alt="{item.title}"
-                  loading="lazy"
-                />
-              </ImageListItem>
-              <ImageListItem>
-                <img
-                  className={classes.item_image}
-                  src="https://demos.creative-tim.com/purity-ui-dashboard-pro/static/media/product-page-5.5f13044c.png"
-                  alt="{item.title}"
-                  loading="lazy"
-                />
-              </ImageListItem>
-              <ImageListItem>
-                <img
-                  className={classes.item_image}
-                  src="https://demos.creative-tim.com/purity-ui-dashboard-pro/static/media/product-page-5.5f13044c.png"
-                  alt="{item.title}"
-                  loading="lazy"
-                />
-              </ImageListItem>
-            </ImageList>
+              <Carousel
+                PrevIcon={<ArrowBackIosIcon sx={{ color: "#fff" }} />}
+                NextIcon={<ArrowForwardIosIcon sx={{ color: "#fff" }} />}
+              >
+                {images.map((image, i) => (
+                  <Box
+                    component="img"
+                    src={image.path}
+                    sx={{
+                      height: "100%",
+                      width: "100%",
+                    }}
+                  />
+                ))}
+              </Carousel>
+            </Paper>
           </Grid>
-          <Grid item xs={5}>
-            <Card sx={{ maxWidth: 700, border: "none" }}>
+          <Grid item xs={6}>
+            <Card sx={{ maxWidth: 700 }} elevation={5}>
               <CardHeader
-                title={<Typography variant="h4">Modern Luxury Sofa</Typography>}
+                title={
+                  <Typography variant="h4" sx={{ mb: 1 }}>
+                    {isLoading ? "Loading..." : data.post.title}
+                  </Typography>
+                }
                 subheader={
-                  <Rating name="read-only" value={4} readOnly size="large" />
+                  !isLoading && (
+                    <Rating
+                      name="read-only"
+                      value={data.post.avgRating}
+                      readOnly
+                      size="large"
+                    />
+                  )
                 }
               />
               <CardContent>
@@ -131,9 +128,27 @@ function Detail() {
                   Price
                 </Typography>
                 <Typography variant="h4" sx={{ fontWeight: "500" }}>
-                  $2,599.00
+                  {isLoading ? "Loading..." : `\$${data.post.price}`}
                 </Typography>
 
+                <Typography
+                  variant="body1"
+                  sx={{ color: "rgb(170,183,199)", fontSize: 20, mt: 4 }}
+                >
+                  Author
+                </Typography>
+                <Typography>
+                  {isLoading ? "Loading..." : data.post.author.fullName}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{ color: "rgb(170,183,199)", mt: 4, fontSize: 20 }}
+                >
+                  Location
+                </Typography>
+                <Typography>
+                  {isLoading ? "Loading..." : data.post.location}
+                </Typography>
                 <Typography
                   variant="body1"
                   sx={{ color: "rgb(170,183,199)", mt: 4, fontSize: 20 }}
@@ -141,45 +156,43 @@ function Detail() {
                   Description
                 </Typography>
 
-                <ul>
-                  <li style={{ fontSize: "20px", marginBottom: "20px" }}>
-                    The most beautiful curves of this swivel stool adds an
-                    elegant touch to any environment
-                  </li>
-                  <li style={{ fontSize: "20px", marginBottom: "20px" }}>
-                    Memory swivel seat returns to original seat position
-                  </li>
-                  <li style={{ fontSize: "20px", marginBottom: "20px" }}>
-                    Comfortable integrated layered chair seat cushion design
-                  </li>
-                  <li style={{ fontSize: "20px", marginBottom: "20px" }}>
-                    Fully assembled! No assembly required
-                  </li>
-                </ul>
+                <Typography>
+                  {isLoading ? "Loading..." : data.post.description}
+                </Typography>
               </CardContent>
-              <CardActions>
+              <CardActions sx={{ mb: 1, ml: 1 }}>
                 <Grid container direction="column">
                   <Grid item>
-                    <Button
-                      sx={{
-                        width: 240,
-                        height: 50,
-                        borderRadius: "10px",
-                      }}
-                      variant="contained"
-                      color="success"
-                    >
+                    <Button variant="contained" color="primary">
                       Add to favorites
                     </Button>
                   </Grid>
                 </Grid>
               </CardActions>
             </Card>
+            <ImageList
+              sx={{ width: "100%", height: 150, mt: 2 }}
+              cols={5}
+              rowHeight={64}
+              gap={20}
+            >
+              {images.map((image, i) => (
+                <Paper elevation={5}>
+                  <ImageListItem>
+                    <img
+                      className={classes.item_image}
+                      src={image.path}
+                      alt="{item.title}"
+                    />
+                  </ImageListItem>
+                </Paper>
+              ))}
+            </ImageList>
           </Grid>
         </Grid>
-        <Box sx={{ width: "100%", height: 300, border: "1px solid" }}>
+        {/* <Box sx={{ width: "100%", height: 300, border: "0px solid" }}>
           Phan va cac san phan lien quan (de xuat)
-        </Box>
+        </Box> */}
       </Box>
     </Box>
     //

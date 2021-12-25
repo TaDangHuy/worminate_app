@@ -1,13 +1,8 @@
-import {
-  Avatar,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Avatar, Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-// import { accountService } from "../../../_services";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -29,6 +24,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 function User({userName, isAdmin, setUserName}) {
+
   const classes = useStyle();
 
   const [isLoggedIn, setisLoggedIn] = useState(false);
@@ -39,6 +35,7 @@ function User({userName, isAdmin, setUserName}) {
   },[userName])
 
 
+
   const handleLogout = () => {
     localStorage.clear();
     setUserName("");
@@ -47,7 +44,7 @@ function User({userName, isAdmin, setUserName}) {
   return (
     <div className={classes.container}>
       <Link to="/login">
-        <Avatar/>
+        <Avatar />
       </Link>
 
       <div className={classes.user}>
@@ -60,7 +57,7 @@ function User({userName, isAdmin, setUserName}) {
           </Link>
         </Typography>
         <Typography variant="subtitle1" className={classes.typography}>
-          {!isAdmin ? "admin": "user"}
+          {!isAdmin ? "admin" : "user"}
         </Typography>
       </div>
 

@@ -11,23 +11,20 @@ import {
 import { Box } from "@mui/system";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import Star from "@mui/icons-material/Star";
-import AttachMoney from "@mui/icons-material/AttachMoney";
+import { Star, HeartIcon } from "@mui/icons-material/Star";
 import { useSelector } from "react-redux";
 
 function ProductCard({ index, isLoading }) {
   const post = useSelector((state) => state.posts.value[index]) ?? [];
-  const images = isLoading ? [{ path: "", _id: "" }] : post.images;
 
   return (
-    <Card>
-      {console.log(images)}
+    <Card elevation={5}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <CardMedia
             component="img"
             height="220"
-            imageUrl=""
+            image={!isLoading && post.images ? post.images[0].path : ""}
             alt="img"
             sx={{ bgcolor: "#F9F9F9" }}
           />
@@ -57,7 +54,7 @@ function ProductCard({ index, isLoading }) {
               )} */}
             </div>
 
-            <div style={{ height: 100 }}>
+            <div style={{ height: 150 }}>
               <Typography variant="body1">
                 {isLoading ? "Loading..." : post.description}
               </Typography>
@@ -80,11 +77,8 @@ function ProductCard({ index, isLoading }) {
                 sx={{ display: "inline", fontSize: "20px" }}
                 variant="subtitle1"
               >
-                {isLoading ? "Loading..." : post.price}
+                {isLoading ? "Loading..." : `\$${post.price}`}
               </Typography>
-              {!isLoading && (
-                <AttachMoney sx={{ display: "inline", pt: "8px" }} />
-              )}
             </div>
 
             <div>
@@ -96,16 +90,16 @@ function ProductCard({ index, isLoading }) {
             <Stack direction="row" spacing={3}>
               <Button
                 variant="contained"
+                color="primary"
                 sx={{
-                  height: "40px",
+                  height: "46px",
                   textTransform: "none",
                   fontSize: 13,
-                  bgcolor: "#6A983C",
                 }}
                 endIcon={<ArrowForwardIosIcon />}
               >
                 <Link
-                  to="/post/:idPost"
+                  to={`/posts/${post._id}`}
                   style={{ textDecoration: "none", color: "#fff" }}
                 >
                   Product Details
@@ -113,12 +107,11 @@ function ProductCard({ index, isLoading }) {
               </Button>
               <Button
                 variant="contained"
+                color="primary"
                 sx={{
-                  height: "40px",
+                  height: "46px",
                   textTransform: "none",
                   fontSize: 13,
-                  bgcolor: "#F5F5F5",
-                  color: "black",
                 }}
                 startIcon={<FavoriteBorderIcon />}
               >
