@@ -11,8 +11,6 @@ import {
   ImageListItem,
   Rating,
   CssBaseline,
-  Breadcrumbs,
-  Link,
   Paper,
 } from "@mui/material";
 import Carousel from "react-material-ui-carousel";

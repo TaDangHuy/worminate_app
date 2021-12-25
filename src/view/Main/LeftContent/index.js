@@ -10,10 +10,7 @@ import {
   Grid,
   Rating,
   Slider,
-  Stack,
   Typography,
-  FormHelperText,
-  OutlinedInput,
   Button,
   TextField,
 } from "@mui/material";
