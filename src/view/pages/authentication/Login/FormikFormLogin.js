@@ -12,6 +12,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import SnackbarCustom from "../../../../components/SnackbarCustom";
 
 const useStyles = makeStyles({
   link2: {
@@ -20,6 +21,17 @@ const useStyles = makeStyles({
   },
   submitButton: {},
 });
+
+const snackbarProps = {
+  success: {
+    severity: "success",
+    message: "Upload success",
+  },
+  error: {
+    severity: "error",
+    message: "Username or password incorrect",
+  },
+};
 
 function FormikForm({ history }) {
   const classes = useStyles();
@@ -33,29 +45,36 @@ function FormikForm({ history }) {
     password: Yup.string().required("Required"),
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, actions) => {
     axios({
       method: "post",
       url: "/login",
       data: values,
     })
-    .then((res)=> {
-      if(res) {
-        console.log(res)
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("UserName", res.data.user.fullName);
-        localStorage.setItem("isAdmin", res.data.user.admin);
-        history.history.push("/home")
-      }; 
-    })
-    .catch((error) => {
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      }
-    })
-  }
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("UserName", res.data.user.fullName);
+          localStorage.setItem("isAdmin", res.data.user.admin);
+          localStorage.setItem("_id", res.data.user["_id"]);
+          localStorage.setItem("email", res.data.user.email);
+          localStorage.setItem("avatar", res.data.user.image.path);
+          history.history.push("/home");
+        }
+      })
+      .catch((error) => {
+        actions.setSubmitting(false);
+
+        if (error.response.status === 404) {
+          setSnackbarProps(snackbarProps.error);
+          setOpenSnackbar(true);
+        }
+      });
+  };
+
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+  const [snackbarprops, setSnackbarProps] = React.useState({});
 
   return (
     <Formik
@@ -124,6 +143,14 @@ function FormikForm({ history }) {
                 </Link>
               </Grid>
             </Grid>
+
+            <SnackbarCustom
+              openSnackbarProp={openSnackbar}
+              setOpenSnackbarProp={(value) => {
+                setOpenSnackbar(value);
+              }}
+              snackbarprops={snackbarprops}
+            />
           </Form>
         );
       }}

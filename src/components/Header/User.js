@@ -3,7 +3,6 @@ import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -23,46 +22,48 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-function User({userName, isAdmin, setUserName}) {
-
+function User({ userName, isAdmin, setUserNameProps }) {
   const classes = useStyle();
 
   const [isLoggedIn, setisLoggedIn] = useState(false);
 
   useEffect(() => {
-    console.log({userName});
-    if(userName) setisLoggedIn(true);
-  },[userName])
-
-
+    if (userName) setisLoggedIn(true);
+  }, [userName]);
 
   const handleLogout = () => {
     localStorage.clear();
-    setUserName("");
-    setisLoggedIn(false)
-  }
+    setUserNameProps("");
+    setisLoggedIn(false);
+  };
   return (
     <div className={classes.container}>
-      <Link to="/login">
-        <Avatar />
+      <Link to="/profile">
+        <Avatar alt={userName} src={localStorage.getItem("avatar")} />
       </Link>
 
       <div className={classes.user}>
         <Typography variant="h6" className={classes.typography}>
-          <Link
-            to="/profile"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            {userName ? userName : "Anonymous"}
-          </Link>
+          {userName ? userName : "Anonymous"}
         </Typography>
         <Typography variant="subtitle1" className={classes.typography}>
-          {!isAdmin ? "admin" : "user"}
+          {isAdmin === "true" ? "admin" : "user"}
         </Typography>
       </div>
 
-      {!isLoggedIn? (<Button> <Link to="/login">Login</Link></Button>): (<Button onClick={handleLogout}>Logout</Button>) }
-
+      {!isLoggedIn ? (
+        <Button>
+          {" "}
+          <Link
+            to="/login"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            Login
+          </Link>
+        </Button>
+      ) : (
+        <Button onClick={handleLogout}>Logout</Button>
+      )}
     </div>
   );
 }

@@ -15,6 +15,7 @@ const Profile = Loadable(lazy(() => import("../view/Profile")));
 const ForgotPassword = Loadable(lazy(() => import("../view/ForgotPassword")));
 const Main = Loadable(lazy(() => import("../view/Main")));
 const Detail = Loadable(lazy(() => import("../view/Detail")));
+const CreatePost = Loadable(lazy(() => import("../view/CreatePost")));
 const Login = Loadable(
   lazy(() => import("../view/pages/authentication/Login"))
 );
@@ -37,6 +38,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/ForgotPassword" component={ForgotPassword} />
+        <Route path="/post/new" component={CreatePost} />
       </Switch>
     </ThemeProvider>
   );

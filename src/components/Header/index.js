@@ -1,5 +1,4 @@
 import {
-  Divider,
   Typography,
   InputUnstyled,
   Button,
@@ -55,8 +54,7 @@ function Navigation() {
   useEffect(() => {
     setUserName(localStorage.getItem("UserName"));
     setIsAdmin(localStorage.getItem("isAdmin"));
-    console.log(userName, isAdmin);
-  }, [userName]);
+  }, [userName, isAdmin]);
 
   return (
     <AppBar
@@ -109,7 +107,13 @@ function Navigation() {
         )}
         {/* <Divider orientation="vertical" flexItem sx={{ mx: 2 }} /> */}
 
-        <User userName={userName} isAdmin={isAdmin} />
+        <User
+          userName={userName}
+          isAdmin={isAdmin}
+          setUserNameProps={(newUserName) => {
+            setUserName(newUserName);
+          }}
+        />
       </Toolbar>
     </AppBar>
   );

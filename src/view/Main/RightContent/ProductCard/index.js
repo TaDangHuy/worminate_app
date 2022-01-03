@@ -24,7 +24,11 @@ function ProductCard({ index, isLoading }) {
           <CardMedia
             component="img"
             height="220"
-            image={!isLoading && post.images ? post.images[0].path : ""}
+            image={
+              !isLoading && post.images && post.images.length > 0
+                ? post.images[0].path
+                : ""
+            }
             alt="img"
             sx={{ bgcolor: "#F9F9F9" }}
           />

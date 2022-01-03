@@ -16,7 +16,10 @@ function RightContent() {
   const { data, isLoading } = useGetPostsQuery(pageIndex);
 
   useEffect(() => {
-    if (data) dispatch(setPosts(data.posts.docs));
+    if (data) {
+      // console.log("data", data);
+      dispatch(setPosts(data.posts.docs));
+    }
     //eslint-disable-next-line
   }, [data]);
 

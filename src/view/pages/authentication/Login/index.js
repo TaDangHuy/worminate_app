@@ -72,7 +72,6 @@ const Login = (history) => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log({ history });
     // redirect to home if already logged in
     if (accountService.accountValue) {
       history.push("/");

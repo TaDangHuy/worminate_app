@@ -126,7 +126,7 @@ function Detail() {
                   Price
                 </Typography>
                 <Typography variant="h4" sx={{ fontWeight: "500" }}>
-                  {isLoading ? "Loading..." : `\$${data.post.price}`}
+                  {isLoading ? "Loading..." : `$${data.post.price}`}
                 </Typography>
 
                 <Typography
