@@ -19,7 +19,7 @@ const validationSchema = [
     [category.name]: Yup.string()
       .nullable()
       .required(`${category.requiredErrorMsg}`),
-    [price.name]: Yup.string().required(`${price.requiredErrorMsg}`),
+    [price.name]: Yup.number().required(`${price.requiredErrorMsg}`),
   }),
   // Upload
   Yup.object().shape({

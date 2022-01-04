@@ -1,22 +1,16 @@
 import React from "react";
-import { CircularProgress, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 const Thumb = (props) => {
-  const { file, src, variant = "normal" } = props;
-
+  const { fileName, src, variant = "normal" } = props;
   const matchWidthBigScreen = useMediaQuery("(min-width:900px)");
-  if (!file || !src) {
+  if (!fileName || !src) {
     return null;
-  }
-
-  if (src.readyState < 2) {
-    return <CircularProgress size={24} />;
-    //    <p>Loading ... </p>;
   }
 
   return (
     <img
-      src={src.result}
-      alt={file.name}
+      src={src}
+      alt={fileName}
       style={{
         maxWidth: `${
           variant === "small"

@@ -11,12 +11,14 @@ const RenderData = (props) => {
       return <Typography gutterBottom>{`${value}`}</Typography>;
     case "image":
       // return <Thumb file={value.file} src={value.src} varian={"small"}></Thumb>
-      if (!value.file.length) {
+      if (!value.src.length) {
         return <Typography>No image</Typography>;
       }
-      return value.file.map((f, i) => (
+      return value.name.map((nameElement, i) => (
         <Grid item>
-          {f && value.src[i] && <Thumb file={f} src={value.src[i]}></Thumb>}
+          {nameElement && value.src[i] && (
+            <Thumb fileName={nameElement} src={value.src[i]}></Thumb>
+          )}
         </Grid>
       ));
     default:

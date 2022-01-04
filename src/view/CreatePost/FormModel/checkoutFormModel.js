@@ -27,7 +27,7 @@ const checkoutFormModel = {
     },
     price: {
       name: "price",
-      label: "price*",
+      label: "Price*",
       requiredErrorMsg: "price is required",
       type: "text",
     },

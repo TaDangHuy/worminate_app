@@ -91,9 +91,9 @@ function ProfileForm({
   const formik = useFormik({
     initialValues: {
       fullName: fullName,
-      password: "123456",
-      newPassword: "123456",
-      confirmPassword: "123456",
+      password: null,
+      newPassword: null,
+      confirmPassword: null,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -140,7 +140,7 @@ function ProfileForm({
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <FormControl variant="standard" fullWidth>
-              <InputLabel htmlFor="fullName">
+              <InputLabel shrink htmlFor="fullName">
                 <Typography variant="h5" color="textSecondary">
                   Full Name
                 </Typography>
@@ -159,7 +159,7 @@ function ProfileForm({
           </Grid>
           <Grid item xs={12}>
             <FormControl variant="standard" fullWidth disabled>
-              <InputLabel htmlFor="email">
+              <InputLabel shrink htmlFor="email">
                 <Typography variant="h5" color="textSecondary">
                   Email
                 </Typography>
@@ -169,7 +169,7 @@ function ProfileForm({
           </Grid>
           <Grid item xs={12}>
             <FormControl variant="standard" fullWidth>
-              <InputLabel htmlFor="password">
+              <InputLabel shrink htmlFor="password">
                 <Typography variant="h5" color="textSecondary">
                   Current Password
                 </Typography>
@@ -211,7 +211,7 @@ function ProfileForm({
           </Grid>
           <Grid item xs={6}>
             <FormControl variant="standard" fullWidth>
-              <InputLabel htmlFor="newPassword">
+              <InputLabel shrink htmlFor="newPassword">
                 <Typography variant="h5" color="textSecondary">
                   New Password
                 </Typography>
@@ -254,7 +254,7 @@ function ProfileForm({
           </Grid>
           <Grid item xs={6}>
             <FormControl variant="standard" fullWidth>
-              <InputLabel htmlFor="confirmPassword">
+              <InputLabel shrink htmlFor="confirmPassword">
                 <Typography variant="h5" color="textSecondary">
                   Confirm Password
                 </Typography>

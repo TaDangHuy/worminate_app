@@ -1,60 +1,29 @@
 import { Box } from "@mui/system";
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import InputField from "../FormFields/InputField";
 import SelectField from "../FormFields/SelectField";
-
-const categories = [
-  {
-    value: undefined,
-    label: "None",
-  },
-  {
-    value: "1",
-    label: "Xe",
-  },
-  {
-    value: "2",
-    label: "Dien Thoai",
-  },
-  {
-    value: "3",
-    label: "May tinh",
-  },
-];
 
 export default function ResultForm(props) {
   const {
     formField: { title, location, description, category, price },
   } = props;
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/posts/new")
+      .then((res) => {
+        let tmp = res.data.category.map((category) => ({
+          value: category["_id"],
+          label: category.name,
+        }));
+        setCategories([...tmp]);
+      })
+      .catch((err) => console.error(err));
+  }, []);
   return (
     <React.Fragment>
-      {/* <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <InputField name={title.name} label={title.label} fullWidth />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <InputField name={location.name} label={location.label} fullWidth />
-        </Grid>
-        <Grid item xs={12}>
-          <InputField
-            name={description.name}
-            label={description.label}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <SelectField
-            name={category.name}
-            label={category.label}
-            data={categories}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <InputField name={price.name} label={price.label} fullWidth />
-        </Grid>
-      </Grid> */}
       <Box
         sx={{
           display: "grid",

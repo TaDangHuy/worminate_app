@@ -7,9 +7,12 @@ const formInitialValues = {
   [title.name]: "",
   [location.name]: "",
   [description.name]: "",
-  [price.name]: "",
+  [price.name]: null,
   [category.name]: "",
-  [image.name]: [],
+  [image.name]: {
+    name: [],
+    src: [],
+  },
 };
 
 export default formInitialValues;

@@ -1,4 +1,5 @@
 import {
+  Backdrop,
   Button,
   CircularProgress,
   Stack,
@@ -20,10 +21,14 @@ import ReviewOrder from "./ReviewOrder/ReviewOrder";
 import validationSchema from "./FormModel/validationSchema";
 import checkoutFormModel from "./FormModel/checkoutFormModel";
 import formInitialValues from "./FormModel/formInitialValues";
+import axios from "axios";
+import SnackbarCustom from "../../components/SnackbarCustom";
+import { useHistory } from "react-router-dom";
 
 const debug = true;
 const steps = ["Info", "Image", "Submit"];
 const { formId, formField } = checkoutFormModel;
+const token = localStorage.getItem("token");
 
 function _renderStepContent(step) {
   switch (step) {
@@ -63,18 +68,48 @@ function _renderStepHeader(step) {
   }
 }
 
+const snackbarProps = {
+  success: {
+    severity: "success",
+    message: "Create Post success",
+  },
+  error: {
+    severity: "error",
+    message: "Cannot update password, password is invalid",
+  },
+};
 function CreatePost() {
+  const history = useHistory();
+
   const [activeStep, setActiveStep] = useState(0);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarprops, setSnackbarProps] = React.useState({});
+
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
-  function _sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
-  async function _submitForm(values, actions) {
-    await _sleep(1000);
-    console.log(values);
-    actions.setSubmitting(false);
+  function _submitForm(values, actions) {
+    let images = values.image;
+    let configImage = images.name.map((name, index) => ({
+      fileName: name,
+      path: images.src[index],
+    }));
+    const { image, ...rest } = values;
+    const post = { ...rest, images: configImage };
+    axios({
+      method: "POST",
+      url: `/posts`,
+      headers: { Authorization: `Bearer ${token}` },
+      data: { post },
+    })
+      .then((response) => {
+        actions.setSubmitting(false);
+        setSnackbarProps(snackbarProps.success);
+        setOpenSnackbar(true);
+        const idPost = response.data.post["_id"];
+        history.push(`/posts/${idPost}`);
+      })
+      .catch((err) => console.log(err));
   }
 
   function _handleSubmit(values, actions) {
@@ -142,8 +177,10 @@ function CreatePost() {
                     justifyContent="space-between"
                     sx={{ pt: "25px" }}
                   >
-                    {activeStep !== 0 && (
+                    {activeStep !== 0 ? (
                       <Button onClick={_handleBack}>Back</Button>
+                    ) : (
+                      <Button disabled></Button>
                     )}
                     <div>
                       <Button
@@ -154,15 +191,30 @@ function CreatePost() {
                       >
                         {isLastStep ? "Create" : "Next"}
                       </Button>
-                      {isSubmitting && <CircularProgress size={24} />}
                     </div>
                   </Stack>
+                  <Backdrop
+                    sx={{
+                      color: "#fff",
+                      zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                    open={isSubmitting}
+                  >
+                    <CircularProgress color="inherit" />
+                  </Backdrop>
                 </Form>
               )}
             </Formik>
           </Box>
         </Box>
       </Box>
+      <SnackbarCustom
+        openSnackbarProp={openSnackbar}
+        setOpenSnackbarProp={(value) => {
+          setOpenSnackbar(value);
+        }}
+        snackbarprops={snackbarprops}
+      />
     </div>
   );
 }

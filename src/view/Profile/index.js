@@ -8,9 +8,11 @@ import PostPart from "./PostPart";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import ChangeAvatarButton from "./ChangeAvatarButton/ChangeAvatarButton";
+import SimpleDialog from "./SimpleDialog";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 
 const token = localStorage.getItem("token");
-const id = localStorage.getItem("_id");
 
 function Profile() {
   const [posts, setPosts] = useState([]);
@@ -19,16 +21,29 @@ function Profile() {
     path: localStorage.getItem("avatar") ? localStorage.getItem("avatar") : "",
     fileName: "",
   });
+  const [createAccountDate, setCreateAccountDate] = useState("");
+
+  const [manageFollowers, setManageFollowers] = useState({
+    follow: [],
+    followBy: [],
+  });
+  // const [openFollowers, setOpenFollowers] = useState(false);
+  const [userRank, setUserRank] = useState("");
+  const [openFollowing, setOpenFollowing] = useState(false);
   // const [isChangedAvatar, setIsChangedAvatar] = useState(true);
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: `/user/${id}`,
+      url: `/user`,
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
-        setPosts([...response.data.posts]);
+        console.log(response);
+        setManageFollowers({ ...response.data.user.manageFollowers });
+        setPosts([...response.data.user.postList]);
+        setCreateAccountDate(response.data.user.createdAt);
+        setUserRank(response.data.user.userRank);
       })
       .catch((error) => {
         console.log(error);
@@ -132,7 +147,67 @@ function Profile() {
               }}
             >
               <Typography variant="h5">{fullName}</Typography>
-              <Typography variant="subtitle1">user</Typography>
+              <Stack direction="row" spacing={2}>
+                <Typography
+                  variant="small"
+                  sx={{
+                    "&:hover": {
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    },
+                  }}
+                  onClick={() => {
+                    setOpenFollowing(true);
+                  }}
+                >
+                  {manageFollowers.follow.length} Following
+                </Typography>
+
+                <SimpleDialog
+                  open={openFollowing}
+                  data={manageFollowers.follow}
+                  onClose={() => {
+                    setOpenFollowing(false);
+                  }}
+                />
+
+                <Typography
+                  variant="small"
+                  sx={{
+                    "&:hover": {
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  {manageFollowers.followBy.length} Followers
+                </Typography>
+              </Stack>
+
+              <Stack sx={{ mt: 2 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <StarOutlineIcon fontSize="small" />
+                  <span>Rank: {userRank}</span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <EventNoteIcon fontSize="small" />
+                  <span>{`Active Date: ${createAccountDate.slice(
+                    0,
+                    10
+                  )}`}</span>
+                </div>
+              </Stack>
 
               <Box sx={{ mt: "30px", display: "flex", alignItems: "center" }}>
                 <Button
