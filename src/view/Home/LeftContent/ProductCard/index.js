@@ -11,15 +11,13 @@ import {
 import { Box } from "@mui/system";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import AttachMoney from "@mui/icons-material/AttachMoney";
 import { useSelector } from "react-redux";
 
 function ProductCard({ index, isLoading }) {
   const post = useSelector((state) => state.posts.value[index]) ?? [];
-  const images = isLoading ? [{ path: "", _id: "" }] : post.images;
 
   return (
-    <Card>
+    <Card elevation={5}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <CardMedia
@@ -54,7 +52,7 @@ function ProductCard({ index, isLoading }) {
               )} */}
             </div>
 
-            <div style={{ height: 100 }}>
+            <div style={{ height: 150 }}>
               <Typography variant="body1">
                 {isLoading ? "Loading..." : post.description}
               </Typography>
@@ -77,11 +75,8 @@ function ProductCard({ index, isLoading }) {
                 sx={{ display: "inline", fontSize: "20px" }}
                 variant="subtitle1"
               >
-                {isLoading ? "Loading..." : post.price}
+                {isLoading ? "Loading..." : `\$${post.price}`}
               </Typography>
-              {!isLoading && (
-                <AttachMoney sx={{ display: "inline", pt: "8px" }} />
-              )}
             </div>
 
             <div>
@@ -93,33 +88,32 @@ function ProductCard({ index, isLoading }) {
             <Stack direction="row" spacing={3}>
               <Button
                 variant="contained"
+                color="primary"
                 sx={{
-                  height: "40px",
+                  height: "46px",
                   textTransform: "none",
                   fontSize: 13,
-                  bgcolor: "#6A983C",
                 }}
                 endIcon={<ArrowForwardIosIcon />}
               >
                 <Link
-                  to="/post/12344"
+                  to={`/posts/${post._id}`}
                   style={{ textDecoration: "none", color: "#fff" }}
                 >
-                  Details
+                  Product Details
                 </Link>
               </Button>
               <Button
                 variant="contained"
+                color="primary"
                 sx={{
-                  height: "40px",
+                  height: "46px",
                   textTransform: "none",
                   fontSize: 13,
-                  bgcolor: "#F5F5F5",
-                  color: "black",
                 }}
                 startIcon={<FavoriteBorderIcon />}
               >
-                Care
+                Add to wish list
               </Button>
             </Stack>
           </Box>

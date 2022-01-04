@@ -12,19 +12,21 @@ import {
   Rating,
   CssBaseline,
   Paper,
+  Skeleton,
+  Container,
 } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import { makeStyles } from "@mui/styles";
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import { useLocation } from "react-router-dom";
 import { useGetPostQuery } from "../../api/posts";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setPost } from "../../features/posts/postSlice";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-
+import Heart from "react-animated-heart";
+import { Link } from "react-router-dom";
 const useStyles = makeStyles({
   container: {
     backgroundColor: "#FFFF",
@@ -43,6 +45,7 @@ const useStyles = makeStyles({
 });
 
 function Detail() {
+  const [isHeartClicked, setIsHeartClicked] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
   const { data, isLoading } = useGetPostQuery(useLocation().pathname);
@@ -63,137 +66,191 @@ function Detail() {
     >
       <CssBaseline />
       <Header />
-      <Box
-        className={classes.container}
-        sx={{ mt: 11, mb: 1.5, mx: 10, p: 2, pt: 3.5 }}
-      >
-        <Typography
-          className={classes.big_title}
-          variant="h5"
-          sx={{ mb: "20px" }}
+      <Container maxWidth="lg">
+        <Box
+          className={classes.container}
+          sx={{ mt: 11, mb: 1.5, mx: 10, p: 2, pt: 3, borderRadius: 3 }}
         >
-          Product details
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Paper
-              elevation={5}
-              sx={{
-                height: "10%",
-              }}
+          <Box
+            sx={{
+              position: "absolute",
+              top: "17.5%",
+              left: "15%",
+            }}
+          >
+            <Button
+              variant="text"
+              color="primary"
+              startIcon={<ArrowBackIosIcon />}
             >
-              <Carousel
-                PrevIcon={<ArrowBackIosIcon sx={{ color: "#fff" }} />}
-                NextIcon={<ArrowForwardIosIcon sx={{ color: "#fff" }} />}
+              <Link
+                to="/main"
+                style={{ textDecoration: "none", color: "#009688" }}
               >
-                {images.map((image, i) => (
-                  <Box
-                    component="img"
-                    src={image.path}
-                    sx={{
-                      height: "100%",
-                      width: "100%",
-                    }}
-                  />
-                ))}
-              </Carousel>
-            </Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Card sx={{ maxWidth: 700 }} elevation={5}>
-              <CardHeader
-                title={
-                  <Typography variant="h4" sx={{ mb: 1 }}>
-                    {isLoading ? "Loading..." : data.post.title}
-                  </Typography>
-                }
-                subheader={
-                  !isLoading && (
-                    <Rating
-                      name="read-only"
-                      value={data.post.avgRating}
-                      readOnly
-                      size="large"
+                Back
+              </Link>
+            </Button>
+          </Box>
+          <Typography
+            className={classes.big_title}
+            variant="h5"
+            sx={{ mb: "20px", textAlign: "center" }}
+          >
+            Product details
+          </Typography>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "25.2%",
+              left: "78%",
+            }}
+          >
+            <Heart
+              isClick={isHeartClicked}
+              onClick={() => setIsHeartClicked(!isHeartClicked)}
+            />
+          </Box>
+          <Grid container spacing={2} sx={{ borderRadius: 3 }}>
+            <Grid item xs={6}>
+              {isLoading ? (
+                <Skeleton variant="retangular" height="320px" />
+              ) : (
+                <Carousel>
+                  {images.map((image, i) => (
+                    <Box
+                      component="img"
+                      src={
+                        "https://i2.wp.com/tumusiimerobert.com/wp-content/uploads/2021/11/faster-computer.jpg?w=1000"
+                      }
+                      sx={{
+                        height: "100%",
+                        width: "100%",
+                      }}
                     />
-                  )
-                }
-              />
-              <CardContent>
-                <Typography
-                  variant="body1"
-                  sx={{ color: "rgb(170,183,199)", fontSize: 20 }}
-                >
-                  Price
-                </Typography>
-                <Typography variant="h4" sx={{ fontWeight: "500" }}>
-                  {isLoading ? "Loading..." : `$${data.post.price}`}
-                </Typography>
+                  ))}
+                </Carousel>
+              )}
 
-                <Typography
-                  variant="body1"
-                  sx={{ color: "rgb(170,183,199)", fontSize: 20, mt: 4 }}
-                >
-                  Author
-                </Typography>
-                <Typography>
-                  {isLoading ? "Loading..." : data.post.author.fullName}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ color: "rgb(170,183,199)", mt: 4, fontSize: 20 }}
-                >
-                  Location
-                </Typography>
-                <Typography>
-                  {isLoading ? "Loading..." : data.post.location}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{ color: "rgb(170,183,199)", mt: 4, fontSize: 20 }}
-                >
-                  Description
-                </Typography>
-
-                <Typography>
-                  {isLoading ? "Loading..." : data.post.description}
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ mb: 1, ml: 1 }}>
-                <Grid container direction="column">
-                  <Grid item>
-                    <Button variant="contained" color="primary">
-                      Add to favorites
-                    </Button>
-                  </Grid>
-                </Grid>
-              </CardActions>
-            </Card>
-            <ImageList
+              {/* <ImageList
               sx={{ width: "100%", height: 150, mt: 2 }}
               cols={5}
               rowHeight={64}
               gap={20}
-            >
-              {images.map((image, i) => (
-                <Paper elevation={5}>
-                  <ImageListItem>
-                    <img
-                      className={classes.item_image}
-                      src={image.path}
-                      alt="{item.title}"
+            > */}
+              <ImageList sx={{ height: "200px" }}>
+                {images.map((image, i) => (
+                  <Paper elevation={5}>
+                    <ImageListItem>
+                      <img
+                        className={classes.item_image}
+                        src={
+                          "https://i2.wp.com/tumusiimerobert.com/wp-content/uploads/2021/11/faster-computer.jpg?w=1000"
+                        }
+                        alt="{item.title}"
+                      />
+                    </ImageListItem>
+                  </Paper>
+                ))}
+              </ImageList>
+            </Grid>
+            <Grid item xs={6}>
+              <Card sx={{ maxWidth: 700, pl: 2 }} elevation={5}>
+                <CardHeader
+                  title={
+                    isLoading ? (
+                      <Skeleton variant="text" width="350px" />
+                    ) : (
+                      <Typography variant="h4" sx={{ mb: 1 }}>
+                        {data.post.title}
+                      </Typography>
+                    )
+                  }
+                  subheader={
+                    isLoading ? (
+                      <Skeleton variant="text" width="180px" />
+                    ) : (
+                      <Rating
+                        name="read-only"
+                        value={data.post.avgRating}
+                        readOnly
+                        size="large"
+                      />
+                    )
+                  }
+                />
+                <CardContent>
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "rgb(170,183,199)", fontSize: 20 }}
+                  >
+                    Price
+                  </Typography>
+
+                  {isLoading ? (
+                    <Skeleton variant="text" width="350px" />
+                  ) : (
+                    <Typography variant="h4" sx={{ fontWeight: "500" }}>
+                      {`\$${data.post.price}`}
+                    </Typography>
+                  )}
+
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "rgb(170,183,199)", fontSize: 20, mt: 4 }}
+                  >
+                    Author
+                  </Typography>
+
+                  {isLoading ? (
+                    <Skeleton variant="text" width="350px" />
+                  ) : (
+                    <Typography>{data.post.author.fullName}</Typography>
+                  )}
+
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "rgb(170,183,199)", mt: 4, fontSize: 20 }}
+                  >
+                    Location
+                  </Typography>
+
+                  {isLoading ? (
+                    <Skeleton variant="text" width="350px" />
+                  ) : (
+                    <Typography>{data.post.location} </Typography>
+                  )}
+
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "rgb(170,183,199)", mt: 4, fontSize: 20 }}
+                  >
+                    Description
+                  </Typography>
+
+                  {isLoading ? (
+                    <Skeleton
+                      variant="retangular"
+                      height="100px"
+                      width="350px"
                     />
-                  </ImageListItem>
-                </Paper>
-              ))}
-            </ImageList>
+                  ) : (
+                    <Typography>{data.post.description}</Typography>
+                  )}
+                </CardContent>
+                <CardActions sx={{ mb: 1, ml: 1 }}>
+                  <Grid container direction="column">
+                    <Grid item></Grid>
+                  </Grid>
+                </CardActions>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-        {/* <Box sx={{ width: "100%", height: 300, border: "0px solid" }}>
+          {/* <Box sx={{ width: "100%", height: 300, border: "0px solid" }}>
           Phan va cac san phan lien quan (de xuat)
         </Box> */}
-      </Box>
+        </Box>
+      </Container>
     </Box>
-    //
   );
 }
 

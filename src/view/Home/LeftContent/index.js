@@ -19,7 +19,9 @@ function LeftContent() {
     //eslint-disable-next-line
   }, [data]);
   return (
-    <Box sx={{ p: 2 }}>
+    <Box
+      sx={{ px: 4, pb: 0.5, height: "76%", width: "50%", position: "fixed" }}
+    >
       <Grid container direction="column">
         {/* <Grid item>
           <Grid container justifyContent="space-between">
@@ -43,26 +45,26 @@ function LeftContent() {
         <Grid item mb={2}>
           <Grid container justifyContent="space-between">
             <Grid item>Top Product</Grid>
-            <Grid item>icon, sort by</Grid>
+            {/* <Grid item>icon, sort by</Grid> */}
           </Grid>
         </Grid>
         <Grid item sx={{ height: "635px" }}>
           <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
             <Grid container>
               <Grid item xs={12} mb={2}>
-                  <ProductCard index={0} isLoading={isLoading} />
+                <ProductCard index={0} isLoading={isLoading} />
               </Grid>
               <Grid item xs={12} mb={2}>
-                  <ProductCard index={1} isLoading={isLoading} />
+                <ProductCard index={1} isLoading={isLoading} />
               </Grid>
               <Grid item xs={12} mb={2}>
-                  <ProductCard index={2} isLoading={isLoading} />
+                <ProductCard index={2} isLoading={isLoading} />
               </Grid>
               <Grid item xs={12} mb={2}>
-                  <ProductCard index={3} isLoading={isLoading} />
+                <ProductCard index={3} isLoading={isLoading} />
               </Grid>
               <Grid item xs={12} mb={2}>
-                  <ProductCard index={4} isLoading={isLoading} />
+                <ProductCard index={4} isLoading={isLoading} />
               </Grid>
             </Grid>
           </Scrollbars>

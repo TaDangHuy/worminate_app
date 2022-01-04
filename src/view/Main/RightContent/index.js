@@ -29,7 +29,15 @@ function RightContent() {
 
   return (
     <Box
-      sx={{ px: 4, pb: 0.5, height: "76%", width: "75%", position: "fixed" }}
+      sx={{
+        px: 4,
+        pb: 0.5,
+        height: "76%",
+        width: "60%",
+        position: "absolute",
+        top: "16%",
+        left: "33%",
+      }}
     >
       <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
         <Grid container spacing={2}>

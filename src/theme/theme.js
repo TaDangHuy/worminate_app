@@ -7,11 +7,11 @@ export const theme = createTheme({
       main: "#009688",
     },
     secondary: {
-      main: "#009650",
+      main: "#009688",
     },
   },
   typography: {
-    fontFamily: "Itim",
+    fontFamily: "Nunito",
     fontSize: 16,
   },
 });
