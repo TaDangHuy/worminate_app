@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { Card } from "@mui/material";
+import { Paper } from "@mui/material";
 import Map from "./Map";
 // import MapboxGeocoder from "react-map-gl-geocoder";
 // import axios from "axios"
@@ -371,16 +371,16 @@ function LeftContent() {
   //     center: [-98.55562, 39.809734], // center of map
   //     zoom: 3.3
   //   });
-  
+
   //   if(location_auto) {
   //       map.setCenter([location_auto[0],location_auto[1]]);
   //       map.setZoom(7.5);
   //   }
-    
+
   //   // map.addControl(new MapboxGeocoder({ // add search capability in map - need for mapBoxToken
   //   //     accessToken: "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ"
   //   // }));
-  
+
   //   map.on('load', function () {
   //       // Add a new source from our GeoJSON data and set the
   //       // 'cluster' option to true. GL-JS will add the point_count property to your source data.
@@ -392,7 +392,7 @@ function LeftContent() {
   //           clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
   //           // something like measurable unit for detemine point_count for each point in map
   //       });
-    
+
   //       map.addLayer({
   //           id: "clusters",
   //           type: "circle",
@@ -424,7 +424,7 @@ function LeftContent() {
   //               ]
   //           }
   //       });
-    
+
   //       map.addLayer({
   //           id: "cluster-count",
   //           type: "symbol",
@@ -436,7 +436,7 @@ function LeftContent() {
   //               "text-size": 12
   //           }
   //       });
-    
+
   //       map.addLayer({
   //           id: "unclustered-point",
   //           type: "circle",
@@ -449,24 +449,24 @@ function LeftContent() {
   //               "circle-stroke-color": "#fff"
   //           }
   //       });
-    
+
   //       map.on('click', 'unclustered-point', function (e) {
   //           var coordinates = e.features[0].geometry.coordinates.slice();
   //           var description = e.features[0].properties.description;
-    
+
   //           // Ensure that if the map is zoomed out such that multiple
   //           // copies of the feature are visible, the popup appears
   //           // over the copy being pointed to.
   //           while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
   //               coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
   //           }
-    
+
   //           new mapboxgl.Popup()
   //               .setLngLat(coordinates)
   //               .setHTML(description)
   //               .addTo(map);
   //       });
-    
+
   //       // inspect a cluster on click
   //       map.on('click', 'clusters', function (e) {
   //           var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
@@ -474,14 +474,14 @@ function LeftContent() {
   //           map.getSource('posts').getClusterExpansionZoom(clusterId, function (err, zoom) {
   //               if (err)
   //                   return;
-    
+
   //               map.easeTo({
   //                   center: features[0].geometry.coordinates,
   //                   zoom: zoom
   //               });
   //           });
   //       });
-    
+
   //       var mouseenterCursor = function () {
   //           map.getCanvas().style.cursor = 'pointer';
   //       };
@@ -497,16 +497,18 @@ function LeftContent() {
   return (
     <Box
       sx={{
-        bgcolor: "#f5f5f5",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        p: 2 ,
+        px: 4,
+        pb: 0.5,
+        height: "76%",
+        width: "50%",
+        position: "absolute",
+        top: "15%",
+        left: "50%",
       }}
     >
-      <Card sx={{ width: "90%"}}>
-        <Map/>
-      </Card>
+      <Paper elevation={8} sx={{ height: "500px", width: "98%" }}>
+        <Map />
+      </Paper>
     </Box>
   );
 }

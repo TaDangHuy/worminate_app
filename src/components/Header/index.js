@@ -12,6 +12,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import User from "./User";
 import Categories from "./Categories";
+import {
+  useGetPostsQuery,
+  useSearchPostsQuery,
+  useTakePostsQuery,
+} from "../../api/posts";
+import { useDispatch, useSelector } from "react-redux";
+import { setPosts } from "../../features/posts/postsSlice";
 
 const StyledInputElement = styled("input")`
   width: 500px;
@@ -58,6 +65,24 @@ function Navigation() {
     console.log(userName, isAdmin);
   }, [userName]);
 
+  const [skip, setSkip] = useState(true);
+  const [searchContent, setSearchContent] = useState("");
+  const { data } = useSearchPostsQuery(searchContent, {
+    skip,
+  });
+  const dispatch = useDispatch();
+
+  // const search = useSelector((state) => state.search);
+
+  // const { data } = useTakePostsQuery(search, {
+  //   skip,
+  // });
+
+  useEffect(() => {
+    if (data) dispatch(setPosts(data.posts.docs));
+    //eslint-disable-next-line
+  }, [data]);
+
   return (
     <AppBar
       position="fixed"
@@ -86,7 +111,16 @@ function Navigation() {
           </Typography>
         </Link>
 
-        <CustomInput aria-label="Demo input" placeholder="Search..." />
+        <CustomInput
+          aria-label="Demo input"
+          placeholder="Search..."
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              setSearchContent(event.target.value);
+              setSkip(false);
+            }
+          }}
+        />
 
         {useLocation().pathname !== "/home" && <Categories />}
         <Box sx={{ flexGrow: 1 }} />

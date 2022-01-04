@@ -3,6 +3,7 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { baseApi } from "../api/base";
 import postSlice from "../features/posts/postSlice";
 import postsSlice from "../features/posts/postsSlice";
+import searchSlice from "../features/search/searchSlice";
 // import userSlice from "../features/posts/userSlice";
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     posts: postsSlice,
     post: postSlice,
     // user: userSlice,
+    search: searchSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(baseApi.middleware),

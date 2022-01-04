@@ -19,9 +19,9 @@ function HeroSection() {
           height: "100%",
           width: "100%",
           position: "absolute",
-          filter: "opacity(60%)",
+          filter: "opacity(90%)",
         }}
-        src={require("../../../../assets/images/background.png").default}
+        src={require("../../../../assets/images/background.jpg").default}
       />
       <Container
         sx={{
@@ -33,22 +33,32 @@ function HeroSection() {
         <Grid
           sx={{
             height: "100%",
-            paddingTop: "22vh",
+            paddingTop: "18vh",
           }}
           container
         >
-          <Grid sm={8} item>
-            <Typography variant="h3">Welcome to Worminate</Typography>
-            <Typography variant="h6">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi
-              repellat!
+          <Grid sm={8} sx={{ ml: 20, mt: 6 }} item>
+            <Typography
+              variant="h4"
+              sx={{
+                textAlign: "center",
+                textShadow: "#fff 1px 1px",
+              }}
+            >
+              Welcome to Worminate
             </Typography>
-            <Box my={2}>
+            <Typography
+              variant="h6"
+              sx={{ textAlign: "center", textShadow: "#fff 1px 1px" }}
+            >
+              Everything you want is right here
+            </Typography>
+            <Box my={2} sx={{ textAlign: "center" }}>
               <Button
                 startIcon={<Home />}
                 variant="contained"
                 color="primary"
-                size="large"
+                size="medium"
               >
                 <Link
                   to="/home"

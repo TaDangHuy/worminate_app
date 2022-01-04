@@ -1,33 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
+  IconButton,
   Card,
   CardMedia,
   Grid,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { Star, HeartIcon } from "@mui/icons-material/Star";
+import { Star, Visibility } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 
+import Heart from "react-animated-heart";
+
 function ProductCard({ index, isLoading }) {
+  const [isHeartClicked, setIsHeartClicked] = useState(false);
+
   const post = useSelector((state) => state.posts.value[index]) ?? [];
 
   return (
-    <Card elevation={5}>
+    <Card elevation={5} sx={{ borderRadius: 3, mx: 2 }}>
       <Grid container spacing={2}>
         <Grid item xs={4}>
-          <CardMedia
-            component="img"
-            height="220"
-            image={!isLoading && post.images ? post.images[0].path : ""}
-            alt="img"
-            sx={{ bgcolor: "#F9F9F9" }}
-          />
+          {isLoading ? (
+            <Skeleton
+              variant="retangular"
+              height="220px"
+              sx={{ m: 1, borderRadius: 3 }}
+            />
+          ) : (
+            <CardMedia
+              component="img"
+              height="220"
+              image={
+                !isLoading && post.images
+                  ? "https://i2.wp.com/tumusiimerobert.com/wp-content/uploads/2021/11/faster-computer.jpg?w=1000"
+                  : ""
+              }
+              alt="img"
+              sx={{ bgcolor: "#F9F9F9", m: 1, borderRadius: 3 }}
+            />
+          )}
         </Grid>
         <Grid item xs={4}>
           <Box
@@ -40,9 +58,12 @@ function ProductCard({ index, isLoading }) {
             }}
           >
             <div>
-              <Typography variant="subtitle1">
-                {isLoading ? "Loading..." : post.title}
-              </Typography>
+              {isLoading ? (
+                <Skeleton variant="text" />
+              ) : (
+                <Typography variant="subtitle1">{post.title}</Typography>
+              )}
+
               <Typography
                 sx={{ display: "inline", fontSize: "18px" }}
                 variant="subtitle2"
@@ -55,9 +76,11 @@ function ProductCard({ index, isLoading }) {
             </div>
 
             <div style={{ height: 150 }}>
-              <Typography variant="body1">
-                {isLoading ? "Loading..." : post.description}
-              </Typography>
+              {isLoading ? (
+                <Skeleton variant="retangular" height="150px" />
+              ) : (
+                <Typography variant="body1">{post.description}</Typography>
+              )}
             </div>
           </Box>
         </Grid>
@@ -73,50 +96,49 @@ function ProductCard({ index, isLoading }) {
             }}
           >
             <div>
-              <Typography
-                sx={{ display: "inline", fontSize: "20px" }}
-                variant="subtitle1"
-              >
-                {isLoading ? "Loading..." : `\$${post.price}`}
-              </Typography>
+              {isLoading ? (
+                <Skeleton variant="text" />
+              ) : (
+                <Typography
+                  sx={{ display: "inline", fontSize: "20px" }}
+                  variant="subtitle1"
+                >{`\$${post.price}`}</Typography>
+              )}
             </div>
 
             <div>
-              <Typography variant="subtitle1">
-                {isLoading ? "Loading..." : post.location}
-              </Typography>
+              {isLoading ? (
+                <Skeleton variant="text" />
+              ) : (
+                <Typography variant="subtitle1">{post.location} </Typography>
+              )}
             </div>
 
-            <Stack direction="row" spacing={3}>
-              <Button
-                variant="contained"
-                color="primary"
+            <Stack direction="row" spacing={0} sx={{}}>
+              <IconButton
+                size="large"
                 sx={{
                   height: "46px",
-                  textTransform: "none",
-                  fontSize: 13,
+                  width: "46px",
+                  mt: "24px",
                 }}
-                endIcon={<ArrowForwardIosIcon />}
               >
-                <Link
-                  to={`/posts/${post._id}`}
-                  style={{ textDecoration: "none", color: "#fff" }}
-                >
-                  Product Details
+                <Link to={`/posts/${post._id}`} style={{ color: "#aab8c2" }}>
+                  <Visibility
+                    fontSize="inherit"
+                    sx={{
+                      ":hover": {
+                        color: "primary.main",
+                      },
+                    }}
+                  />
                 </Link>
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  height: "46px",
-                  textTransform: "none",
-                  fontSize: 13,
-                }}
-                startIcon={<FavoriteBorderIcon />}
-              >
-                Add to wish list
-              </Button>
+              </IconButton>
+
+              <Heart
+                isClick={isHeartClicked}
+                onClick={() => setIsHeartClicked(!isHeartClicked)}
+              />
             </Stack>
           </Box>
         </Grid>

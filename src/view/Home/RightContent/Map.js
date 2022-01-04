@@ -2,28 +2,28 @@ import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import { makeStyles } from "@mui/styles";
 
-mapboxgl.accessToken="pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
 
 const useStyle = makeStyles({
-    // sidebar: {
-    //     backgroundColor : "rgba(35, 55, 75, 0.9)",
-    //     color: "#fff",
-    //     padding: "6px 12px",
-    //     fontFamily: "monospace",
-    //     zIndex: 1,
-    //     position: "absolute",
-    //     top: 0,
-    //     left: 0,
-    //     margin: "12px",
-    //     borderRadius: "4px",
-    // },
-    "map-container": {
-        height: "400px"
-    }
-
-})
+  // sidebar: {
+  //     backgroundColor : "rgba(35, 55, 75, 0.9)",
+  //     color: "#fff",
+  //     padding: "6px 12px",
+  //     fontFamily: "monospace",
+  //     zIndex: 1,
+  //     position: "absolute",
+  //     top: 0,
+  //     left: 0,
+  //     margin: "12px",
+  //     borderRadius: "4px",
+  // },
+  "map-container": {
+    height: "500px",
+  },
+});
 export default function Map() {
-    const classes = useStyle();
+  const classes = useStyle();
 
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -52,7 +52,6 @@ export default function Map() {
 
   return (
     <div>
-      
       <div ref={mapContainer} className={classes["map-container"]} />
     </div>
   );

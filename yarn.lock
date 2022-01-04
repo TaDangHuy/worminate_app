@@ -6092,6 +6092,11 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
+goober@^2.0.37:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/goober/-/goober-2.1.1.tgz#2328a6dae015c3cd30fc55a70090037a244ad2f6"
+  integrity sha512-TkGCqHxE4g5DtdpwxFCi53bXRtvw0BoSgCihVSIOioe9kfkqin5wXG8BQKykN0tjzmxZJ81qU2KWinZf5qKVlw==
+
 got@^8.3.2:
   version "8.3.2"
   resolved "https://registry.npmjs.org/got/-/got-8.3.2.tgz"
@@ -10175,6 +10180,16 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-animated-heart@^0.0.7-alpha.1:
+  version "0.0.7-alpha.1"
+  resolved "https://registry.yarnpkg.com/react-animated-heart/-/react-animated-heart-0.0.7-alpha.1.tgz#6d9e8e4b5e712fddbeeb0d2d3df6f8e087a437e7"
+  integrity sha512-xcy5oWOF3rc7dt8K+g7mdMLcyRIlYWleHSI8LLqlKRD2UVFUvhcl+qNS+X36qulMS0b9Nv0+wDgkLFQWjGB7cA==
+  dependencies:
+    goober "^2.0.37"
+    react "^17.0.2"
+    react-dom "^17.0.2"
+    react-scripts "4.0.3"
+
 react-app-polyfill@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/react-app-polyfill/-/react-app-polyfill-2.0.0.tgz"
@@ -10277,6 +10292,13 @@ react-material-ui-carousel@^3.1.1:
   integrity sha512-MmU0eQ9NXMAfPOoK8mR5qPBdMvrtIPXq+FHRiiT+FDXQARKoLO4G1UJP/iMQHWx+9/w9hF8QfZvxZSSs3ab+nA==
   dependencies:
     framer-motion "^4.1.17"
+
+react-paginate@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-8.1.0.tgz#8c4c6c5b7d90e8a4f33653262204fd32c5dfd207"
+  integrity sha512-XK8cgcX8Zk4De6F4Iozd91a2xm/U+mdD4SB5k4xcBabqZj86U20N7kMiMzOFk1AEGCj6Kg1374xXK03dz7BTRA==
+  dependencies:
+    prop-types "^15.6.1"
 
 react-perfect-scrollbar@^1.5.8:
   version "1.5.8"

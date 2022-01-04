@@ -16,31 +16,37 @@ import {
   OutlinedInput,
   Button,
   TextField,
+  IconButton,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useState } from "react";
 import Filter from "./Filter";
+import { LocationOn } from "@mui/icons-material";
 
 function LeftContent() {
+  const [rating, setRating] = useState(0);
   const [rangeValue, setRangeValue] = useState([0, 1000]);
-
-  const changeRange = (event, newValue) => {
-    setRangeValue(newValue);
-  };
-
+  const [distance, setDistance] = useState(50);
   return (
     <Box
       sx={{ ml: 2, pb: 0.5, height: "83%", width: "25%", position: "fixed" }}
     >
-      <Card sx={{ height: "100%", px: 2 }} elevation={4}>
+      <Card sx={{ height: "100%", p: 2, borderRadius: 3 }} elevation={4}>
         <CardContent>
-          <Grid container gridAutoFlow="column" gap={1}>
-            <Grid item xs={12}>
+          <Grid container gridAutoFlow="column" gap={3}>
+            <Grid item xs={12} sx={{ mt: 1 }}>
               <Filter />
             </Grid>
             <Grid item xs={12}>
-              <FormControl component="fieldset" variant="standard">
+              <Typography variant="subtitle1">Rating</Typography>
+              <Rating
+                sx={{ position: "absolute", top: "19.6%", left: "28%" }}
+                name="read-only"
+                value={rating}
+                onChange={(event, newValue) => setRating(newValue)}
+              />
+              {/* <FormControl component="fieldset" variant="standard">
                 <FormLabel component="legend">
                   <Typography variant="subtitle1">Rating</Typography>
                 </FormLabel>
@@ -102,14 +108,14 @@ function LeftContent() {
                     label={<Rating name="read-only" value={1} readOnly />}
                   />
                 </FormGroup>
-              </FormControl>
+              </FormControl> */}
             </Grid>
             <Grid item xs={12}>
               <Slider
-                sx={{ width: "86%", ml: 1 }}
+                sx={{ width: "86%" }}
                 getAriaLabel={() => "Temperature range"}
                 value={rangeValue}
-                onChange={changeRange}
+                onChange={(event, newValue) => setRangeValue(newValue)}
               />
               <Typography variant="subtitle1">
                 {"Price from "}
@@ -129,16 +135,45 @@ function LeftContent() {
                   ${rangeValue[1] * 10}
                 </Typography>{" "}
               </Typography>
-
-              <Grid item xs={12} sx={{ mt: 2 }}>
-                <TextField label="Location" />
-              </Grid>
+            </Grid>
+            <Grid item xs={12} sx={{}}>
+              <TextField label="Location" variant="standard" />
+              <IconButton sx={{ mt: 1.5 }}>
+                <LocationOn
+                  sx={{
+                    ":hover": {
+                      color: "primary.main",
+                    },
+                  }}
+                />
+              </IconButton>
+            </Grid>
+            <Grid item xs={12}>
+              <Slider
+                sx={{ width: "90%" }}
+                value={distance}
+                onChange={(event, newDistance) => setDistance(newDistance)}
+              />
+              <Typography variant="subtitle1">
+                {"Around "}
+                <Typography
+                  variant="subtitle1"
+                  color="primary"
+                  component="span"
+                >
+                  {distance}km
+                </Typography>
+              </Typography>
             </Grid>
           </Grid>
         </CardContent>
         <CardActions sx={{ mx: "9px" }}>
-          <Button variant="contained">Apply</Button>
-          <Button variant="outlined">Reset</Button>
+          <Button variant="contained" size="small">
+            Apply
+          </Button>
+          <Button variant="outlined" size="small">
+            Reset
+          </Button>
         </CardActions>
       </Card>
     </Box>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useGetCategoryQuery } from "../../api/posts";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -62,6 +63,16 @@ export default function CustomizedMenus() {
     if (category) setCategory(category);
   };
 
+  const [categories, setCategories] = useState([]);
+  const { data, isLoading } = useGetCategoryQuery();
+
+  useEffect(() => {
+    if (data) {
+      setCategories(data.category);
+    }
+    //eslint-disable-next-line
+  }, [data]);
+
   return (
     <div>
       <Button
@@ -73,7 +84,7 @@ export default function CustomizedMenus() {
         disableElevation
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
-        sx={{ width: "208px", height: "39px", fontSize: "13.25px" }}
+        sx={{ width: "180px", height: "39px", fontSize: "13.25px" }}
       >
         {category}
       </Button>
@@ -90,58 +101,12 @@ export default function CustomizedMenus() {
           All categories
         </MenuItem>
 
-        <MenuItem onClick={() => handleClose("Electronics")} disableRipple>
-          Electronics
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => handleClose("Collectibles & Art")}
-          disableRipple
-        >
-          Collectibles & Art
-        </MenuItem>
-
-        <MenuItem onClick={() => handleClose("Fashion")} disableRipple>
-          Fashion
-        </MenuItem>
-
-        <MenuItem onClick={() => handleClose("Motors")} disableRipple>
-          Motors
-        </MenuItem>
-
-        <MenuItem onClick={() => handleClose("Toys & Hobbies")} disableRipple>
-          Toys & Hobbies
-        </MenuItem>
-
-        <MenuItem onClick={() => handleClose("Sporting Goods")} disableRipple>
-          Sporting Goods
-        </MenuItem>
-
-        <MenuItem onClick={() => handleClose("Health & Beauty")} disableRipple>
-          Health & Beauty
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => handleClose("Books, Movies & Music")}
-          disableRipple
-        >
-          Books, Movies & Music
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => handleClose("Business & Industrial")}
-          disableRipple
-        >
-          Business & Industrial
-        </MenuItem>
-
-        <MenuItem onClick={() => handleClose("Home & Garden")} disableRipple>
-          Home & Garden
-        </MenuItem>
-
-        <MenuItem onClick={() => handleClose("Others")} disableRipple>
-          Others
-        </MenuItem>
+        {!isLoading &&
+          categories.map((item, i) => (
+            <MenuItem onClick={() => handleClose(item.name)} disableRipple>
+              {item.name}
+            </MenuItem>
+          ))}
       </StyledMenu>
     </div>
   );
