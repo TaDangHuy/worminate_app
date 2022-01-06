@@ -49,7 +49,7 @@ function Detail() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { data, isLoading } = useGetPostQuery(useLocation().pathname);
-  const images = !isLoading && data.post.images ? data.post.images : [];
+  const images = data ? data.post.images : [];
 
   useEffect(() => {
     if (data) dispatch(setPost(data.post));
@@ -116,18 +116,17 @@ function Detail() {
                 <Skeleton variant="retangular" height="320px" />
               ) : (
                 <Carousel>
-                  {images.map((image, i) => (
-                    <Box
-                      component="img"
-                      src={
-                        "https://i2.wp.com/tumusiimerobert.com/wp-content/uploads/2021/11/faster-computer.jpg?w=1000"
-                      }
-                      sx={{
-                        height: "100%",
-                        width: "100%",
-                      }}
-                    />
-                  ))}
+                  {!isLoading &&
+                    images.map((image, i) => (
+                      <Box
+                        component="img"
+                        src={image.path}
+                        sx={{
+                          height: "100%",
+                          width: "100%",
+                        }}
+                      />
+                    ))}
                 </Carousel>
               )}
 
@@ -138,19 +137,14 @@ function Detail() {
               gap={20}
             > */}
               <ImageList sx={{ height: "200px" }}>
-                {images.map((image, i) => (
-                  <Paper elevation={5}>
-                    <ImageListItem>
-                      <img
-                        className={classes.item_image}
-                        src={
-                          "https://i2.wp.com/tumusiimerobert.com/wp-content/uploads/2021/11/faster-computer.jpg?w=1000"
-                        }
-                        alt="{item.title}"
-                      />
-                    </ImageListItem>
-                  </Paper>
-                ))}
+                {!isLoading &&
+                  images.map((image, i) => (
+                    <Paper elevation={5} key={i}>
+                      <ImageListItem>
+                        <img className={classes.item_image} src={image.path} />
+                      </ImageListItem>
+                    </Paper>
+                  ))}
               </ImageList>
             </Grid>
             <Grid item xs={6}>

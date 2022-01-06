@@ -10,17 +10,14 @@ import { Box, styled } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import User from "./User";
-import Categories from "./Categories";
-import {
-  useGetPostsQuery,
-  useSearchPostsQuery,
-  useTakePostsQuery,
-} from "../../api/posts";
+import { useGetPostsQuery } from "../../api/posts";
 import { useDispatch, useSelector } from "react-redux";
+import { setSearchContent } from "../../features/search/searchSlice";
 import { setPosts } from "../../features/posts/postsSlice";
+import { setPageIndex } from "../../features/search/searchSlice";
 
 const StyledInputElement = styled("input")`
-  width: 500px;
+  width: 600px;
   height: 40px;
   font-size: 1rem;
   font-family: IBM Plex Sans, sans-serif;
@@ -64,20 +61,15 @@ function Navigation() {
   }, [userName, isAdmin]);
 
   const [skip, setSkip] = useState(true);
-  const [searchContent, setSearchContent] = useState("");
-  const { data } = useSearchPostsQuery(searchContent, {
+
+  const dispatch = useDispatch();
+  const search = useSelector((state) => state.search);
+  const { data } = useGetPostsQuery(search, {
     skip,
   });
-  const dispatch = useDispatch();
-
-  // const search = useSelector((state) => state.search);
-
-  // const { data } = useTakePostsQuery(search, {
-  //   skip,
-  // });
 
   useEffect(() => {
-    if (data) dispatch(setPosts(data.posts.docs));
+    if (data && data.posts) dispatch(setPosts(data.posts.docs));
     //eslint-disable-next-line
   }, [data]);
 
@@ -114,30 +106,45 @@ function Navigation() {
           placeholder="Search..."
           onKeyPress={(event) => {
             if (event.key === "Enter") {
-              setSearchContent(event.target.value);
+              dispatch(setSearchContent(event.target.value));
+              dispatch(setPageIndex(1));
               setSkip(false);
             }
           }}
         />
 
-        {useLocation().pathname !== "/home" && <Categories />}
         <Box sx={{ flexGrow: 1 }} />
         {useLocation().pathname === "/home" && (
           <Button
+            color="primary"
             variant="contained"
-            startIcon={<ShoppingCartIcon />}
-            sx={{ mr: "90px" }}
+            sx={{ height: 41, width: 130, mr: 3 }}
           >
             <Link
               to="/main"
               style={{
                 textDecoration: "none",
-                color: "white",
+                color: "#fff",
               }}
             >
-              Shop now!!
+              <Typography variant="text">Shop now!!</Typography>
             </Link>
           </Button>
+          // <Button
+          //   variant="contained"
+          //   startIcon={<ShoppingCartIcon />}
+          //   sx={{ mr: "90px" }}
+          // >
+          //   <Link
+          //     to="/main"
+          //     style={{
+          //       textDecoration: "none",
+          //       color: "white",
+          //     }}
+          //   >
+          //     Shop now!!
+          //   </Link>
+          // </Button>
         )}
         {/* <Divider orientation="vertical" flexItem sx={{ mx: 2 }} /> */}
 

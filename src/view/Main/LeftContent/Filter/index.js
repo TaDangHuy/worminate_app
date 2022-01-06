@@ -5,6 +5,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter } from "../../../../features/search/searchSlice";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -23,35 +25,37 @@ const StyledMenu = styled((props) => (
   "& .MuiPaper-root": {
     borderRadius: 6,
     marginTop: theme.spacing(1),
-    minWidth: 169,
+    minWidth: 196.5,
     color:
       theme.palette.mode === "light"
         ? "rgb(55, 65, 81)"
         : theme.palette.grey[300],
-      boxShadow:
-        "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
-      "& .MuiMenu-list": {
-        padding: "4px 0",
+    boxShadow:
+      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+    "& .MuiMenu-list": {
+      padding: "4px 0",
+    },
+    "& .MuiMenuItem-root": {
+      "& .MuiSvgIcon-root": {
+        fontSize: 18,
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5),
       },
-      "& .MuiMenuItem-root": {
-        "& .MuiSvgIcon-root": {
-          fontSize: 18,
-          color: theme.palette.text.secondary,
-          marginRight: theme.spacing(1.5),
-        },
-        "&:active": {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            theme.palette.action.selectedOpacity
-          ),
-        },
+      "&:active": {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.selectedOpacity
+        ),
       },
+    },
   },
 }));
 
 export default function CustomizedMenus() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [filter, setFilter] = useState("No filter");
+  const filter = useSelector((state) => state.search.filter);
+  const dispatch = useDispatch();
+
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -59,7 +63,7 @@ export default function CustomizedMenus() {
   };
   const handleClose = (filter) => {
     setAnchorEl(null);
-    if (filter) setFilter(filter);
+    if (filter) dispatch(setFilter(filter));
   };
 
   return (
@@ -73,7 +77,7 @@ export default function CustomizedMenus() {
         disableElevation
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
-        sx={{ width: "169x", height: "39px", fontSize: "13.25px", py: 1 }}
+        sx={{ width: 196.5, height: "39px", fontSize: "13.25px", py: 1 }}
       >
         {filter}
       </Button>
@@ -94,16 +98,8 @@ export default function CustomizedMenus() {
           Newest
         </MenuItem>
 
-        <MenuItem onClick={() => handleClose("Most rated")} disableRipple>
-          Most rated
-        </MenuItem>
-
         <MenuItem onClick={() => handleClose("Lowest price")} disableRipple>
           Lowest price
-        </MenuItem>
-
-        <MenuItem onClick={() => handleClose("Nearest")} disableRipple>
-          Nearest
         </MenuItem>
       </StyledMenu>
     </div>

@@ -1,30 +1,37 @@
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, Pagination } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import ProductCard from "./ProductCard";
+import PostCard from "./PostCard";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useGetPostsQuery } from "../../../api/posts";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../../features/posts/postsSlice";
 import { useState, useEffect } from "react";
+import { setPageIndex } from "../../../features/search/searchSlice";
 
 function RightContent() {
-  const [pageIndex, setPageIndex] = useState(1);
+  const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetPostsQuery(pageIndex);
+  const { data, isLoading } = useGetPostsQuery(search);
+  let maxPageIndex = 1;
+  let posts = [];
 
   useEffect(() => {
-    if (data) {
+    if (data && data.posts) {
       // console.log("data", data);
       dispatch(setPosts(data.posts.docs));
     }
     //eslint-disable-next-line
   }, [data]);
 
+  if (data && data.posts) {
+    posts = data.posts.docs;
+    maxPageIndex = data.posts.pages;
+  }
   const updatePosts = (newPageIndex) => {
-    setPageIndex(newPageIndex);
+    dispatch(setPageIndex(newPageIndex));
   };
 
   return (
@@ -32,67 +39,69 @@ function RightContent() {
       sx={{
         px: 4,
         pb: 0.5,
-        height: "76%",
-        width: "60%",
-        position: "absolute",
-        top: "16%",
-        left: "33%",
+        ml: -0.5,
+        height: "92%",
+        width: 950,
+        position: "relative",
+        top: "0%",
+        left: "0%",
       }}
     >
-      <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <ProductCard index={0} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={1} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={2} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={3} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={4} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={5} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={6} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={7} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={8} isLoading={isLoading} />
-          </Grid>
-          <Grid item xs={12}>
-            <ProductCard index={9} isLoading={isLoading} />
-          </Grid>
+      <Scrollbars
+        autoHide
+        autoHideTimeout={500}
+        autoHideDuration={200}
+        renderTrackHorizontal={(props) => (
+          <div
+            {...props}
+            className="track-horizontal"
+            style={{ display: "none" }}
+          />
+        )}
+        renderThumbHorizontal={(props) => (
+          <div
+            {...props}
+            className="thumb-horizontal"
+            style={{ display: "none" }}
+          />
+        )}
+        renderTrackVertical={(props) => (
+          <div
+            {...props}
+            className="track-vertical"
+            style={{ display: "none" }}
+          />
+        )}
+        renderThumbVertical={(props) => (
+          <div
+            {...props}
+            className="thumb-vertical"
+            style={{ display: "none" }}
+          />
+        )}
+      >
+        <Grid container spacing={2} sx={{ px: 1.2, pb: 1.5 }}>
+          {posts.length > 0 &&
+            posts.map((post, i) => (
+              <Grid item sx={4}>
+                <PostCard post={post} index={i} key={{ i }} />
+              </Grid>
+            ))}
         </Grid>
       </Scrollbars>
-      <Grid container sx={{ mt: 1, mb: 2, justifyContent: "space-between" }}>
+      <Grid container sx={{ mt: 1, mb: 2, justifyContent: "space-around" }}>
         <Grid item>
-          <Button
-            variant="text"
+          <Pagination
             color="primary"
-            startIcon={<ArrowBackIosIcon />}
-            onClick={() => updatePosts(pageIndex === 1 ? 1 : pageIndex - 1)}
-          >
-            Back
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="text"
-            color="primary"
-            endIcon={<ArrowForwardIosIcon />}
-            onClick={() => updatePosts(pageIndex === 60 ? 60 : pageIndex + 1)}
-          >
-            Next
-          </Button>
+            count={maxPageIndex}
+            siblingCount={2}
+            boundaryCount={2}
+            page={search.pageIndex}
+            onChange={(event, newPageIndex) => {
+              updatePosts(newPageIndex);
+            }}
+            sx={{ mt: 1, ml: -4.4 }}
+          />
         </Grid>
       </Grid>
     </Box>
