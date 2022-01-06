@@ -5,7 +5,7 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Box, styled } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -118,7 +118,7 @@ function Navigation() {
           <Button
             color="primary"
             variant="contained"
-            sx={{ height: 41, width: 130, mr: 3 }}
+            sx={{ height: 39, width: 130, mr: 5, mb: 0.5 }}
           >
             <Link
               to="/main"

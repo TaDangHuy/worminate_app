@@ -1,8 +1,6 @@
 import {
   Box,
-  Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Rating,
@@ -53,7 +51,7 @@ function PostCard({ post, index }) {
               variant="subtitle1"
               color="primary"
             >
-              {post.price ? `\$${post.price}` : post.price === 0 ? "$0" : "?"}
+              {post.price ? `$${post.price}` : post.price === 0 ? "$0" : "?"}
             </Typography>
 
             <Rating

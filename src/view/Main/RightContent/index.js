@@ -1,26 +1,23 @@
-import { Grid, Typography, Button, Pagination } from "@mui/material";
+import { Grid, Pagination } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import PostCard from "./PostCard";
+import PostCard from "../../../components/PostCard";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useGetPostsQuery } from "../../../api/posts";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../../features/posts/postsSlice";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { setPageIndex } from "../../../features/search/searchSlice";
 
 function RightContent() {
   const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetPostsQuery(search);
+  const { data } = useGetPostsQuery(search);
   let maxPageIndex = 1;
   let posts = [];
 
   useEffect(() => {
     if (data && data.posts) {
-      // console.log("data", data);
       dispatch(setPosts(data.posts.docs));
     }
     //eslint-disable-next-line

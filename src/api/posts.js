@@ -2,8 +2,12 @@ import { baseApi } from "./base";
 
 const postsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getTopProduct: builder.query({
-      query: () => ``,
+    getTopProducts: builder.query({
+      query: ({ longitude, latitude }) =>
+        `` +
+        (longitude !== 105.8490039 && latitude !== 21.0085042
+          ? `?location=[${longitude}, ${latitude}]`
+          : ""),
     }),
     getCategory: builder.query({
       query: () => `/posts/new`,
@@ -36,5 +40,9 @@ const postsApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetPostsQuery, useGetPostQuery, useGetCategoryQuery } =
-  postsApi;
+export const {
+  useGetTopProductsQuery,
+  useGetPostsQuery,
+  useGetPostQuery,
+  useGetCategoryQuery,
+} = postsApi;
