@@ -5,22 +5,25 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
 
-function Map({ posts, longitude, latitude }) {
+function Map({ posts, location }) {
+  let longitude, latitude;
+  if (typeof location === "object") {
+    longitude = location[0];
+    latitude = location[1];
+  } else {
+    longitude =
+      posts.length > 0 ? posts[0].geometry.coordinates[0] : 105.8490039;
+    latitude = posts.length > 0 ? posts[0].geometry.coordinates[1] : 21.0085042;
+  }
   posts = { features: posts };
-  useEffect(() => {
-    var location_auto;
 
+  useEffect(() => {
     var map = new mapboxgl.Map({
       container: "map",
       style: "mapbox://styles/mapbox/satellite-streets-v11",
       center: [longitude, latitude], // center of map
       zoom: 7.5,
     });
-
-    if (location_auto) {
-      map.setCenter([location_auto[0], location_auto[1]]);
-      map.setZoom(7.5);
-    }
 
     map.addControl(new mapboxgl.NavigationControl());
 
@@ -142,7 +145,7 @@ function Map({ posts, longitude, latitude }) {
   });
 
   return (
-    <Card sx={{ width: "90%", borderRadius: 3 }} elevation={8}>
+    <Card sx={{ width: "90%", borderRadius: 3 }} elevation={4}>
       <div id="map" style={{ height: "480px" }}></div>
     </Card>
   );

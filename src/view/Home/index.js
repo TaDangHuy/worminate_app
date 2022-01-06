@@ -10,19 +10,14 @@ import { useGetTopProductsQuery } from "../../api/posts";
 import { useState, useEffect } from "react";
 
 function Home() {
-  const [{ longitude, latitude }, setLocation] = useState({
-    longitude: 105.8490039,
-    latitude: 21.0085042,
-  });
+  const [location, setLocation] = useState([105.8490039, 21.0085042]);
   const [posts, setPosts] = useState([]);
-  const { data } = useGetTopProductsQuery({ longitude, latitude });
+  const { data } = useGetTopProductsQuery(location);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      setLocation({
-        longitude: position.coords.longitude,
-        latitude: position.coords.latitude,
-      });
+      if (typeof location === "object")
+        setLocation([position.coords.longitude, position.coords.latitude]);
     });
     if (data && data.posts) {
       setPosts(data.posts);
@@ -36,7 +31,7 @@ function Home() {
   // }
 
   return (
-    <Box xs={{ display: "flex" }} sx={{ mt: 10 }}>
+    <Box xs={{ display: "flex" }} sx={{ mt: 10.5 }}>
       <CssBaseline />
       <Header />
       <Container maxWidth="lg">
@@ -47,8 +42,8 @@ function Home() {
           <Grid item xs={6}>
             <RightContent
               posts={posts}
-              longitude={longitude}
-              latitude={latitude}
+              location={location}
+              setLocation={setLocation}
             />
           </Grid>
         </Grid>

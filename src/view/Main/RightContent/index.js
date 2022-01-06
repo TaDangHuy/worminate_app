@@ -1,4 +1,4 @@
-import { Grid, Pagination } from "@mui/material";
+import { Grid, Pagination, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import PostCard from "../../../components/PostCard";
@@ -77,6 +77,18 @@ function RightContent() {
           />
         )}
       >
+        {posts.length === 0 && (
+          <Typography
+            sx={{
+              fontSize: 22,
+              position: "relative",
+              top: "49%",
+              left: "39%",
+            }}
+          >
+            No Posts Found
+          </Typography>
+        )}
         <Grid container spacing={2} sx={{ px: 1.2, pb: 1.5 }}>
           {posts.length > 0 &&
             posts.map((post, i) => (

@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import Scrollbars from "react-custom-scrollbars";
@@ -18,10 +18,12 @@ function LeftContent({ posts }) {
       }}
     >
       <Grid container direction="column" sx={{ mb: 8 }}>
-        <Grid item mb={1} ml={1.5}>
-          Top Products
+        <Grid item mb={0.5} ml={1.5} mt={-0.6}>
+          <Typography variant="subtitle1" sx={{ fontSize: 20 }}>
+            Top Products
+          </Typography>
         </Grid>
-        <Grid item sx={{ height: "480px", mt: 0.5 }}>
+        <Grid item sx={{ height: "485px", mt: 1 }}>
           <Scrollbars
             autoHide
             autoHideTimeout={500}
@@ -55,6 +57,18 @@ function LeftContent({ posts }) {
               />
             )}
           >
+            {posts.length === 0 && (
+              <Typography
+                sx={{
+                  fontSize: 22,
+                  position: "relative",
+                  top: "45%",
+                  left: "26%",
+                }}
+              >
+                No Products Found
+              </Typography>
+            )}
             <Grid container spacing={2} sx={{ px: 1.2, pb: 1.5 }}>
               {posts.length > 0 &&
                 posts.map((post, i) => (

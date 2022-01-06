@@ -101,6 +101,14 @@ export default function CustomizedMenus() {
         <MenuItem onClick={() => handleClose("Lowest price")} disableRipple>
           Lowest price
         </MenuItem>
+
+        <MenuItem onClick={() => handleClose("Oldest")} disableRipple>
+          Oldest
+        </MenuItem>
+
+        <MenuItem onClick={() => handleClose("Highest price")} disableRipple>
+          Highest price
+        </MenuItem>
       </StyledMenu>
     </div>
   );

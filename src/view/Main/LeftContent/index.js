@@ -2,11 +2,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormLabel,
   Grid,
   Rating,
   Slider,
@@ -81,78 +76,8 @@ function LeftContent() {
                 value={rating}
                 onChange={(event, newValue) => setRating(newValue)}
               />
-              {/* <FormControl component="fieldset" variant="standard">
-                <FormLabel component="legend">
-                  <Typography variant="subtitle1">Rating</Typography>
-                </FormLabel>
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        // checked={gilad}
-                        // onChange={handleChange}
-                        name=""
-                        sx={{ py: 0.5 }}
-                      />
-                    }
-                    label={<Rating name="read-only" value={5} readOnly />}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        // checked={jason}
-                        // onChange={handleChange}
-                        name=""
-                        sx={{ py: 0.5 }}
-                      />
-                    }
-                    label={<Rating name="read-only" value={4} readOnly />}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        // checked={antoine}
-                        // onChange={handleChange}
-                        name=""
-                        sx={{ py: 0.5 }}
-                      />
-                    }
-                    label={<Rating name="read-only" value={3} readOnly />}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        // checked={antoine}
-                        // onChange={handleChange}
-                        name=""
-                        sx={{ py: 0.5 }}
-                      />
-                    }
-                    label={<Rating name="read-only" value={2} readOnly />}
-                  />
-
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        // checked={antoine}
-                        // onChange={handleChange}
-                        name=""
-                        sx={{ py: 0.5 }}
-                      />
-                    }
-                    label={<Rating name="read-only" value={1} readOnly />}
-                  />
-                </FormGroup>
-              </FormControl> */}
             </Grid>
             <Grid item xs={12} sx={{ mt: -5 }}>
-              {/* <Slider
-                sx={{ width: "86%" }}
-                getAriaLabel={() => "Temperature range"}
-                value={rangeValue}
-                onChange={(event, newValue) => setRangeValue(newValue)}
-              /> */}
-              {/* <Typography variant="subtitle1">Price</Typography> */}
               <TextField
                 type="number"
                 label="Min price"
@@ -176,24 +101,6 @@ function LeftContent() {
                 }}
               />
             </Grid>
-            {/* <Typography variant="subtitle1">
-                {"Price from "}
-                <Typography
-                  variant="subtitle1"
-                  color="primary"
-                  component="span"
-                >
-                  ${rangeValue[0] * 10}
-                </Typography>
-                {" to "}
-                <Typography
-                  variant="subtitle1"
-                  color="primary"
-                  component="span"
-                >
-                  ${rangeValue[1] * 10}
-                </Typography>{" "}
-              </Typography> */}
 
             <Grid item xs={12} sx={{}}>
               <TextField

@@ -3,11 +3,14 @@ import { baseApi } from "./base";
 const postsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getTopProducts: builder.query({
-      query: ({ longitude, latitude }) =>
-        `` +
-        (longitude !== 105.8490039 && latitude !== 21.0085042
-          ? `?location=[${longitude}, ${latitude}]`
-          : ""),
+      query: (location) =>
+        typeof location === "object" &&
+        location[0] !== 105.8490039 &&
+        location[1] !== 21.0085042
+          ? `?location=[${location[0]}, ${location[1]}]`
+          : location !== ""
+          ? `?location=${location}`
+          : "",
     }),
     getCategory: builder.query({
       query: () => `/posts/new`,
@@ -29,7 +32,10 @@ const postsApi = baseApi.injectEndpoints({
       }) =>
         `/posts?page=${pageIndex}` +
         (searchContent !== "" ? `&search=${searchContent}` : "") +
-        (filter !== "No filter" ? `&filter=${filter}` : "") +
+        (filter === "Newest" ? `&sortby=0` : "") +
+        (filter === "Oldest" ? `&sortby=1` : "") +
+        (filter === "Lowest price" ? `&sortby=2` : "") +
+        (filter === "Highest price" ? `&sortby=3` : "") +
         (category !== "All categories" ? `&category=${category}` : "") +
         (avgRating !== null ? `&avgRating[]=${avgRating}` : "") +
         (minPrice !== "" ? `&price[min]=${minPrice}` : "") +
