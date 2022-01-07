@@ -17,7 +17,7 @@ import { setPosts } from "../../features/posts/postsSlice";
 import { setPageIndex } from "../../features/search/searchSlice";
 
 const StyledInputElement = styled("input")`
-  width: 600px;
+  width: 575px;
   height: 40px;
   font-size: 1rem;
   font-family: IBM Plex Sans, sans-serif;
@@ -124,7 +124,8 @@ function Navigation() {
           <Button
             color="primary"
             variant="contained"
-            sx={{ height: 39, width: 130, mr: 5, mb: 0.5 }}
+            sx={{ height: 39, width: 150, mr: 3, mb: 0.5 }}
+            size="small"
           >
             <Link
               to="/main"
@@ -133,7 +134,7 @@ function Navigation() {
                 color: "#fff",
               }}
             >
-              <Typography variant="text">Shop now!!</Typography>
+              <Typography variant="text">Shop now</Typography>
             </Link>
           </Button>
           // <Button
