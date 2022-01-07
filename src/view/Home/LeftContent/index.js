@@ -23,7 +23,7 @@ function LeftContent({ posts }) {
             Top Products
           </Typography>
         </Grid>
-        <Grid item sx={{ height: "485px", mt: 1 }}>
+        <Grid item sx={{ height: "480px", mt: 1 }}>
           <Scrollbars
             autoHide
             autoHideTimeout={500}

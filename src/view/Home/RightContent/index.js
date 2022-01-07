@@ -48,8 +48,8 @@ function RightContent({ posts, location, setLocation }) {
             />
           </IconButton>
         </Grid>
-        <Grid item sx={{ height: "480px", mt: 0.5 }}>
-          <Map posts={posts} location={location} />
+        <Grid item sx={{ mt: 0.5 }}>
+          <Map posts={posts} location={location} height="480px" />
         </Grid>
       </Grid>
     </Box>

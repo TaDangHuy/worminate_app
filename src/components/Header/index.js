@@ -8,7 +8,7 @@ import {
 // import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Box, styled } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import User from "./User";
 import { useGetPostsQuery } from "../../api/posts";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,6 +61,7 @@ function Navigation() {
   }, [userName, isAdmin]);
 
   const [skip, setSkip] = useState(true);
+  const history = useHistory();
 
   const dispatch = useDispatch();
   const search = useSelector((state) => state.search);
@@ -72,6 +73,11 @@ function Navigation() {
     if (data && data.posts) dispatch(setPosts(data.posts.docs));
     //eslint-disable-next-line
   }, [data]);
+
+  const path = useLocation().pathname;
+
+  if ((path === "/home" || path.includes("/posts")) && skip === false)
+    history.push("/main");
 
   return (
     <AppBar

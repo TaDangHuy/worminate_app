@@ -5,7 +5,7 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
 
-function Map({ posts, location }) {
+function Map({ height, posts, location }) {
   let longitude, latitude;
   if (typeof location === "object") {
     longitude = location[0];
@@ -146,7 +146,7 @@ function Map({ posts, location }) {
 
   return (
     <Card sx={{ width: "90%", borderRadius: 3 }} elevation={4}>
-      <div id="map" style={{ height: "480px" }}></div>
+      <div id="map" style={{ height: height }}></div>
     </Card>
   );
 }
