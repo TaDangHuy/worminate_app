@@ -32,9 +32,9 @@ const checkoutFormModel = {
       type: "text",
     },
 
-    image: {
-      name: "image",
-      label: "8. Please upload an image:",
+    images: {
+      name: "images",
+      label: "Your images:",
       type: "image",
     },
   },

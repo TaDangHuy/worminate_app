@@ -1,12 +1,17 @@
 import {
-  Button,
+  IconButton,
   Card,
   CardActions,
   CardContent,
   CardMedia,
   Typography,
+  Stack,
 } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import PublishIcon from "@mui/icons-material/Publish";
 
 function PostCard({ post, id }) {
   return (
@@ -30,17 +35,45 @@ function PostCard({ post, id }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          variant="outlined"
-          sx={{
-            width: 140,
-            height: 36,
-            borderRadius: "20px",
-            "&:hover": { backgroundColor: "rgb(230,255,250)" },
-          }}
+        <Stack
+          sx={{ width: "100%" }}
+          direction="row"
+          justifyContent="space-around"
         >
-          View Post
-        </Button>
+          <IconButton
+            color="secondary"
+            variant="outlined"
+            component={Link}
+            to={`/posts/${post["_id"]}`}
+            sx={{
+              "&:hover": { backgroundColor: "rgb(230,255,250)" },
+            }}
+          >
+            <RemoveRedEyeIcon />
+          </IconButton>
+          <IconButton
+            color="secondary"
+            variant="outlined"
+            component={Link}
+            // to={`/posts/${post["_id"]}`}
+            sx={{
+              "&:hover": { backgroundColor: "rgb(230,255,250)" },
+            }}
+          >
+            <PublishIcon />
+          </IconButton>
+          <IconButton
+            color="secondary"
+            variant="outlined"
+            component={Link}
+            to={`/posts/${post["_id"]}/edit`}
+            sx={{
+              "&:hover": { backgroundColor: "rgb(230,255,250)" },
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </Stack>
       </CardActions>
     </Card>
   );

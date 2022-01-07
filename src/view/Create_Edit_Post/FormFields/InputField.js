@@ -15,6 +15,7 @@ export default function InputField(props) {
 
   return (
     <TextField
+      InputLabelProps={{ shrink: true }}
       type="text"
       error={meta.touched && meta.error && true}
       helperText={_renderHelperText()}

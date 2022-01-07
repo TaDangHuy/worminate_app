@@ -6,6 +6,7 @@ import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 import { PrivateRoute } from "../components/PrivateRoute";
 import { lazy } from "react";
 import Loadable from "../ui-component/Loadable";
+import FileNotFound from "../view/FileNotFound";
 
 import { theme } from "../theme/theme";
 
@@ -15,7 +16,9 @@ const Profile = Loadable(lazy(() => import("../view/Profile")));
 const ForgotPassword = Loadable(lazy(() => import("../view/ForgotPassword")));
 const Main = Loadable(lazy(() => import("../view/Main")));
 const Detail = Loadable(lazy(() => import("../view/Detail")));
-const CreatePost = Loadable(lazy(() => import("../view/CreatePost")));
+const Create_Edit_Post = Loadable(
+  lazy(() => import("../view/Create_Edit_Post"))
+);
 const Login = Loadable(
   lazy(() => import("../view/pages/authentication/Login"))
 );
@@ -34,11 +37,15 @@ function App() {
         <PrivateRoute path="/home" component={Home} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/main" component={Main} />
+        <Route path="/posts/new" component={Create_Edit_Post} />
         <PrivateRoute path="/posts/:idPost" component={Detail} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/ForgotPassword" component={ForgotPassword} />
-        <Route path="/post/new" component={CreatePost} />
+
+        <Route path="*">
+          <FileNotFound />
+        </Route>
       </Switch>
     </ThemeProvider>
   );

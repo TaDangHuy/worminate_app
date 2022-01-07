@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Formik, Form } from "formik";
 
@@ -20,7 +20,6 @@ import ReviewOrder from "./ReviewOrder/ReviewOrder";
 
 import validationSchema from "./FormModel/validationSchema";
 import checkoutFormModel from "./FormModel/checkoutFormModel";
-import formInitialValues from "./FormModel/formInitialValues";
 import axios from "axios";
 import SnackbarCustom from "../../components/SnackbarCustom";
 import { useHistory } from "react-router-dom";
@@ -29,19 +28,6 @@ const debug = true;
 const steps = ["Info", "Image", "Submit"];
 const { formId, formField } = checkoutFormModel;
 const token = localStorage.getItem("token");
-
-function _renderStepContent(step) {
-  switch (step) {
-    case 0:
-      return <ResultForm formField={formField} />;
-    case 1:
-      return <UploadForm formField={formField} />;
-    case 2:
-      return <ReviewOrder />;
-    default:
-      return <div>Not Found</div>;
-  }
-}
 
 function _renderStepHeader(step) {
   switch (step) {
@@ -78,8 +64,26 @@ const snackbarProps = {
     message: "Cannot update password, password is invalid",
   },
 };
-function CreatePost() {
+
+function Create_Edit_Post({ post }) {
   const history = useHistory();
+  const {
+    formField: { title, location, description, category, price, images },
+  } = checkoutFormModel;
+
+  const [formInitialValues, setFormInitialValues] = useState({});
+  useEffect(() => {
+    setFormInitialValues({
+      [title.name]: post?.title || "",
+      [location.name]: post?.location || "",
+      [description.name]: post?.description || "",
+      [price.name]: post?.price || null,
+      [category.name]: post?.category["_id"] || "",
+      [images.name]: post ? post.images : [],
+    });
+  }, [post]);
+
+  const [deleteImages, setDeleteImages] = useState([]);
 
   const [activeStep, setActiveStep] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -88,19 +92,34 @@ function CreatePost() {
   const currentValidationSchema = validationSchema[activeStep];
   const isLastStep = activeStep === steps.length - 1;
 
+  function _renderStepContent(step) {
+    switch (step) {
+      case 0:
+        return <ResultForm formField={formField} />;
+      case 1:
+        return (
+          <UploadForm
+            formField={formField}
+            setDeleteImages={(image) =>
+              setDeleteImages([...deleteImages, image])
+            }
+          />
+        );
+      case 2:
+        return <ReviewOrder />;
+      default:
+        return <div>Not Found</div>;
+    }
+  }
+
   function _submitForm(values, actions) {
-    let images = values.image;
-    let configImage = images.name.map((name, index) => ({
-      fileName: name,
-      path: images.src[index],
-    }));
-    const { image, ...rest } = values;
-    const post = { ...rest, images: configImage };
+    console.log({ values });
+    console.log({ deleteImages });
     axios({
       method: "POST",
       url: `/posts`,
       headers: { Authorization: `Bearer ${token}` },
-      data: { post },
+      data: { post: values },
     })
       .then((response) => {
         actions.setSubmitting(false);
@@ -112,9 +131,32 @@ function CreatePost() {
       .catch((err) => console.log(err));
   }
 
+  function _updateForm(values, actions) {
+    console.log({ values });
+    console.log({ deleteImages });
+    // axios({
+    //   method: "PUT",
+    //   url: `/posts/${post["_id"]}`,
+    //   headers: { Authorization: `Bearer ${token}` },
+    //   data: { post: values, deleteImages },
+    // })
+    //   .then((response) => {
+    //     actions.setSubmitting(false);
+    //     setSnackbarProps(snackbarProps.success);
+    //     setOpenSnackbar(true);
+    //     const idPost = response.data.post["_id"];
+    //     history.push(`/posts/${idPost}`);
+    //   })
+    //   .catch((err) => console.log(err));
+  }
+
   function _handleSubmit(values, actions) {
     if (isLastStep) {
-      _submitForm(values, actions);
+      if (!post) {
+        _submitForm(values, actions);
+      } else {
+        _updateForm(values, actions);
+      }
     } else {
       setActiveStep(activeStep + 1);
       actions.setTouched({});
@@ -161,8 +203,9 @@ function CreatePost() {
           }}
         >
           {_renderStepHeader(activeStep)}
-          <Box sx={{ pt: "35px" }}>
+          <Box sx={{ pt: "10px" }}>
             <Formik
+              enableReinitialize
               initialValues={formInitialValues}
               validationSchema={currentValidationSchema}
               onSubmit={_handleSubmit}
@@ -189,7 +232,7 @@ function CreatePost() {
                         variant="contained"
                         color="primary"
                       >
-                        {isLastStep ? "Create" : "Next"}
+                        {!isLastStep ? "Next" : post ? "Update" : "Create"}
                       </Button>
                     </div>
                   </Stack>
@@ -219,4 +262,4 @@ function CreatePost() {
   );
 }
 
-export default CreatePost;
+export default Create_Edit_Post;

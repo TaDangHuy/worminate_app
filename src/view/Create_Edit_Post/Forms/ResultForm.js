@@ -32,8 +32,8 @@ export default function ResultForm(props) {
           rowGap: 2,
           gridTemplateRows: "auto",
           gridTemplateAreas: `"title location"
-                              "description category"
-                              "description price"`,
+                              "price category"
+                              "description description"`,
         }}
       >
         <Box sx={{ gridArea: "title" }}>

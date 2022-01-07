@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import checkoutFormModel from "./checkoutFormModel";
 const {
-  formField: { title, location, description, category, price, image },
+  formField: { title, location, description, category, price, images },
 } = checkoutFormModel;
 
 // const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -23,7 +23,7 @@ const validationSchema = [
   }),
   // Upload
   Yup.object().shape({
-    [image.name]: Yup.array().nullable(),
+    [images.name]: Yup.array().nullable(),
     // .test(
     //   "fileSize",
     //   "File too large",

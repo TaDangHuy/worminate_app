@@ -28,7 +28,9 @@ function CustomPanel(props) {
 }
 export default function PostPart({ posts }) {
   const [value, setValue] = useState("1");
-  const recentPosts = posts.filter((post) => post.status);
+  const recentPosts = posts.filter((post) => {
+    return post.status;
+  });
   const soldPosts = posts.filter((post) => !post.status);
   const [pageAll, setPageAll] = useState(1);
   return (
@@ -64,7 +66,101 @@ export default function PostPart({ posts }) {
                   <Typography>No posts</Typography>
                 </Grid>
               </Grid>
-            ) : posts.length < 8 ? (
+            ) : (
+              <>
+                <Box>
+                  {Array.from(Array(Math.ceil(posts.length / 8)).keys()).map(
+                    (num) => (
+                      <CustomPanel value={pageAll} index={num + 1}>
+                        <Grid container spacing={2}>
+                          {num ? (
+                            posts
+                              .slice(num * 8, num * 8 + 8)
+                              .map((post, id) => {
+                                return (
+                                  <Grid item key={num * 8 + id}>
+                                    <PostCard post={post} id={num * 8 + id} />
+                                  </Grid>
+                                );
+                              })
+                          ) : (
+                            <>
+                              <Grid item>
+                                <Button
+                                  component={Link}
+                                  to="/posts/new"
+                                  variant="outlined"
+                                  sx={{ width: 270, height: 308 }}
+                                >
+                                  <Stack
+                                    spacing={1}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                  >
+                                    <AddIcon />
+                                    <Typography
+                                      variant="subtitle1"
+                                      color="text.secondary"
+                                      fontWeight="700"
+                                    >
+                                      Create a New Post
+                                    </Typography>
+                                  </Stack>
+                                </Button>
+                              </Grid>
+                              {posts
+                                .slice(num * 8, num * 8 + 7)
+                                .map((post, id) => {
+                                  return (
+                                    <Grid item key={num * 8 + id}>
+                                      <PostCard post={post} id={num * 8 + id} />
+                                    </Grid>
+                                  );
+                                })}
+                            </>
+                          )}
+                        </Grid>
+                      </CustomPanel>
+                    )
+                  )}
+                  <Box sx={{ pt: "20px" }}>
+                    <Pagination
+                      count={Math.ceil(posts.length / 8)}
+                      page={pageAll}
+                      onChange={(event, newValue) => {
+                        setPageAll(newValue);
+                      }}
+                    />
+                  </Box>
+                </Box>
+              </>
+            )}
+          </div>
+        </TabPanel>
+        <TabPanel value="2">
+          {/* <Box>
+            <Grid container spacing={2}>
+              {recentPosts.length === 0 ? (
+                <Grid item>
+                  <Typography>No posts</Typography>
+                </Grid>
+              ) : (
+                recentPosts.map((post, id) => (
+                  <Grid item key={id}>
+                    <PostCard post={post} id={id} />
+                  </Grid>
+                ))
+              )}
+            </Grid>
+          </Box> */}
+          <div>
+            {recentPosts.length === 0 ? (
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Typography>No recentPosts</Typography>
+                </Grid>
+              </Grid>
+            ) : recentPosts.length < 8 ? (
               <Grid container spacing={2}>
                 <Grid item>
                   <Button
@@ -89,7 +185,7 @@ export default function PostPart({ posts }) {
                     </Stack>
                   </Button>
                 </Grid>
-                {posts.map((post, id) => (
+                {recentPosts.map((post, id) => (
                   <Grid item key={id}>
                     <PostCard post={post} id={id} />
                   </Grid>
@@ -98,24 +194,26 @@ export default function PostPart({ posts }) {
             ) : (
               <>
                 <Box>
-                  {Array.from(Array(Math.ceil(posts.length / 8)).keys()).map(
-                    (num) => (
-                      <CustomPanel value={pageAll} index={num + 1}>
-                        <Grid container spacing={2}>
-                          {posts.slice(num * 8, num * 8 + 8).map((post, id) => {
+                  {Array.from(
+                    Array(Math.ceil(recentPosts.length / 8)).keys()
+                  ).map((num) => (
+                    <CustomPanel value={pageAll} index={num + 1}>
+                      <Grid container spacing={2}>
+                        {recentPosts
+                          .slice(num * 8, num * 8 + 8)
+                          .map((post, id) => {
                             return (
                               <Grid item key={num * 8 + id}>
                                 <PostCard post={post} id={num * 8 + id} />
                               </Grid>
                             );
                           })}
-                        </Grid>
-                      </CustomPanel>
-                    )
-                  )}
+                      </Grid>
+                    </CustomPanel>
+                  ))}
                   <Box sx={{ pt: "20px" }}>
                     <Pagination
-                      count={Math.ceil(posts.length / 8)}
+                      count={Math.ceil(recentPosts.length / 8)}
                       page={pageAll}
                       onChange={(event, newValue) => {
                         setPageAll(newValue);
@@ -127,25 +225,8 @@ export default function PostPart({ posts }) {
             )}
           </div>
         </TabPanel>
-        <TabPanel value="2">
-          <Box>
-            <Grid container spacing={2}>
-              {recentPosts.length === 0 ? (
-                <Grid item>
-                  <Typography>No posts</Typography>
-                </Grid>
-              ) : (
-                recentPosts.map((post, id) => (
-                  <Grid item key={id}>
-                    <PostCard post={post} id={id} />
-                  </Grid>
-                ))
-              )}
-            </Grid>
-          </Box>
-        </TabPanel>
         <TabPanel value="3">
-          <Box>
+          {/* <Box>
             <Grid container spacing={2}>
               {soldPosts.length === 0 ? (
                 <Grid item>
@@ -159,7 +240,55 @@ export default function PostPart({ posts }) {
                 ))
               )}
             </Grid>
-          </Box>
+          </Box> */}
+          <div>
+            {soldPosts.length === 0 ? (
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Typography>No soldPosts</Typography>
+                </Grid>
+              </Grid>
+            ) : soldPosts.length < 8 ? (
+              <Grid container spacing={2}>
+                {soldPosts.map((post, id) => (
+                  <Grid item key={id}>
+                    <PostCard post={post} id={id} />
+                  </Grid>
+                ))}
+              </Grid>
+            ) : (
+              <>
+                <Box>
+                  {Array.from(
+                    Array(Math.ceil(soldPosts.length / 8)).keys()
+                  ).map((num) => (
+                    <CustomPanel value={pageAll} index={num + 1}>
+                      <Grid container spacing={2}>
+                        {soldPosts
+                          .slice(num * 8, num * 8 + 8)
+                          .map((post, id) => {
+                            return (
+                              <Grid item key={num * 8 + id}>
+                                <PostCard post={post} id={num * 8 + id} />
+                              </Grid>
+                            );
+                          })}
+                      </Grid>
+                    </CustomPanel>
+                  ))}
+                  <Box sx={{ pt: "20px" }}>
+                    <Pagination
+                      count={Math.ceil(soldPosts.length / 8)}
+                      page={pageAll}
+                      onChange={(event, newValue) => {
+                        setPageAll(newValue);
+                      }}
+                    />
+                  </Box>
+                </Box>
+              </>
+            )}
+          </div>
         </TabPanel>
       </TabContext>
     </Box>

@@ -1,5 +1,6 @@
 import { Avatar, Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -31,10 +32,24 @@ function User({ userName, isAdmin, setUserNameProps }) {
     if (userName) setisLoggedIn(true);
   }, [userName]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    setUserNameProps("");
-    setisLoggedIn(false);
+  const handleLogout = async () => {
+    try {
+      const response = await axios({
+        method: "POST",
+        url: "/logout",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        data: {
+          token: localStorage.getItem("token"),
+        },
+      });
+
+      console.log(response);
+      localStorage.clear();
+      setUserNameProps("");
+      setisLoggedIn(false);
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <div className={classes.container}>

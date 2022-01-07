@@ -14,7 +14,7 @@ function LeftContent() {
   useEffect(() => {
     var post = [];
     axios
-      .get("https://shielded-sands-12116.herokuapp.com/api")
+      .get("/")
       .then((res) => {
         console.log(res);
         post = [...res.data.posts];
@@ -24,8 +24,8 @@ function LeftContent() {
         var map = new mapboxgl.Map({
           container: "map",
           style: "mapbox://styles/mapbox/streets-v11",
-          center: [-98.55562, 39.809734], // center of map
-          zoom: 3.3,
+          center: [105.843088, 21.006475], // center of map
+          zoom: 4,
         });
 
         if (location_auto) {
