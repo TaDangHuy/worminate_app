@@ -12,8 +12,8 @@ const useStyle = makeStyles((theme) => ({
   user: {
     display: "flex",
     flexDirection: "column",
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(3),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(3.5),
   },
   typography: {
     lineHeight: "25px",
@@ -61,23 +61,33 @@ function User({ userName, isAdmin, setUserNameProps }) {
         <Typography variant="h6" className={classes.typography}>
           {userName ? userName : "Anonymous"}
         </Typography>
-        <Typography variant="subtitle1" className={classes.typography}>
+        {/* <Typography variant="subtitle1" className={classes.typography}>
           {isAdmin === "true" ? "admin" : "user"}
-        </Typography>
+        </Typography> */}
       </div>
 
       {!isLoggedIn ? (
-        <Button>
-          {" "}
+        <Button
+          variant="outlined"
+          size="small"
+          sx={{ height: 39, width: 80, mb: 0.5 }}
+        >
           <Link
             to="/login"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            Login
+            Sign in
           </Link>
         </Button>
       ) : (
-        <Button onClick={handleLogout}>Logout</Button>
+        <Button
+          onClick={handleLogout}
+          variant="outlined"
+          size="small"
+          sx={{ height: 39, width: 90, ml: 1, mb: 0.5 }}
+        >
+          Sign out
+        </Button>
       )}
     </div>
   );

@@ -11,13 +11,13 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios"
+import axios from "axios";
 import { useModal } from "react-hooks-use-modal";
 
 function FormikFormRegister() {
-  const [Modal, open, close, isOpen] = useModal('root', {
+  const [Modal, open, close, isOpen] = useModal("root", {
     preventScroll: true,
-    closeOnOverlayClick: false
+    closeOnOverlayClick: false,
   });
 
   const initialValues = {
@@ -32,17 +32,17 @@ function FormikFormRegister() {
   });
   const onSubmit = (values) => {
     axios({
-      method: 'post',
-      url: '/user',
-      data: {...values}
+      method: "post",
+      url: "/user",
+      data: { ...values },
     })
-    .then((res)=> {
-      console.log({res});
-      open();
-    })
-    .catch((error) => {
-      console.log({error})
-    })
+      .then((res) => {
+        console.log({ res });
+        open();
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
   };
   return (
     <Formik
@@ -113,7 +113,7 @@ function FormikFormRegister() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, backgroundColor: "rgb(92, 212, 201)" }}
+              sx={{ mt: 3, mb: 2, backgroundColor: "#3b8767" }}
             >
               Sign Up
             </Button>
@@ -130,9 +130,20 @@ function FormikFormRegister() {
 
             {/* Modal */}
             <Modal>
-                <div style={{backgroundColor: "white", height: "300px", width: "450px", borderRadius:"20px", padding:"20px"}}>
-                  <p>Please check your email and click <Link to="/login">here</Link> to login</p>
-                </div>
+              <div
+                style={{
+                  backgroundColor: "white",
+                  height: "300px",
+                  width: "450px",
+                  borderRadius: "20px",
+                  padding: "20px",
+                }}
+              >
+                <p>
+                  Please check your email and click{" "}
+                  <Link to="/login">here</Link> to login
+                </p>
+              </div>
             </Modal>
           </Form>
         );

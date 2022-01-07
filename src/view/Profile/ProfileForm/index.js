@@ -55,7 +55,7 @@ const CustomInput = styled(OutlinedInput)(({ theme }) => ({
       "BlinkMacSystemFont",
       '"Segoe UI"',
       "Roboto",
-      '"Helvetica Neue"',
+      '"Nunito Neue"',
       "Arial",
       "sans-serif",
       '"Apple Color Emoji"',

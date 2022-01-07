@@ -5,7 +5,9 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { useGetCategoryQuery } from "../../api/posts";
+import { useGetCategoryQuery } from "../../../../api/posts";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategory } from "../../../../features/search/searchSlice";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -24,7 +26,7 @@ const StyledMenu = styled((props) => (
   "& .MuiPaper-root": {
     borderRadius: 6,
     marginTop: theme.spacing(1),
-    minWidth: 180,
+    minWidth: 196.5,
     color:
       theme.palette.mode === "light"
         ? "rgb(55, 65, 81)"
@@ -52,7 +54,9 @@ const StyledMenu = styled((props) => (
 
 export default function CustomizedMenus() {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [category, setCategory] = useState("All categories");
+  const category = useSelector((state) => state.search.category);
+  const dispatch = useDispatch();
+
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -60,7 +64,9 @@ export default function CustomizedMenus() {
   };
   const handleClose = (category) => {
     setAnchorEl(null);
-    if (category) setCategory(category);
+    if (category) {
+      dispatch(setCategory(category));
+    }
   };
 
   const [categories, setCategories] = useState([]);
@@ -84,7 +90,7 @@ export default function CustomizedMenus() {
         disableElevation
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
-        sx={{ width: "180px", height: "39px", fontSize: "13.25px" }}
+        sx={{ width: 196.5, height: "39px", fontSize: "13.25px" }}
       >
         {category}
       </Button>

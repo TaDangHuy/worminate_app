@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   banner: {
     height: "450px",
     width: "100%",
-    backgroundColor: "rgb(92,212,201)",
+    backgroundColor: "#3b8767",
     borderRadius: "20px",
     padding: "30px 40px",
     display: "flex",
@@ -66,7 +66,7 @@ const Register = () => {
           sx={{ mb: "50px" }}
         >
           <Link to="/" className={classes.link1}>
-            Logo-Worminate
+            Worminate
           </Link>
         </Typography>
         <Typography
@@ -76,10 +76,10 @@ const Register = () => {
         >
           Welcome
         </Typography>
-        <Typography variant="h6" className={classes.banner_subtitle}>
-          Use these awesome forms to login or create new account in your project
-          for free.
-        </Typography>
+        <Typography
+          variant="h6"
+          className={classes.banner_subtitle}
+        ></Typography>
       </Box>
       <Box className={classes.form_container}>
         <Card className={classes.card}>

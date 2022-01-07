@@ -2,14 +2,15 @@ import { baseApi } from "./base";
 
 const postsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getPosts: builder.query({
-      query: (pageIndex) => `/posts?page=${pageIndex}`,
-    }),
-    getTopProduct: builder.query({
-      query: (pageIndex) => `/posts?page=${pageIndex}`,
-    }),
-    searchPosts: builder.query({
-      query: (content) => `/posts?search=${content}`,
+    getTopProducts: builder.query({
+      query: (location) =>
+        typeof location === "object" &&
+        location[0] !== 105.8490039 &&
+        location[1] !== 21.0085042
+          ? `?location=[${location[0]}, ${location[1]}]`
+          : location !== ""
+          ? `?location=${location}`
+          : "",
     }),
     getCategory: builder.query({
       query: () => `/posts/new`,
@@ -17,31 +18,37 @@ const postsApi = baseApi.injectEndpoints({
     getPost: builder.query({
       query: (postId) => `${postId}`,
     }),
-    takePosts: builder.query({
+    getPosts: builder.query({
       query: ({
         pageIndex,
         searchContent,
+        filter,
+        category,
         avgRating,
         minPrice,
         maxPrice,
         location,
         distance,
       }) =>
-        `/posts?page=${pageIndex}` + searchContent !== "" &&
-        `&search=${searchContent}` + avgRating !== 0 &&
-        `&avgRating[]=${avgRating}` + minPrice !== 0 &&
-        `&price[min]=${minPrice}` + maxPrice !== 10000 &&
-        `&price[max]=${maxPrice}` + location !== "" &&
-        `&location=${location}` + distance !== 50 &&
-        `&distance=${distance}`,
+        `/posts?page=${pageIndex}` +
+        (searchContent !== "" ? `&search=${searchContent}` : "") +
+        (filter === "Newest" ? `&sortby=0` : "") +
+        (filter === "Oldest" ? `&sortby=1` : "") +
+        (filter === "Lowest price" ? `&sortby=2` : "") +
+        (filter === "Highest price" ? `&sortby=3` : "") +
+        (category !== "All categories" ? `&category=${category}` : "") +
+        (avgRating !== null ? `&avgRating[]=${avgRating}` : "") +
+        (minPrice !== "" ? `&price[min]=${minPrice}` : "") +
+        (maxPrice !== "" ? `&price[max]=${maxPrice}` : "") +
+        (location !== "" ? `&location=${location}` : "") +
+        (location !== "" && distance !== 50 ? `&distance=${distance}` : ""),
     }),
   }),
 });
 
 export const {
+  useGetTopProductsQuery,
   useGetPostsQuery,
-  useSearchPostsQuery,
   useGetPostQuery,
   useGetCategoryQuery,
-  useTakePostsQuery,
 } = postsApi;

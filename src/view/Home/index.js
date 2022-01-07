@@ -1,24 +1,54 @@
 import * as React from "react";
-import { CssBaseline } from "@mui/material";
+import { Container, CssBaseline } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LeftContent from "./LeftContent";
 import RightContent from "./RightContent";
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import { useGetTopProductsQuery } from "../../api/posts";
+import { useState, useEffect } from "react";
 
 function Home() {
+  const [location, setLocation] = useState([105.8490039, 21.0085042]);
+  const [posts, setPosts] = useState([]);
+  const { data } = useGetTopProductsQuery(location);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      if (typeof location === "object")
+        setLocation([position.coords.longitude, position.coords.latitude]);
+    });
+    if (data && data.posts) {
+      setPosts(data.posts);
+    }
+
+    //eslint-disable-next-line
+  }, [data]);
+
+  // if (data && data.posts) {
+  //   posts = data.posts.docs;
+  // }
+
   return (
-    <Box xs={{ display: "flex" }} sx={{ mt: 10 }}>
+    <Box xs={{ display: "flex" }} sx={{ mt: 10.5 }}>
       <CssBaseline />
       <Header />
-      <Grid container>
-        <Grid item xs={6}>
-          <LeftContent />
+      <Container maxWidth="lg">
+        <Grid container>
+          <Grid item xs={6}>
+            <LeftContent posts={posts} />
+          </Grid>
+          <Grid item xs={6}>
+            <RightContent
+              posts={posts}
+              location={location}
+              setLocation={setLocation}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <RightContent />
-        </Grid>
-      </Grid>
+      </Container>
+      <Footer />
     </Box>
   );
 }

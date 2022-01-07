@@ -1,71 +1,81 @@
-import { Grid, ListItemText, Switch } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React from "react";
 import Scrollbars from "react-custom-scrollbars";
-import ProductCard from "./ProductCard";
+import PostCard from "../../../components/PostCard";
 
-import { useDispatch } from "react-redux";
-import { useGetPostsQuery } from "../../../api/posts";
-import { setPosts } from "../../../features/posts/postsSlice";
-import { useEffect } from "react";
-
-function LeftContent() {
-  const [pageIndex, setPageIndex] = useState(1);
-  const dispatch = useDispatch();
-  const { data, isLoading } = useGetPostsQuery();
-
-  useEffect(() => {
-    if (data) dispatch(setPosts(data.posts.docs));
-    //eslint-disable-next-line
-  }, [data]);
+function LeftContent({ posts }) {
   return (
     <Box
-      sx={{ px: 4, pb: 0.5, height: "76%", width: "50%", position: "fixed" }}
+      sx={{
+        pl: 1,
+        pb: -3.5,
+        ml: -1,
+        width: 600,
+        position: "relative",
+        top: "0%",
+        left: "0%",
+      }}
     >
-      <Grid container direction="column">
-        {/* <Grid item>
-          <Grid container justifyContent="space-between">
-            <Grid item>
-              <ListItemText
-                primary="Apartments in New York"
-                secondary="1248 results -Jan 9, 2014"
-              />
-            </Grid>
-            <Grid item>
-              <ListItemText primary="Wi-Fi" />
-              <Switch
-                edge="end"
-                inputProps={{
-                  "aria-labelledby": "switch-list-label-wifi",
-                }}
-              />
-            </Grid>
-          </Grid>
-        </Grid> */}
-        <Grid item mb={2}>
-          <Grid container justifyContent="space-between">
-            <Grid item>Top Product</Grid>
-            {/* <Grid item>icon, sort by</Grid> */}
-          </Grid>
+      <Grid container direction="column" sx={{ mb: 8 }}>
+        <Grid item mb={0.5} ml={1.5} mt={-0.6}>
+          <Typography variant="subtitle1" sx={{ fontSize: 20 }}>
+            Top Products
+          </Typography>
         </Grid>
-        <Grid item sx={{ height: "635px" }}>
-          <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
-            <Grid container>
-              <Grid item xs={12} mb={2}>
-                <ProductCard index={0} isLoading={isLoading} />
-              </Grid>
-              <Grid item xs={12} mb={2}>
-                <ProductCard index={1} isLoading={isLoading} />
-              </Grid>
-              <Grid item xs={12} mb={2}>
-                <ProductCard index={2} isLoading={isLoading} />
-              </Grid>
-              <Grid item xs={12} mb={2}>
-                <ProductCard index={3} isLoading={isLoading} />
-              </Grid>
-              <Grid item xs={12} mb={2}>
-                <ProductCard index={4} isLoading={isLoading} />
-              </Grid>
+        <Grid item sx={{ height: "480px", mt: 1 }}>
+          <Scrollbars
+            autoHide
+            autoHideTimeout={500}
+            autoHideDuration={200}
+            renderTrackHorizontal={(props) => (
+              <div
+                {...props}
+                className="track-horizontal"
+                style={{ display: "none" }}
+              />
+            )}
+            renderThumbHorizontal={(props) => (
+              <div
+                {...props}
+                className="thumb-horizontal"
+                style={{ display: "none" }}
+              />
+            )}
+            renderTrackVertical={(props) => (
+              <div
+                {...props}
+                className="track-vertical"
+                style={{ display: "none" }}
+              />
+            )}
+            renderThumbVertical={(props) => (
+              <div
+                {...props}
+                className="thumb-vertical"
+                style={{ display: "none" }}
+              />
+            )}
+          >
+            {posts.length === 0 && (
+              <Typography
+                sx={{
+                  fontSize: 22,
+                  position: "relative",
+                  top: "45%",
+                  left: "26%",
+                }}
+              >
+                No Products Found
+              </Typography>
+            )}
+            <Grid container spacing={2} sx={{ px: 1.2, pb: 1.5 }}>
+              {posts.length > 0 &&
+                posts.map((post, i) => (
+                  <Grid item sx={4}>
+                    <PostCard post={post} index={i} key={{ i }} />
+                  </Grid>
+                ))}
             </Grid>
           </Scrollbars>
         </Grid>
