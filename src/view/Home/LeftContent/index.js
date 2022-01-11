@@ -10,21 +10,18 @@ function LeftContent({ posts }) {
       sx={{
         pl: 1,
         pb: -3.5,
-        ml: -1,
+
         width: 600,
-        position: "relative",
-        top: "0%",
-        left: "0%",
       }}
     >
-      <Grid container direction="column" sx={{ mb: 8 }}>
-        <Grid item mb={0.5} ml={1.5} mt={-0.6}>
+      <Grid container direction="column">
+        <Grid item mb={0.5} ml={1.5} mt={1.7}>
           <Typography variant="subtitle1" sx={{ fontSize: 20 }}>
             Top Products
           </Typography>
         </Grid>
-        <Grid item sx={{ height: "480px", mt: 1 }}>
-          <Scrollbars
+        <Grid item sx={{ mt: 1.2 }}>
+          {/* <Scrollbars
             autoHide
             autoHideTimeout={500}
             autoHideDuration={200}
@@ -56,28 +53,28 @@ function LeftContent({ posts }) {
                 style={{ display: "none" }}
               />
             )}
-          >
-            {posts.length === 0 && (
-              <Typography
-                sx={{
-                  fontSize: 22,
-                  position: "relative",
-                  top: "45%",
-                  left: "26%",
-                }}
-              >
-                No Products Found
-              </Typography>
-            )}
-            <Grid container spacing={2} sx={{ px: 1.2, pb: 1.5 }}>
-              {posts.length > 0 &&
-                posts.map((post, i) => (
-                  <Grid item sx={4}>
-                    <PostCard post={post} index={i} key={{ i }} />
-                  </Grid>
-                ))}
-            </Grid>
-          </Scrollbars>
+          > */}
+          {posts.length === 0 && (
+            <Typography
+              sx={{
+                fontSize: 22,
+                position: "relative",
+                top: "45%",
+                left: "26%",
+              }}
+            >
+              No Products Found
+            </Typography>
+          )}
+          <Grid container spacing={3} sx={{ px: 1.2 }}>
+            {posts.length > 0 &&
+              posts.map((post, i) => (
+                <Grid item sx={4}>
+                  <PostCard post={post} index={i} key={{ i }} />
+                </Grid>
+              ))}
+          </Grid>
+          {/* </Scrollbars> */}
         </Grid>
       </Grid>
     </Box>

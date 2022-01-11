@@ -9,6 +9,7 @@ import Loadable from "../ui-component/Loadable";
 import FileNotFound from "../view/FileNotFound";
 
 import { theme } from "../theme/theme";
+import ScrollToTop from "../components/ScrollToTop";
 
 const LandingPage = Loadable(lazy(() => import("../view/LandingPage")));
 const Home = Loadable(lazy(() => import("../view/Home")));
@@ -31,6 +32,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <ScrollToTop />
       <Switch>
         <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
         <Route exact path="/" component={LandingPage} />

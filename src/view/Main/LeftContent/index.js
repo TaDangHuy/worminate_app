@@ -42,17 +42,15 @@ function LeftContent() {
   return (
     <Box
       sx={{
-        pl: 2,
+        pl: 1,
         pb: -3.5,
-        ml: -1,
+        ml: 4,
+        mt: 2,
         width: 300,
-        position: "relative",
-        top: "0%",
-        left: "0%",
       }}
     >
       <Card
-        sx={{ height: "100%", py: 2, px: 3, borderRadius: 3 }}
+        sx={{ height: "100%", pt: 2, pb: 1.5, px: 3, borderRadius: 6 }}
         elevation={4}
       >
         <CardContent sx={{ pl: 2.2 }}>
@@ -72,7 +70,6 @@ function LeftContent() {
               </Typography>
               <Rating
                 sx={{ position: "relative", top: "-36%", left: "31.3%" }}
-                name="read-only"
                 value={rating}
                 onChange={(event, newValue) => setRating(newValue)}
               />
