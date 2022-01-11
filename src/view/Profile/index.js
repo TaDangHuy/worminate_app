@@ -12,10 +12,9 @@ import SimpleDialog from "./SimpleDialog";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
-const token = localStorage.getItem("token");
-
 function Profile() {
   const [posts, setPosts] = useState([]);
+  const [favoritesProduct, setFavoritesProduct] = useState([]);
   const [fullName, setFullName] = useState(localStorage.getItem("UserName"));
   const [avatar, setAvatar] = useState({
     path: localStorage.getItem("avatar") ? localStorage.getItem("avatar") : "",
@@ -36,12 +35,13 @@ function Profile() {
     axios({
       method: "GET",
       url: `/user`,
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
       .then((response) => {
         console.log(response);
         setManageFollowers({ ...response.data.user.manageFollowers });
         setPosts([...response.data.user.postList]);
+        setFavoritesProduct([...response.data.user.favoritesProduct]);
         setCreateAccountDate(response.data.user.createdAt);
         setUserRank(response.data.user.userRank);
       })
@@ -50,6 +50,20 @@ function Profile() {
       });
   }, []);
 
+  function renderRank() {
+    switch (userRank) {
+      case "S":
+        return "Legendary";
+      case "A":
+        return "Master";
+      case "B":
+        return "Pro";
+      case "C":
+        return "Elite";
+      default:
+        return "Rookie";
+    }
+  }
   return (
     <div
       style={{
@@ -133,9 +147,9 @@ function Profile() {
                 position: "absolute",
               }}
               src={
-                avatar.path
-                  ? avatar.path
-                  : require("../../assets/images/default.png").default
+                avatar.path === "images/default-profile.jpg"
+                  ? require("../../assets/images/logo.png").default
+                  : avatar.path
               }
             />
             <Box
@@ -166,6 +180,14 @@ function Profile() {
                 <SimpleDialog
                   open={openFollowing}
                   data={manageFollowers.follow}
+                  removeFollowingByID={(followingId) =>
+                    setManageFollowers((old) => ({
+                      ...old,
+                      follow: old.follow.filter(
+                        (e) => e["_id"] !== followingId
+                      ),
+                    }))
+                  }
                   onClose={() => {
                     setOpenFollowing(false);
                   }}
@@ -192,7 +214,7 @@ function Profile() {
                   }}
                 >
                   <StarOutlineIcon fontSize="small" />
-                  <span>Rank: {userRank}</span>
+                  <span>Rank: {renderRank()}</span>
                 </div>
                 <div
                   style={{
@@ -233,7 +255,7 @@ function Profile() {
           </Box>
         </Stack>
 
-        <PostPart posts={posts} />
+        <PostPart posts={posts} favoritesProduct={favoritesProduct} />
       </Box>
     </div>
   );

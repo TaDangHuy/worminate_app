@@ -57,14 +57,13 @@ function Detail() {
           {/* <Route path={`${url}/edit`} component={Create_Edit_Post}> */}
           <Create_Edit_Post post={data?.post} />
         </Route>
-        <Route path={`${url}`}>
+        <Route exact path={`${url}`}>
           <Box>
             <CssBaseline />
             <Header />
             <Container maxWidth="lg">
               <Paper
                 sx={{
-                  mt: 11,
                   mb: 5,
                   ml: 1.5,
                   px: 2,
@@ -145,13 +144,13 @@ function Detail() {
                           position: "relative",
                           top: "-1.6%",
                           left: "3%",
-                          width: 530,
+                          width: 320,
                         }}
                       >
                         <Map
                           posts={[data.post]}
                           location={data.post.geometry.coordinates}
-                          height="460px"
+                          height="300px"
                         />
                       </Box>
                     )}

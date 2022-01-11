@@ -132,22 +132,25 @@ function Create_Edit_Post({ post }) {
   }
 
   function _updateForm(values, actions) {
+    console.log("updata");
     console.log({ values });
     console.log({ deleteImages });
-    // axios({
-    //   method: "PUT",
-    //   url: `/posts/${post["_id"]}`,
-    //   headers: { Authorization: `Bearer ${token}` },
-    //   data: { post: values, deleteImages },
-    // })
-    //   .then((response) => {
-    //     actions.setSubmitting(false);
-    //     setSnackbarProps(snackbarProps.success);
-    //     setOpenSnackbar(true);
-    //     const idPost = response.data.post["_id"];
-    //     history.push(`/posts/${idPost}`);
-    //   })
-    //   .catch((err) => console.log(err));
+    axios({
+      method: "PUT",
+      url: `/posts/${post["_id"]}`,
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        post: { ...values, deleteImages: deleteImages.map((e) => e.filename) },
+      },
+    })
+      .then((response) => {
+        actions.setSubmitting(false);
+        setSnackbarProps(snackbarProps.success);
+        setOpenSnackbar(true);
+        const idPost = response.data.post["_id"];
+        history.push(`/posts/${idPost}`);
+      })
+      .catch((err) => console.log(err));
   }
 
   function _handleSubmit(values, actions) {

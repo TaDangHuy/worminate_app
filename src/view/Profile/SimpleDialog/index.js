@@ -1,50 +1,116 @@
 import {
+  Alert,
   Avatar,
   Dialog,
+  DialogContent,
   DialogTitle,
+  Divider,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
+  Snackbar,
 } from "@mui/material";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 
 export default function SimpleDialog(props) {
-  const { onClose, open, data } = props;
+  const history = useHistory();
+  const { onClose, open, data, removeFollowingByID } = props;
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const handleClose = () => {
     onClose();
   };
 
-  const handleListItemClick = (value) => {
-    onClose(value);
+  const handleListItemClick = (userId) => {
+    history.push(`/profile/${userId}`);
   };
   return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Following user</DialogTitle>
-      {data ? (
-        <List sx={{ pt: 0, width: 300 }}>
-          {data.map((element, index) => (
-            <ListItem
-              button
-              onClick={() => handleListItemClick(element.fullName)}
-              key={index}
-            >
-              <ListItemAvatar>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={element.image.path}
-                  sx={{ width: 56, height: 56 }}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={element.fullName}
-                secondary={element.email}
-              />
-            </ListItem>
-          ))}
-        </List>
-      ) : (
-        <h1>Danh sách đang còn trống</h1>
-      )}
-    </Dialog>
+    <>
+      <Dialog
+        onClose={handleClose}
+        open={open}
+        fullWidth
+        titleStyle={{ textAlign: "center" }}
+      >
+        <DialogTitle>Following user</DialogTitle>
+        <DialogContent>
+          {data.length ? (
+            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+              {data.map((user, index) => (
+                <>
+                  <ListItem
+                    alignItems="center"
+                    key={index}
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        aria-label="add"
+                        onClick={() => {
+                          axios
+                            .delete("/user/followers", {
+                              data: { userId: user["_id"] },
+                              headers: {
+                                Authorization: `Bearer ${localStorage.getItem(
+                                  "token"
+                                )}`,
+                              },
+                            })
+                            .then((res) => {
+                              console.log(res);
+                              setOpenSnackbar(true);
+                              removeFollowingByID(user["_id"]);
+                            });
+                        }}
+                      >
+                        <PersonRemoveIcon />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemButton
+                      onClick={() => handleListItemClick(user["_id"])}
+                    >
+                      <ListItemAvatar>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={user.image.path}
+                          sx={{ width: 56, height: 56 }}
+                        />
+                      </ListItemAvatar>
+                      <ListItemText primary={user.fullName} sx={{ ml: 2 }} />
+                    </ListItemButton>
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </>
+              ))}
+            </List>
+          ) : (
+            <ListItemText primary={<h1>Danh sách đang còn trống</h1>} />
+          )}
+        </DialogContent>
+      </Dialog>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={2000}
+        message="Da bo theo doi"
+        onClose={(event, reason) => {
+          if (reason === "clickaway") {
+            return;
+          }
+
+          setOpenSnackbar(false);
+        }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          Bo theo doi thanh cong
+        </Alert>
+      </Snackbar>
+    </>
   );
 }

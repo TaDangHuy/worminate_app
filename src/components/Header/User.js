@@ -59,7 +59,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
 
       <div className={classes.user}>
         <Typography variant="h6" className={classes.typography}>
-          {userName ? userName : "Anonymous"}
+          {userName ? userName : "Guest"}
         </Typography>
         {/* <Typography variant="subtitle1" className={classes.typography}>
           {isAdmin === "true" ? "admin" : "user"}
@@ -68,7 +68,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
 
       {!isLoggedIn ? (
         <Button
-          variant="outlined"
+          variant="text"
           size="small"
           sx={{ height: 39, width: 80, mb: 0.5 }}
         >
@@ -82,7 +82,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
       ) : (
         <Button
           onClick={handleLogout}
-          variant="outlined"
+          variant="text"
           size="small"
           sx={{ height: 39, width: 90, ml: 1, mb: 0.5 }}
         >

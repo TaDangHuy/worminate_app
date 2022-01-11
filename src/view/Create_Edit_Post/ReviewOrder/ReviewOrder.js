@@ -9,6 +9,7 @@ export default function ReviewOrder() {
   const { formField } = formModel;
   const { values: formValues } = useFormikContext();
 
+  console.log(formValues);
   return (
     <React.Fragment>
       <Grid container spacing={2}>

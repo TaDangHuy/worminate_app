@@ -31,7 +31,7 @@ function Home() {
   // }
 
   return (
-    <Box xs={{ display: "flex" }} sx={{ mt: 10.5 }}>
+    <Box xs={{ display: "flex" }}>
       <CssBaseline />
       <Header />
       <Container maxWidth="lg">

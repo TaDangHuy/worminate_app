@@ -10,25 +10,6 @@ const RenderData = (props) => {
     case "text":
       return <Typography gutterBottom>{`${value}`}</Typography>;
     case "image":
-      // return <Thumb file={value.file} src={value.src} varian={"small"}></Thumb>
-      // if (!value.src.length) {
-      //   return <Typography>No image</Typography>;
-      // }
-      // return (
-      //   <Grid container spacing={2}>
-      //     {value.name.map((nameElement, i) => (
-      //       <Grid item>
-      //         {nameElement && value.src[i] && (
-      //           <Thumb
-      //             variant="small"
-      //             fileName={nameElement}
-      //             src={value.src[i]}
-      //           ></Thumb>
-      //         )}
-      //       </Grid>
-      //     ))}
-      //   </Grid>
-      // );
       if (!value.length) {
         return <Typography>No image</Typography>;
       }
@@ -53,7 +34,12 @@ function ReportField(props) {
   const { formValues, formData } = props;
   return Object.values(formData).map((field) => {
     return (
-      <Grid item sx={12} sm={field.type === "image" ? 12 : 6} key={field.name}>
+      <Grid
+        item
+        sx={12}
+        sm={field.name === "images" || field.name === "description" ? 12 : 6}
+        key={field.name}
+      >
         <Typography variant="h6" gutterBottom>
           {field.label}
         </Typography>
