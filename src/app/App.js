@@ -45,7 +45,7 @@ function App() {
         <PrivateRoute path="/posts/:idPost" component={Detail} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route path="/ForgotPassword" component={ForgotPassword} />
+        <Route path="/forgot-password" component={ForgotPassword} />
 
         <Route path="*">
           <FileNotFound />

@@ -25,8 +25,7 @@ const validationSchema = yup.object({
     .required("Current Password is required"),
   newPassword: yup
     .string("New Password")
-    .min(6, "Password should be of minimum 8 characters length")
-    .required("Current Password is required"),
+    .min(6, "Password should be of minimum 8 characters length"),
   confirmPassword: yup
     .string("Confirm Password")
     .min(6, "Passsword should be of minimum 8 characters length"),
@@ -92,8 +91,8 @@ function ProfileForm({
     initialValues: {
       fullName: fullName,
       password: null,
-      newPassword: null,
-      confirmPassword: null,
+      newPassword: "",
+      confirmPassword: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -153,7 +152,6 @@ function ProfileForm({
                 error={
                   formik.touched.fullName && Boolean(formik.errors.fullName)
                 }
-                // helperText={formik.touched.fullName && formik.errors.fullName}
               />
             </FormControl>
           </Grid>
@@ -182,9 +180,7 @@ function ProfileForm({
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
-                // helperText={
-                //   formik.touched.password && formik.errors.password
-                // }
+                helperText={formik.touched.password && formik.errors.password}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton

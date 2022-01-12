@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React, { useEffect, useState } from "react";
 
 import { Formik, Form } from "formik";
@@ -22,7 +23,7 @@ import validationSchema from "./FormModel/validationSchema";
 import checkoutFormModel from "./FormModel/checkoutFormModel";
 import axios from "axios";
 import SnackbarCustom from "../../components/SnackbarCustom";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const debug = true;
 const steps = ["Info", "Image", "Submit"];
@@ -76,7 +77,7 @@ function Create_Edit_Post({ post }) {
     setFormInitialValues({
       [title.name]: post?.title || "",
       [location.name]: post?.location || "",
-      [description.name]: post?.description || "",
+      [description.name]: post?.description,
       [price.name]: post?.price || null,
       [category.name]: post?.category["_id"] || "",
       [images.name]: post ? post.images : [],
@@ -140,7 +141,13 @@ function Create_Edit_Post({ post }) {
       url: `/posts/${post["_id"]}`,
       headers: { Authorization: `Bearer ${token}` },
       data: {
-        post: { ...values, deleteImages: deleteImages.map((e) => e.filename) },
+        post: {
+          ...values,
+          deleteImages: deleteImages.map((e) => {
+            const { path, ...rest } = e;
+            return rest;
+          }),
+        },
       },
     })
       .then((response) => {
@@ -170,6 +177,7 @@ function Create_Edit_Post({ post }) {
   function _handleBack() {
     setActiveStep(activeStep - 1);
   }
+
   return (
     <div
       style={{
@@ -188,6 +196,18 @@ function Create_Edit_Post({ post }) {
           pt: "50px",
         }}
       >
+        <Button
+          alignSelf="flex-start"
+          sx={{ width: 100 }}
+          startIcon={<ArrowBackIcon />}
+        >
+          <Link
+            to="/profile"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            Back
+          </Link>
+        </Button>
         <Stepper activeStep={activeStep}>
           {steps.map((label) => (
             <Step key={label}>

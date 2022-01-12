@@ -8,7 +8,9 @@ const RenderData = (props) => {
     case "select":
       return <Typography gutterBottom>{`${value}`}</Typography>;
     case "text":
-      return <Typography gutterBottom>{`${value}`}</Typography>;
+      return `${value}`
+        .split("\n")
+        .map((line) => <Typography>{line}</Typography>);
     case "image":
       if (!value.length) {
         return <Typography>No image</Typography>;

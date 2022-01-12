@@ -63,7 +63,10 @@ function ViewProfile() {
         }}
       >
         <Button alignSelf="flex-start" sx={{ width: 100 }}>
-          <Link to="/home" style={{ textDecoration: "none", color: "inherit" }}>
+          <Link
+            to="/profile"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             Back
           </Link>
         </Button>
@@ -199,7 +202,7 @@ function ViewProfile() {
                 </Stack>
               )}
 
-              <Box sx={{ mt: "30px", display: "flex", alignItems: "center" }}>
+              {/* <Box sx={{ mt: "30px", display: "flex", alignItems: "center" }}>
                 {user ? (
                   <></>
                 ) : (
@@ -220,7 +223,7 @@ function ViewProfile() {
                   // </Button>
                   <Skeleton width={100} height={50} />
                 )}
-              </Box>
+              </Box> */}
             </Box>
           </Box>
           {user ? (
