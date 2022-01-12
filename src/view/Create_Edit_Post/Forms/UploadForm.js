@@ -18,7 +18,7 @@ const ImageForm = (props) => {
   const { setValue } = helper;
   const isError = touched && error && true;
   const { value } = field;
-  console.log(value);
+
   const [selectedImages, setSelectedImages] = useState([...value]);
 
   const _onChange = (e) => {

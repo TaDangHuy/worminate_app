@@ -59,7 +59,7 @@ export default function ResultForm(props) {
             label={description.label}
             fullWidth
             multiline
-            rows={4}
+            rows={12}
           />
         </Box>
         <Box sx={{ gridArea: "category" }}>
