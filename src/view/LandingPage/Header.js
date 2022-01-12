@@ -17,10 +17,11 @@ function Navbar(props) {
           <Box
             component="img"
             sx={{
-              height: 30,
-              width: 30,
-              marginRight: 2,
-              marginLeft: 2,
+              height: 46,
+              width: 41,
+              marginRight: 1,
+              marginLeft: 1,
+              marginTop: -0.9,
             }}
             src={require("../../assets/images/logo.png").default}
             alt="worminate-token"

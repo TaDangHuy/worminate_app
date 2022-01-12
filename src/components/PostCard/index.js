@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Grid,
   Rating,
   Typography,
 } from "@mui/material";
@@ -12,6 +11,7 @@ import { Link } from "react-router-dom";
 import { BiDollar } from "react-icons/bi";
 
 function PostCard({ post }) {
+  const price = Math.floor((post.price * 100) / 100);
   return (
     <Link to={`/posts/${post._id}`} style={{ textDecoration: "none" }}>
       <Card sx={{ width: 225, borderRadius: 8, height: 330 }} elevation={4}>
@@ -49,7 +49,7 @@ function PostCard({ post }) {
             color="primary"
             noWrap
           >
-            {post.price ? `${post.price}` : post.price === 0 ? "0" : "?"}
+            {post.price ? `${price}` : post.price === 0 ? "0" : "?"}
           </Typography>
           {/* <Typography
             variant="subtitle1"

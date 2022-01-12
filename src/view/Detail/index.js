@@ -15,6 +15,8 @@ import {
   DialogContentText,
   DialogActions,
   TextField,
+  Avatar,
+  Stack,
 } from "@mui/material";
 
 import React, { useState } from "react";
@@ -26,6 +28,7 @@ import { useEffect } from "react";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import MapIcon from "@mui/icons-material/Map";
 import Add from "@mui/icons-material/Add";
+import LocalAtm from "@mui/icons-material/LocalAtm";
 import Heart from "react-animated-heart";
 import { Link } from "react-router-dom";
 import Map from "../../components/Map";
@@ -38,14 +41,25 @@ import PostCard from "../../components/PostCard";
 import { BiDollar } from "react-icons/bi";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+import { Edit, Delete } from "@mui/icons-material";
 
 function Detail() {
   let { url } = useRouteMatch();
   let { idPost } = useParams();
   const [isHeartClicked, setIsHeartClicked] = useState(false);
 
-  const { data, isLoading } = useGetPostQuery(`/posts/${idPost}`);
+  const [rating, setRating] = useState(null);
+  const token = localStorage.getItem("token");
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [reviewed, setReviewed] = useState(false);
+  const [state, setState] = useState(0);
+
+  // const [skip, setSkip] = useState(false);
+  const { data, isLoading } = useGetPostQuery(`posts/${idPost}`);
   const images = data ? data.post.images : [];
+  let price;
+  if (data) price = Math.floor((data.post.price * 100) / 100);
   const [image, setImage] = useState(
     "https://www.viet247.net/images/noimage_food_viet247.jpg"
   );
@@ -54,22 +68,26 @@ function Detail() {
     if (data && data.post.images.length > 0) {
       setImage(data.post.images[0].path);
     }
+    if (data)
+      data.post.reviews.map((review) => {
+        if (review.author._id === localStorage.getItem("_id"))
+          setReviewed(true);
+      });
     //eslint-disable-next-line
   }, [data]);
 
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
-  const handleClickOpen = () => {
+  // const [selectedValue, setSelectedValue] = useState("");
+  const handleClickOpen = (value) => {
+    if (value === 1) setState(1);
+    else if (value === 2) setState(2);
     setOpen(true);
   };
-  const handleClose = (value) => {
+  const handleClose = () => {
     setOpen(false);
-    setSelectedValue(value);
+    // setSelectedValue(value);
   };
-  const [rating, setRating] = useState(null);
-  const token = localStorage.getItem("token");
-  const [comment, setComment] = useState("");
-  const [loading, setLoading] = useState(false);
+
   return (
     <>
       <Switch>
@@ -77,14 +95,14 @@ function Detail() {
           {/* <Route path={`${url}/edit`} component={Create_Edit_Post}> */}
           <Create_Edit_Post post={data?.post} />
         </Route>
-        <Route path={`${url}`}>
-          <Box sx={{ backgroundColor: "#f5f5f5" }}>
+        <Route exact path={`${url}`}>
+          <Box sx={{ backgroundColor: "#f5f8fb" }}>
             <CssBaseline />
             <Header />
             <Container maxWidth="lg">
               <Paper
                 sx={{
-                  mt: 2.5,
+                  mt: 4.5,
                   mb: 5,
                   ml: 1.5,
                   px: 2,
@@ -174,24 +192,89 @@ function Detail() {
                               noWrap
                               sx={{ fontWeight: "500", display: "inline" }}
                             >
-                              {`${data.post.price}`}
+                              {price}
                             </Typography>
                           </>
                         )}
                       </Grid>
                       {/* <Grid item xs={2} sx={{ mt: 0.3 }}> */}
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          top: "17.7%",
-                          left: "81.3%",
-                        }}
-                      >
-                        <Heart
-                          isClick={isHeartClicked}
-                          onClick={() => setIsHeartClicked(!isHeartClicked)}
-                        />
-                      </Box>
+                      {!isLoading &&
+                        localStorage.getItem("_id") !==
+                          data.post.author._id && (
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              top: "14.6%",
+                              left: "81.1%",
+                            }}
+                          >
+                            <Heart
+                              isClick={isHeartClicked}
+                              onClick={() => {
+                                setIsHeartClicked(!isHeartClicked);
+                                const id = data.post._id;
+                                axios({
+                                  method: "POST",
+                                  url: `posts/favorite`,
+                                  headers: { Authorization: `Bearer ${token}` },
+                                  data: {
+                                    id,
+                                  },
+                                })
+                                  .then((response) => {})
+                                  .catch((err) => console.log(err));
+                              }}
+                            />
+                          </Box>
+                        )}
+                      {!isLoading &&
+                        localStorage.getItem("_id") ===
+                          data.post.author._id && (
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              top: "16.6%",
+                              left: "77%",
+                            }}
+                          >
+                            <Stack spacing={0} sx={{ mt: 0 }} direction="row">
+                              <IconButton sx={{ height: 45 }}>
+                                <LocalAtm
+                                  sx={{
+                                    ":hover": {
+                                      color: "primary.main",
+                                    },
+                                  }}
+                                />
+                              </IconButton>
+                              <Link
+                                to={`${url}/edit`}
+                                style={{ textDecoration: "none" }}
+                              >
+                                {" "}
+                                <IconButton sx={{ height: 45 }}>
+                                  <Edit
+                                    sx={{
+                                      ":hover": {
+                                        color: "primary.main",
+                                      },
+                                    }}
+                                  />
+                                </IconButton>
+                              </Link>
+
+                              <IconButton sx={{ height: 45 }}>
+                                <Delete
+                                  sx={{
+                                    ":hover": {
+                                      color: "primary.main",
+                                    },
+                                  }}
+                                />
+                              </IconButton>
+                            </Stack>
+                          </Box>
+                        )}
                       {/* </Grid> */}
                     </Grid>
                   </Grid>
@@ -267,7 +350,7 @@ function Detail() {
                           </Box>
                         )}
                       </Grid>
-                      <Grid item sx={{ mt: 1 }}>
+                      <Grid item sx={{ mt: 1.3 }}>
                         <Grid container>
                           <Grid item xs={10}>
                             <Typography
@@ -363,7 +446,21 @@ function Detail() {
                     )}
                   </Grid>
 
-                  <Grid item sx={{ mt: 2, ml: -1 }}>
+                  <Grid item sx={{ mt: 3, ml: -1 }}>
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "rgb(170,183,199)", fontSize: 22 }}
+                    >
+                      Category
+                    </Typography>
+                    {isLoading ? (
+                      <Skeleton variant="text" width="200px" height="40px" />
+                    ) : (
+                      <Typography>{data.post.category.name}</Typography>
+                    )}
+                  </Grid>
+
+                  <Grid item xs={12} sx={{ mt: 2, ml: 7 }}>
                     <Typography
                       variant="body1"
                       sx={{ color: "rgb(170,183,199)", fontSize: 22 }}
@@ -373,19 +470,39 @@ function Detail() {
                     {isLoading ? (
                       <Skeleton variant="text" width="200px" height="40px" />
                     ) : (
-                      <>
-                        <Typography>{data.post.author.fullName}</Typography>
-
-                        <Button
-                          startIcon={<Add />}
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          sx={{ mt: 1 }}
-                        >
-                          Follow
-                        </Button>
-                      </>
+                      <Grid container sx={{ mt: 1 }}>
+                        <Grid item xs={1}>
+                          {" "}
+                          <Link
+                            to={`/profile/${data.post.author._id}`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            {" "}
+                            <IconButton>
+                              {" "}
+                              <Avatar
+                                src={data.post.author.image.path}
+                                sx={{ display: "flex" }}
+                              />
+                            </IconButton>
+                          </Link>
+                        </Grid>
+                        <Grid item xs={5} sx={{ ml: -3, mt: 1.5 }}>
+                          <Typography>{data.post.author.fullName}</Typography>
+                          <Button
+                            startIcon={<Add />}
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            sx={{ mt: 1 }}
+                          >
+                            Follow
+                          </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                          {" "}
+                        </Grid>
+                      </Grid>
                     )}
                   </Grid>
                   <Grid item xs={12} sx={{ mx: 7, mt: 3 }}>
@@ -395,7 +512,7 @@ function Detail() {
                       variant="body1"
                       sx={{
                         color: "rgb(170,183,199)",
-                        mt: 4,
+                        mt: 2,
                         mb: 1,
 
                         fontSize: 20,
@@ -437,7 +554,7 @@ function Detail() {
                 >
                   Reviews
                 </Typography>
-                {!isLoading && (
+                {!isLoading && !reviewed && (
                   <IconButton
                     color="primary"
                     size="small"
@@ -474,27 +591,89 @@ function Detail() {
                     />
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
                     {loading ? (
-                      <CircularProgress />
+                      <Box sx={{ px: 3, mt: 1 }}>
+                        <CircularProgress size={20} />
+                      </Box>
                     ) : (
-                      <Button
-                        onClick={() => {
-                          setLoading(true);
-                          axios({
-                            method: "POST",
-                            url: `posts/${idPost}/reviews`,
-                            headers: { Authorization: `Bearer ${token}` },
-                            data: { review: { body: comment, rating: rating } },
-                          })
-                            .then((response) => {
-                              handleClose();
-                            })
-                            .catch((err) => console.log(err));
-                        }}
-                      >
-                        Add
-                      </Button>
+                      <>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        {!reviewed && (
+                          <Button
+                            onClick={() => {
+                              setLoading(true);
+                              axios({
+                                method: "POST",
+                                url: `posts/${idPost}/reviews`,
+                                headers: { Authorization: `Bearer ${token}` },
+                                data: {
+                                  review: { body: comment, rating: rating },
+                                },
+                              })
+                                .then((response) => {
+                                  handleClose();
+                                  // setSkip(true);
+                                  // setSkip(false);
+                                  // setLoading(false);
+                                  setReviewed(true);
+                                })
+                                .catch((err) => console.log(err));
+                            }}
+                          >
+                            Add
+                          </Button>
+                        )}
+                        {reviewed && state === 1 && (
+                          <Button
+                            onClick={() => {
+                              setLoading(true);
+                              axios({
+                                method: "POST",
+                                url: `posts/${idPost}/reviews`,
+                                headers: { Authorization: `Bearer ${token}` },
+                                data: {
+                                  review: { body: comment, rating: rating },
+                                },
+                              })
+                                .then((response) => {
+                                  handleClose();
+                                  setState(0);
+                                  // setSkip(false);
+                                  // setLoading(false);
+                                  // setReviewed(true);
+                                })
+                                .catch((err) => console.log(err));
+                            }}
+                          >
+                            Edit
+                          </Button>
+                        )}
+                        {reviewed && state === 2 && (
+                          <Button
+                            onClick={() => {
+                              setLoading(true);
+                              axios({
+                                method: "POST",
+                                url: `posts/${idPost}/reviews`,
+                                headers: { Authorization: `Bearer ${token}` },
+                                data: {
+                                  review: { body: comment, rating: rating },
+                                },
+                              })
+                                .then((response) => {
+                                  handleClose();
+                                  setState(0);
+                                  // setSkip(false);
+                                  // setLoading(false);
+                                  setReviewed(false);
+                                })
+                                .catch((err) => console.log(err));
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        )}
+                      </>
                     )}
                   </DialogActions>
                 </Dialog>
@@ -509,32 +688,138 @@ function Detail() {
                   </Box>
                 ) : (
                   <Box sx={{ pb: 5, mx: 6, mt: 2.5 }}>
+                    {reviewed && comment && rating && (
+                      <Paper
+                        elevation={4}
+                        sx={{
+                          borderRadius: 8,
+                          width: "100%",
+                          p: 2,
+                          pb: 0.5,
+                          mb: 3,
+                        }}
+                      >
+                        <Grid container spacing={0}>
+                          <Grid item sx={{ ml: 1.5 }}>
+                            <Stack>
+                              <IconButton sx={{ mt: -0.7 }}>
+                                <Avatar src={localStorage.getItem("avatar")} />
+                              </IconButton>
+                            </Stack>
+                          </Grid>
+                          <Grid item xs={10}>
+                            <Box sx={{}}>
+                              {" "}
+                              <Typography
+                                variant="body1"
+                                sx={{ mb: 1, ml: 0.7, mt: 1.1 }}
+                              >
+                                {localStorage.getItem("UserName")}
+                              </Typography>
+                              <Rating
+                                readOnly
+                                size="small"
+                                value={rating}
+                                sx={{ mb: 1, ml: 0.5 }}
+                              />
+                              <Typography
+                                variant="subtitle1"
+                                sx={{ mb: 1, ml: 0.8 }}
+                              >
+                                {comment}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          <Grid item display="flex" justifyContent="right">
+                            {" "}
+                            <Stack spacing={0} sx={{ mt: 0 }} direction="row">
+                              <IconButton sx={{ height: 45 }}>
+                                <Edit color="primary" />
+                              </IconButton>
+                              <IconButton sx={{ height: 45 }}>
+                                <Delete color="primary" />
+                              </IconButton>
+                            </Stack>
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    )}
                     {data.post.reviews.map((review, i) => (
                       <Paper
                         elevation={4}
-                        sx={{ borderRadius: 8, width: "100%", p: 2, mt: 2 }}
+                        sx={{
+                          borderRadius: 8,
+                          width: "100%",
+                          px: 2,
+                          pt: 2.5,
+                          pb: 0.5,
+                          mb: 3,
+                        }}
                       >
-                        <Box sx={{}}>
-                          {" "}
-                          <Typography
-                            variant="body1"
-                            sx={{ mb: 1, ml: 0.7, mt: 1 }}
-                          >
-                            {review.author.fullName}
-                          </Typography>
-                          <Rating
-                            readOnly
-                            size="small"
-                            value={review.rating}
-                            sx={{ mb: 1, ml: 0.5 }}
-                          />
-                          <Typography
-                            variant="subtitle1"
-                            sx={{ mb: 1, ml: 0.7 }}
-                          >
-                            {review.body}
-                          </Typography>
-                        </Box>
+                        <Grid container spacing={0}>
+                          <Grid item sx={{ ml: 1.5 }}>
+                            <Stack>
+                              <Link
+                                to={`/profile/${review.author._id}`}
+                                style={{ textDecoration: "none" }}
+                              >
+                                {" "}
+                                <IconButton sx={{ mt: -0.7 }}>
+                                  <Avatar src={review.author.image.path} />
+                                </IconButton>
+                              </Link>
+                            </Stack>
+                          </Grid>
+                          <Grid item xs={10}>
+                            <Box sx={{}}>
+                              {" "}
+                              <Typography
+                                variant="body1"
+                                sx={{ mb: 1, ml: 0.7, mt: 1.1 }}
+                              >
+                                {review.author.fullName}
+                              </Typography>
+                              <Rating
+                                readOnly
+                                size="small"
+                                value={review.rating}
+                                sx={{ mb: 1, ml: 0.5 }}
+                              />
+                              <Typography
+                                variant="subtitle1"
+                                sx={{ mb: 1, ml: 0.8 }}
+                              >
+                                {review.body}
+                              </Typography>
+                            </Box>
+                          </Grid>
+                          {review.author._id ===
+                            localStorage.getItem("_id") && (
+                            <Grid item display="flex" justifyContent="right">
+                              {" "}
+                              <Stack spacing={0} sx={{ mt: 0 }} direction="row">
+                                <IconButton sx={{ height: 45 }}>
+                                  <Edit
+                                    color="primary"
+                                    onClick={() => {
+                                      setState(1);
+                                      setOpen(true);
+                                    }}
+                                  />
+                                </IconButton>
+                                <IconButton sx={{ height: 45 }}>
+                                  <Delete
+                                    color="primary"
+                                    onClick={() => {
+                                      setState(2);
+                                      setOpen(true);
+                                    }}
+                                  />
+                                </IconButton>
+                              </Stack>
+                            </Grid>
+                          )}
+                        </Grid>
                       </Paper>
                     ))}
                   </Box>

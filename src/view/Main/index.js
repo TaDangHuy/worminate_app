@@ -9,7 +9,7 @@ import StickyBox from "react-sticky-box";
 
 function Main() {
   return (
-    <Box sx={{ backgroundColor: "#f5f5f5" }}>
+    <Box sx={{ backgroundColor: "#f5f8fb" }}>
       <CssBaseline />
       <Header />
       <Container maxWidth="lg">

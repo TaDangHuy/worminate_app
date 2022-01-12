@@ -14,6 +14,7 @@ import ScrollToTop from "../components/ScrollToTop";
 const LandingPage = Loadable(lazy(() => import("../view/LandingPage")));
 const Home = Loadable(lazy(() => import("../view/Home")));
 const Profile = Loadable(lazy(() => import("../view/Profile")));
+const ViewProfile = Loadable(lazy(() => import("../view/ViewProfile")));
 const ForgotPassword = Loadable(lazy(() => import("../view/ForgotPassword")));
 const Main = Loadable(lazy(() => import("../view/Main")));
 const Detail = Loadable(lazy(() => import("../view/Detail")));
@@ -37,8 +38,9 @@ function App() {
         <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
         <Route exact path="/" component={LandingPage} />
         <PrivateRoute path="/home" component={Home} />
-        <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/main" component={Main} />
+        <PrivateRoute exact path="/profile" component={Profile} />
+        <Route path="/profile/:idUser" component={ViewProfile} />
         <Route path="/posts/new" component={Create_Edit_Post} />
         <PrivateRoute path="/posts/:idPost" component={Detail} />
         <Route path="/login" component={Login} />

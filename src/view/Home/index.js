@@ -32,7 +32,7 @@ function Home() {
   // }
 
   return (
-    <Box xs={{ display: "flex" }} sx={{ backgroundColor: "#f5f5f5" }}>
+    <Box xs={{ display: "flex" }} sx={{ backgroundColor: "#f5f8fb" }}>
       <CssBaseline />
       <Header />
       <Container maxWidth="lg">

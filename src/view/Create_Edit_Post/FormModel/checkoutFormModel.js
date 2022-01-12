@@ -13,12 +13,6 @@ const checkoutFormModel = {
       requiredErrorMsg: "Location is required",
       type: "text",
     },
-    description: {
-      name: "description",
-      label: "Description*",
-      requiredErrorMsg: "Description is required",
-      type: "text",
-    },
     category: {
       name: "category",
       label: "Category*",
@@ -29,6 +23,12 @@ const checkoutFormModel = {
       name: "price",
       label: "Price*",
       requiredErrorMsg: "price is required",
+      type: "text",
+    },
+    description: {
+      name: "description",
+      label: "Description*",
+      requiredErrorMsg: "Description is required",
       type: "text",
     },
 

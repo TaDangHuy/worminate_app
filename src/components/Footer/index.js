@@ -3,7 +3,7 @@ import { Paper, Container, Typography, Grid } from "@mui/material";
 
 function Footer() {
   return (
-    <Paper elevation={24} sx={{ mt: 4 }}>
+    <Paper elevation={24} sx={{ mt: 10, pt: 4, pb: 2 }}>
       <Container maxWidth="md">
         <Grid sx={{ height: "16vh" }} container alignItems="center">
           <Grid sm={7} item sx={{ ml: -16.5 }}>

@@ -11,7 +11,7 @@ import { Box } from "@mui/material";
 
 function LandingPage() {
   return (
-    <Box sx={{ backgroundColor: "#f5f5f5" }}>
+    <Box sx={{ backgroundColor: "#f5f8fb" }}>
       <div>
         <Header />
         <div id="hero"></div>

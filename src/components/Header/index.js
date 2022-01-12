@@ -17,7 +17,7 @@ import { setPosts } from "../../features/posts/postsSlice";
 import { setPageIndex } from "../../features/search/searchSlice";
 
 const StyledInputElement = styled("input")`
-  width: 575px;
+  width: 500px;
   height: 40px;
   font-size: 1rem;
   font-family: IBM Plex Sans, sans-serif;
@@ -91,10 +91,11 @@ function Navigation() {
           <Box
             component="img"
             sx={{
-              height: 30,
-              width: 30,
-              marginRight: 2,
-              marginLeft: 2,
+              height: 46,
+              width: 41,
+              marginRight: 1,
+              marginLeft: 1,
+              marginTop: -0.9,
             }}
             src={require("../../assets/images/logo.png").default}
             alt="worminate-token"

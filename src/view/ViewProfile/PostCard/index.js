@@ -9,9 +9,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import EditIcon from "@mui/icons-material/Edit";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import PublishIcon from "@mui/icons-material/Publish";
 
 function PostCard({ post, id }) {
   return (
@@ -59,38 +57,16 @@ function PostCard({ post, id }) {
             justifyContent="space-around"
           >
             {/* <IconButton
-              color="secondary"
-              variant="outlined"
-              component={Link}
-              to={`/posts/${post["_id"]}`}
-              sx={{
-                "&:hover": { backgroundColor: "#f5f8fb" },
-              }}
-            >
-              <RemoveRedEyeIcon />
-            </IconButton> */}
-            <IconButton
-              color="secondary"
-              variant="outlined"
-              component={Link}
-              // to={`/posts/${post["_id"]}`}
-              sx={{
-                "&:hover": { backgroundColor: "#f5f8fb" },
-              }}
-            >
-              <PublishIcon />
-            </IconButton>
-            <IconButton
-              color="secondary"
-              variant="outlined"
-              component={Link}
-              to={`/posts/${post["_id"]}/edit`}
-              sx={{
-                "&:hover": { backgroundColor: "#f5f8fb" },
-              }}
-            >
-              <EditIcon />
-            </IconButton>
+            color="secondary"
+            variant="outlined"
+            component={Link}
+            to={`/posts/${post["_id"]}`}
+            sx={{
+              "&:hover": { backgroundColor: "#f5f8fb" },
+            }}
+          >
+            <RemoveRedEyeIcon />
+          </IconButton> */}
           </Stack>
         </CardActions>
       </Card>
