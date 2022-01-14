@@ -69,7 +69,7 @@ function PostCard({ post, id }) {
             >
               <RemoveRedEyeIcon />
             </IconButton> */}
-            <IconButton
+            {/* <IconButton
               color="secondary"
               variant="outlined"
               component={Link}
@@ -79,15 +79,13 @@ function PostCard({ post, id }) {
               }}
             >
               <PublishIcon />
-            </IconButton>
+            </IconButton> */}
             <IconButton
               color="secondary"
               variant="outlined"
               component={Link}
               to={`/posts/${post["_id"]}/edit`}
-              sx={{
-                "&:hover": { backgroundColor: "#f5f8fb" },
-              }}
+              sx={{ ml: 25, "&:hover": { backgroundColor: "#f5f8fb" } }}
             >
               <EditIcon />
             </IconButton>

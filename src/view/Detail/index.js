@@ -59,6 +59,7 @@ function Detail() {
   const { data, isLoading } = useGetPostQuery(`posts/${idPost}`);
   const images = data ? data.post.images : [];
   let price;
+  const [authorId, setAuthorId] = useState("");
   if (data) price = Math.floor((data.post.price * 100) / 100);
   const [image, setImage] = useState(
     "https://www.viet247.net/images/noimage_food_viet247.jpg"
@@ -70,8 +71,10 @@ function Detail() {
     }
     if (data)
       data.post.reviews.map((review) => {
-        if (review.author._id === localStorage.getItem("_id"))
+        if (review.author._id === localStorage.getItem("_id")) {
           setReviewed(true);
+          setAuthorId(review.author._id);
+        }
       });
     //eslint-disable-next-line
   }, [data]);
@@ -233,12 +236,12 @@ function Detail() {
                           <Box
                             sx={{
                               position: "absolute",
-                              top: "16.6%",
-                              left: "77%",
+                              top: "19.6%",
+                              left: "83%",
                             }}
                           >
                             <Stack spacing={0} sx={{ mt: 0 }} direction="row">
-                              <IconButton sx={{ height: 45 }}>
+                              {/* <IconButton sx={{ height: 45 }}>
                                 <LocalAtm
                                   sx={{
                                     ":hover": {
@@ -246,7 +249,7 @@ function Detail() {
                                     },
                                   }}
                                 />
-                              </IconButton>
+                              </IconButton> */}
                               <Link
                                 to={`${url}/edit`}
                                 style={{ textDecoration: "none" }}
@@ -263,7 +266,7 @@ function Detail() {
                                 </IconButton>
                               </Link>
 
-                              <IconButton sx={{ height: 45 }}>
+                              {/* <IconButton sx={{ height: 45 }}>
                                 <Delete
                                   sx={{
                                     ":hover": {
@@ -271,7 +274,7 @@ function Detail() {
                                     },
                                   }}
                                 />
-                              </IconButton>
+                              </IconButton> */}
                             </Stack>
                           </Box>
                         )}
@@ -489,7 +492,7 @@ function Detail() {
                         </Grid>
                         <Grid item xs={5} sx={{ ml: -3, mt: 1.5 }}>
                           <Typography>{data.post.author.fullName}</Typography>
-                          <Button
+                          {/* <Button
                             startIcon={<Add />}
                             variant="contained"
                             color="primary"
@@ -497,7 +500,7 @@ function Detail() {
                             sx={{ mt: 1 }}
                           >
                             Follow
-                          </Button>
+                          </Button> */}
                         </Grid>
                         <Grid item xs={12}>
                           {" "}
@@ -629,7 +632,7 @@ function Detail() {
                               setLoading(true);
                               axios({
                                 method: "POST",
-                                url: `posts/${idPost}/reviews`,
+                                url: `posts/${idPost}/reviews/`,
                                 headers: { Authorization: `Bearer ${token}` },
                                 data: {
                                   review: { body: comment, rating: rating },
@@ -688,7 +691,7 @@ function Detail() {
                   </Box>
                 ) : (
                   <Box sx={{ pb: 5, mx: 6, mt: 2.5 }}>
-                    {reviewed && comment && rating && (
+                    {reviewed && comment && rating && state === 0 && (
                       <Paper
                         elevation={4}
                         sx={{
@@ -802,6 +805,8 @@ function Detail() {
                                   <Edit
                                     color="primary"
                                     onClick={() => {
+                                      setRating(review.rating);
+                                      setComment(review.body);
                                       setState(1);
                                       setOpen(true);
                                     }}
@@ -811,6 +816,8 @@ function Detail() {
                                   <Delete
                                     color="primary"
                                     onClick={() => {
+                                      setRating(review.rating);
+                                      setComment(review.body);
                                       setState(2);
                                       setOpen(true);
                                     }}

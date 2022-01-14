@@ -91,8 +91,8 @@ function ProfileForm({
     initialValues: {
       fullName: fullName,
       password: null,
-      newPassword: "",
-      confirmPassword: "",
+      newPassword: null,
+      confirmPassword: null,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
