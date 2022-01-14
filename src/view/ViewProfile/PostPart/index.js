@@ -107,29 +107,6 @@ export default function PostPart({ posts }) {
               </Grid>
             ) : recentPosts.length < 12 ? (
               <Grid container spacing={2}>
-                <Grid item>
-                  <Button
-                    component={Link}
-                    to="/post/new"
-                    variant="outlined"
-                    sx={{ width: 270, height: 340 }}
-                  >
-                    <Stack
-                      spacing={1}
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <AddIcon />
-                      <Typography
-                        variant="subtitle1"
-                        color="text.secondary"
-                        fontWeight="700"
-                      >
-                        Create a New Post
-                      </Typography>
-                    </Stack>
-                  </Button>
-                </Grid>
                 {recentPosts.map((post, id) => (
                   <Grid item key={id}>
                     <PostCard post={post} id={id} />

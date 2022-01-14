@@ -35,12 +35,12 @@ function App() {
       <Switch>
         <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
         <Route exact path="/" component={LandingPage} />
-        <PrivateRoute path="/home" component={Home} />
-        <PrivateRoute path="/main" component={Main} />
+        <Route path="/home" component={Home} />
+        <Route path="/main" component={Main} />
         <PrivateRoute exact path="/profile" component={Profile} />
         <Route path="/profile/:idUser" component={ViewProfile} />
-        <Route path="/posts/new" component={Create_Edit_Post} />
-        <PrivateRoute path="/posts/:idPost" component={Detail} />
+        <PrivateRoute path="/posts/new" component={Create_Edit_Post} />
+        <Route path="/posts/:idPost" component={Detail} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/forgot-password" component={ForgotPassword} />

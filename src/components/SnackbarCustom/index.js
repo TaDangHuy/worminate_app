@@ -19,7 +19,7 @@ function SnackbarCustom({
       }}
     >
       <Alert
-        sx={{ width: "280px" }}
+        // sx={{ width: "280px" }}
         severity={snackbarprops?.severity}
         onClose={(event, reason) => {
           if (reason === "clickaway") {

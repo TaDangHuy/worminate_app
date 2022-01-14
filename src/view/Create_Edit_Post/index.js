@@ -84,6 +84,22 @@ function Create_Edit_Post({ post }) {
     });
   }, [post]);
 
+  const [categories, setCategories] = useState([]);
+  console.log(categories);
+
+  useEffect(() => {
+    axios
+      .get("/posts/new")
+      .then((res) => {
+        let tmp = res.data.category.map((category) => ({
+          value: category["_id"],
+          label: category.name,
+        }));
+        setCategories([...tmp]);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   const [deleteImages, setDeleteImages] = useState([]);
 
   const [activeStep, setActiveStep] = useState(0);

@@ -39,7 +39,6 @@ const CustomInput = styled(OutlinedInput)(({ theme }) => ({
     borderRadius: 4,
     position: "relative",
     backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-    // border: "1px solid #ced4da",
     fontSize: 16,
     width: "100%",
     padding: "10px 12px",
@@ -91,8 +90,8 @@ function ProfileForm({
     initialValues: {
       fullName: fullName,
       password: null,
-      newPassword: "",
-      confirmPassword: "",
+      newPassword: null,
+      confirmPassword: null,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -180,7 +179,8 @@ function ProfileForm({
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
-                helperText={formik.touched.password && formik.errors.password}
+                // helperText={formik.touched.password && formik.errors.password}
+                helperText={"fff"}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -217,10 +217,10 @@ function ProfileForm({
                 type={showPassword.newPassword ? "text" : "password"}
                 value={formik.values.newPassword}
                 onChange={formik.handleChange}
-                error={
-                  formik.touched.newPassword &&
-                  Boolean(formik.errors.newPassword)
-                }
+                // error={
+                //   // formik.touched.newPassword &&
+                //   Boolean(formik.errors.newPassword)
+                // }
                 // helperText={
                 //   formik.touched.newPassword && formik.errors.newPassword
                 // }
@@ -260,10 +260,10 @@ function ProfileForm({
                 type={showPassword.confirmPassword ? "text" : "password"}
                 value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
-                error={
-                  formik.touched.confirmPassword &&
-                  Boolean(formik.errors.confirmPassword)
-                }
+                // error={
+                //   // formik.touched.confirmPassword &&
+                //   Boolean(formik.errors.confirmPassword)
+                // }
                 // helperText={
                 //   formik.touched.confirmPassword &&
                 //   formik.errors.confirmPassword

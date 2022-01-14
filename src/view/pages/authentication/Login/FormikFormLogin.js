@@ -88,7 +88,7 @@ function FormikForm({ history }) {
           <Form>
             <FormControl fullWidth>
               <TextField
-                margin="normal"
+                // margin="normal"
                 required
                 fullWidth
                 type="email"
