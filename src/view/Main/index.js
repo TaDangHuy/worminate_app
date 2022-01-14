@@ -1,32 +1,24 @@
-import {
-  Breadcrumbs,
-  CssBaseline,
-  Grid,
-  Link,
-  Typography,
-  Container,
-} from "@mui/material";
+import { CssBaseline, Grid, Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import * as React from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import LeftContent from "./LeftContent";
 import RightContent from "./RightContent";
+import StickyBox from "react-sticky-box";
 
 function Main() {
   return (
-    <Box
-    // sx={{
-    //   mt: 10.5,
-    // }}
-    >
+    <Box sx={{ backgroundColor: "#f5f8fb" }}>
       <CssBaseline />
       <Header />
       <Container maxWidth="lg">
-        <Box sx={{ width: "100%", height: "100%", mb: 9 }}>
+        <Box sx={{ width: "100%", height: "100%" }}>
           <Grid container>
-            <Grid item xs={3}>
-              <LeftContent />
+            <Grid item xs={3} display="flex" alignItems="flex-start">
+              <StickyBox>
+                <LeftContent />
+              </StickyBox>
             </Grid>
             <Grid item xs={9}>
               <RightContent />

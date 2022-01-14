@@ -22,7 +22,7 @@ function Map({ height, posts, location }) {
       container: "map",
       style: "mapbox://styles/mapbox/satellite-streets-v11",
       center: [longitude, latitude], // center of map
-      zoom: 7.5,
+      zoom: 12,
     });
 
     map.addControl(new mapboxgl.NavigationControl());
@@ -145,7 +145,7 @@ function Map({ height, posts, location }) {
   });
 
   return (
-    <Card sx={{ width: "90%", borderRadius: 3 }} elevation={4}>
+    <Card sx={{ width: "90%", borderRadius: 6 }} elevation={4}>
       <div id="map" style={{ height: height }}></div>
     </Card>
   );

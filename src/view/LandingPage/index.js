@@ -7,23 +7,26 @@ import TokenSection from "./Sections/TokenSection";
 import TeamSection from "./Sections/TeamSection";
 import TechnologiesSection from "./Sections/TechnologiesSection";
 import Footer from "../../components/Footer";
+import { Box } from "@mui/material";
 
 function LandingPage() {
   return (
-    <div>
-      <Header />
-      <div id="hero"></div>
-      <HeroSection />
-      <div id="features"></div>
-      <FeaturesSection />
-      <div id="token"></div>
-      <TokenSection />
-      <div id="team"></div>
-      <TeamSection />
-      <div id="technologies"></div>
-      <TechnologiesSection />
-      <Footer />
-    </div>
+    <Box sx={{ backgroundColor: "#f5f8fb" }}>
+      <div>
+        <Header />
+        <div id="hero"></div>
+        <HeroSection />
+        <div id="features"></div>
+        <FeaturesSection />
+        <div id="token"></div>
+        <TokenSection />
+        <div id="team"></div>
+        <TeamSection />
+        <div id="technologies"></div>
+        <TechnologiesSection />
+        <Footer />
+      </div>
+    </Box>
   );
 }
 

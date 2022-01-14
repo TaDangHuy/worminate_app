@@ -32,12 +32,13 @@ function ChangeAvatarButton({ setAvatarProp }) {
       size="small"
       component="label"
       sx={{
-        backgroundColor: "rgb(97,218,251)",
-        "&:hover": {
-          backgroundColor: "rgb(97,218,251)",
-        },
+        // backgroundColor: "rgb(97,218,251)",
+        // "&:hover": {
+        //   backgroundColor: "rgb(97,218,251)",
+        // },
         borderRadius: "10px",
       }}
+      color="primary"
     >
       Change Avatar
       <input

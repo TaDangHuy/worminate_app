@@ -8,6 +8,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useGetTopProductsQuery } from "../../api/posts";
 import { useState, useEffect } from "react";
+import StickyBox from "react-sticky-box";
 
 function Home() {
   const [location, setLocation] = useState([105.8490039, 21.0085042]);
@@ -31,7 +32,7 @@ function Home() {
   // }
 
   return (
-    <Box xs={{ display: "flex" }}>
+    <Box xs={{ display: "flex" }} sx={{ backgroundColor: "#f5f8fb" }}>
       <CssBaseline />
       <Header />
       <Container maxWidth="lg">
@@ -39,12 +40,14 @@ function Home() {
           <Grid item xs={6}>
             <LeftContent posts={posts} />
           </Grid>
-          <Grid item xs={6}>
-            <RightContent
-              posts={posts}
-              location={location}
-              setLocation={setLocation}
-            />
+          <Grid item xs={6} display="flex" alignItems="flex-start">
+            <StickyBox>
+              <RightContent
+                posts={posts}
+                location={location}
+                setLocation={setLocation}
+              />
+            </StickyBox>
           </Grid>
         </Grid>
       </Container>

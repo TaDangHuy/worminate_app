@@ -1,4 +1,4 @@
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ const useStyle = makeStyles((theme) => ({
   },
   typography: {
     lineHeight: "25px",
+    fontSize: "22px",
   },
   select: {
     outline: "none",
@@ -54,11 +55,13 @@ function User({ userName, isAdmin, setUserNameProps }) {
   return (
     <div className={classes.container}>
       <Link to="/profile">
-        <Avatar alt={userName} src={localStorage.getItem("avatar")} />
+        <IconButton color="primary" sx={{ mr: -1 }}>
+          <Avatar alt={userName} src={localStorage.getItem("avatar")} />
+        </IconButton>
       </Link>
 
       <div className={classes.user}>
-        <Typography variant="h6" className={classes.typography}>
+        <Typography variant="subtitle1" className={classes.typography}>
           {userName ? userName : "Guest"}
         </Typography>
         {/* <Typography variant="subtitle1" className={classes.typography}>
@@ -68,9 +71,9 @@ function User({ userName, isAdmin, setUserNameProps }) {
 
       {!isLoggedIn ? (
         <Button
-          variant="text"
+          variant="outlined"
           size="small"
-          sx={{ height: 39, width: 80, mb: 0.5 }}
+          sx={{ height: 39, width: 80, mb: 0.5, mt: 1 }}
         >
           <Link
             to="/login"
@@ -82,9 +85,9 @@ function User({ userName, isAdmin, setUserNameProps }) {
       ) : (
         <Button
           onClick={handleLogout}
-          variant="text"
+          variant="outlined"
           size="small"
-          sx={{ height: 39, width: 90, ml: 1, mb: 0.5 }}
+          sx={{ height: 39, width: 100, ml: 0 }}
         >
           Sign out
         </Button>

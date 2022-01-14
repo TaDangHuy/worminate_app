@@ -34,14 +34,8 @@ function RightContent() {
   return (
     <Box
       sx={{
-        px: 4,
-        pb: 0.5,
-        ml: -0.5,
-        height: "114%",
-        width: 950,
-        position: "relative",
-        top: "0%",
-        left: "0%",
+        ml: 11,
+        mt: 1.9,
       }}
     >
       {/* <Scrollbars
@@ -89,7 +83,7 @@ function RightContent() {
           No Posts Found
         </Typography>
       )}
-      <Grid container spacing={2} sx={{ px: 1.2, pb: 1.5 }}>
+      <Grid container spacing={3} sx={{ px: 1.2, pb: 1.5 }}>
         {posts.length > 0 &&
           posts.map((post, i) => (
             <Grid item sx={4}>
@@ -97,7 +91,7 @@ function RightContent() {
             </Grid>
           ))}
       </Grid>
-      <Grid container sx={{ mt: 1, mb: 2, justifyContent: "space-around" }}>
+      <Grid container sx={{ mt: 1, justifyContent: "space-around" }}>
         <Grid item>
           <Pagination
             color="primary"

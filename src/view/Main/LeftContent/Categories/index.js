@@ -26,7 +26,7 @@ const StyledMenu = styled((props) => (
   "& .MuiPaper-root": {
     borderRadius: 6,
     marginTop: theme.spacing(1),
-    minWidth: 196.5,
+    minWidth: 204,
     color:
       theme.palette.mode === "light"
         ? "rgb(55, 65, 81)"
@@ -90,7 +90,7 @@ export default function CustomizedMenus() {
         disableElevation
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
-        sx={{ width: 196.5, height: "39px", fontSize: "13.25px" }}
+        sx={{ width: 204, height: "39px", fontSize: "13.25px" }}
       >
         {category}
       </Button>

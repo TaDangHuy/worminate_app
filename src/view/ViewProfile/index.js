@@ -172,7 +172,7 @@ function ViewProfile() {
 
               {user ? (
                 <Stack sx={{ mt: 2 }}>
-                  <div
+                  <Typography
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -180,8 +180,8 @@ function ViewProfile() {
                   >
                     <StarOutlineIcon fontSize="small" />
                     <span>Rank: {renderRank()}</span>
-                  </div>
-                  <div
+                  </Typography>
+                  <Typography
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -193,7 +193,7 @@ function ViewProfile() {
                       0,
                       10
                     )}`}</span>
-                  </div>
+                  </Typography>
                 </Stack>
               ) : (
                 <Stack sx={{ mt: 2 }}>
@@ -204,22 +204,23 @@ function ViewProfile() {
 
               {/* <Box sx={{ mt: "30px", display: "flex", alignItems: "center" }}>
                 {user ? (
-                  <Button
-                    variant="contained"
-                    startIcon={<PersonAddAltIcon />}
-                    size="small"
-                    sx={{
-                      backgroundColor: "rgb(38,43,64)",
-                      "&:hover": {
-                        backgroundColor: "rgb(38,43,64)",
-                      },
-                      borderRadius: "10px",
-                      marginRight: "13px",
-                    }}
-                  >
-                    Connect
-                  </Button>
+                  <></>
                 ) : (
+                  // <Button
+                  //   variant="contained"
+                  //   startIcon={<PersonAddAltIcon />}
+                  //   size="small"
+                  //   sx={{
+                  //     backgroundColor: "rgb(38,43,64)",
+                  //     "&:hover": {
+                  //       backgroundColor: "rgb(38,43,64)",
+                  //     },
+                  //     borderRadius: "10px",
+                  //     marginRight: "13px",
+                  //   }}
+                  // >
+                  //   Connect
+                  // </Button>
                   <Skeleton width={100} height={50} />
                 )}
               </Box> */}

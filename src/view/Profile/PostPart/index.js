@@ -167,7 +167,7 @@ export default function PostPart({ posts, favoritesProduct }) {
                 <Grid item>
                   <Button
                     component={Link}
-                    to="/post/new"
+                    to="/posts/new"
                     variant="outlined"
                     sx={{ width: 270, height: 340 }}
                   >

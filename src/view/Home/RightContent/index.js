@@ -8,21 +8,26 @@ function RightContent({ posts, location, setLocation }) {
   return (
     <Box
       sx={{
-        px: 1,
-        pb: 0.5,
-        ml: -0.5,
-        height: "92.5%",
+        p: 1,
+        mt: 1.5,
+        ml: -2.5,
         width: 640,
         position: "relative",
         top: "-1%",
         left: "1.8%",
       }}
     >
-      <Grid container direction="column" sx={{ mb: 8 }}>
-        <Grid item mb={1}>
+      <Grid container direction="column">
+        <Grid
+          item
+          mb={1}
+          display="flex"
+          justifyContent="right"
+          sx={{ mr: 8.1 }}
+        >
           <TextField
             placeholder="Find top products in other places... "
-            sx={{ width: "46%", ml: 0.5 }}
+            sx={{ width: "50%", ml: 0.5, mt: -1 }}
             variant="standard"
             size="small"
             onKeyPress={(event) => {
@@ -31,7 +36,7 @@ function RightContent({ posts, location, setLocation }) {
               }
             }}
           />
-          <IconButton sx={{ mt: -1 }}>
+          <IconButton sx={{ mt: -1.7 }}>
             <LocationOn
               sx={{
                 ":hover": {
@@ -49,7 +54,7 @@ function RightContent({ posts, location, setLocation }) {
           </IconButton>
         </Grid>
         <Grid item sx={{ mt: 0.5 }}>
-          <Map posts={posts} location={location} height="480px" />
+          <Map posts={posts} location={location} height="478px" />
         </Grid>
       </Grid>
     </Box>
