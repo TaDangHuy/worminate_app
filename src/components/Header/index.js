@@ -43,13 +43,7 @@ const StyledInputElement = styled("input")`
 `;
 
 const CustomInput = React.forwardRef(function CustomInput(props, ref) {
-  return (
-    <InputUnstyled
-      components={{ Input: StyledInputElement }}
-      {...props}
-      ref={ref}
-    />
-  );
+  return <InputUnstyled components={{ Input: StyledInputElement }} ref={ref} />;
 });
 
 function Navigation() {
@@ -103,7 +97,11 @@ function Navigation() {
         </Link>
 
         <Link to="/home" style={{ textDecoration: "none", color: "black" }}>
-          <Typography variant="h6" component="div" sx={{ mr: "20px" }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ mr: useLocation().pathname === "/home" ? "10px" : "100px" }}
+          >
             WORMINATE
           </Typography>
         </Link>

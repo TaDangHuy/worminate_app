@@ -2,7 +2,6 @@ import { Grid, Pagination, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import PostCard from "../../../components/PostCard";
-import { Scrollbars } from "react-custom-scrollbars";
 import { useGetPostsQuery } from "../../../api/posts";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../../features/posts/postsSlice";
@@ -75,9 +74,8 @@ function RightContent() {
         <Typography
           sx={{
             fontSize: 22,
-            position: "relative",
-            top: "49%",
-            left: "39%",
+            my: 29,
+            ml: 36,
           }}
         >
           No Posts Found

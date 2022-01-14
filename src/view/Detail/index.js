@@ -12,7 +12,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   TextField,
   Avatar,
@@ -21,7 +20,14 @@ import {
 
 import React, { useState } from "react";
 import Header from "../../components/Header";
-import { Route, Switch, useParams, useRouteMatch } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 import Footer from "../../components/Footer";
 import { useGetPostQuery } from "../../api/posts";
 import { useEffect } from "react";
@@ -29,6 +35,9 @@ import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import MapIcon from "@mui/icons-material/Map";
 import Add from "@mui/icons-material/Add";
 import LocalAtm from "@mui/icons-material/LocalAtm";
+import DoneIcon from "@mui/icons-material/Done";
+import PersonAddIcon from "@mui/icons-material/PersonAddAlt1";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemoveAlt1";
 import Heart from "react-animated-heart";
 import { Link } from "react-router-dom";
 import Map from "../../components/Map";
@@ -44,10 +53,15 @@ import { CircularProgress } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 
 function Detail() {
+  // const history = useHistory();
   let { url } = useRouteMatch();
+  // console.log(location);
+  // if (location.state?.from !== `${url}`) {
+  //   window.location.reload();
+  // }
   let { idPost } = useParams();
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-
+  const [isFollowing, setIsFollowing] = useState(false);
   const [rating, setRating] = useState(null);
   const token = localStorage.getItem("token");
   const [comment, setComment] = useState("");
@@ -59,28 +73,53 @@ function Detail() {
   const { data, isLoading } = useGetPostQuery(`posts/${idPost}`);
   const images = data ? data.post.images : [];
   let price;
-  const [authorId, setAuthorId] = useState("");
+  const [reviewId, setReviewId] = useState("");
   if (data) price = Math.floor((data.post.price * 100) / 100);
   const [image, setImage] = useState(
     "https://www.viet247.net/images/noimage_food_viet247.jpg"
   );
+  // const [favoriteProducts, setFavoriteProducts] = useState([]);
+  // const [followingUsers, setFollowingUsers] = useState([]);
 
   useEffect(() => {
     if (data && data.post.images.length > 0) {
       setImage(data.post.images[0].path);
     }
-    if (data)
+    if (data) {
+      axios({
+        method: "GET",
+        url: `/user`,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => {
+          response.data.user.favoritesProduct.forEach((product) => {
+            if (product._id === data.post._id) {
+              setIsHeartClicked(true);
+            }
+          });
+          response.data.user.manageFollowers.follow.forEach((user) => {
+            if (user._id === data.post.author._id) {
+              setIsFollowing(true);
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       data.post.reviews.map((review) => {
         if (review.author._id === localStorage.getItem("_id")) {
           setReviewed(true);
-          setAuthorId(review.author._id);
+          setReviewId(review._id);
+          setRating(review.rating);
+          setComment(review.body);
         }
       });
+    }
+
     //eslint-disable-next-line
   }, [data]);
 
   const [open, setOpen] = useState(false);
-  // const [selectedValue, setSelectedValue] = useState("");
   const handleClickOpen = (value) => {
     if (value === 1) setState(1);
     else if (value === 2) setState(2);
@@ -94,7 +133,7 @@ function Detail() {
   return (
     <>
       <Switch>
-        <Route path={`${url}/edit`}>
+        <Route exact path={`${url}/edit`}>
           {/* <Route path={`${url}/edit`} component={Create_Edit_Post}> */}
           <Create_Edit_Post post={data?.post} />
         </Route>
@@ -207,7 +246,7 @@ function Detail() {
                           <Box
                             sx={{
                               position: "absolute",
-                              top: "14.6%",
+                              top: "15%",
                               left: "81.1%",
                             }}
                           >
@@ -237,11 +276,11 @@ function Detail() {
                             sx={{
                               position: "absolute",
                               top: "19.6%",
-                              left: "83%",
+                              left: "79.5%",
                             }}
                           >
-                            <Stack spacing={0} sx={{ mt: 0 }} direction="row">
-                              {/* <IconButton sx={{ height: 45 }}>
+                            <Stack spacing={1} sx={{ mt: 0 }} direction="row">
+                              <IconButton sx={{ height: 45 }}>
                                 <LocalAtm
                                   sx={{
                                     ":hover": {
@@ -249,7 +288,7 @@ function Detail() {
                                     },
                                   }}
                                 />
-                              </IconButton> */}
+                              </IconButton>
                               <Link
                                 to={`${url}/edit`}
                                 style={{ textDecoration: "none" }}
@@ -265,8 +304,18 @@ function Detail() {
                                   />
                                 </IconButton>
                               </Link>
-
-                              {/* <IconButton sx={{ height: 45 }}>
+                            </Stack>
+                            <Stack spacing={1} sx={{ mt: 0 }} direction="row">
+                              <IconButton sx={{ height: 45 }}>
+                                <DoneIcon
+                                  sx={{
+                                    ":hover": {
+                                      color: "primary.main",
+                                    },
+                                  }}
+                                />
+                              </IconButton>
+                              <IconButton sx={{ height: 45 }}>
                                 <Delete
                                   sx={{
                                     ":hover": {
@@ -274,7 +323,7 @@ function Detail() {
                                     },
                                   }}
                                 />
-                              </IconButton> */}
+                              </IconButton>
                             </Stack>
                           </Box>
                         )}
@@ -473,7 +522,7 @@ function Detail() {
                     {isLoading ? (
                       <Skeleton variant="text" width="200px" height="40px" />
                     ) : (
-                      <Grid container sx={{ mt: 1 }}>
+                      <Grid container sx={{ mt: 1, ml: -1 }}>
                         <Grid item xs={1}>
                           {" "}
                           <Link
@@ -490,17 +539,49 @@ function Detail() {
                             </IconButton>
                           </Link>
                         </Grid>
-                        <Grid item xs={5} sx={{ ml: -3, mt: 1.5 }}>
+                        <Grid item sx={{ ml: -3, mt: 2 }}>
                           <Typography>{data.post.author.fullName}</Typography>
-                          {/* <Button
-                            startIcon={<Add />}
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            sx={{ mt: 1 }}
-                          >
-                            Follow
-                          </Button> */}
+                        </Grid>
+                        <Grid item sx={{ ml: 1, mt: 0.8 }}>
+                          {isFollowing ? (
+                            <IconButton
+                              onClick={() => {
+                                axios({
+                                  method: "DELETE",
+                                  url: `user/followers`,
+                                  headers: { Authorization: `Bearer ${token}` },
+                                  data: {
+                                    userId: `${data.post.author._id}`,
+                                  },
+                                })
+                                  .then((response) => {
+                                    setIsFollowing(false);
+                                  })
+                                  .catch((err) => console.log(err));
+                              }}
+                            >
+                              <PersonRemoveIcon color="primary" />
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              onClick={() => {
+                                axios({
+                                  method: "POST",
+                                  url: `user/followers`,
+                                  headers: { Authorization: `Bearer ${token}` },
+                                  data: {
+                                    userId: `${data.post.author._id}`,
+                                  },
+                                })
+                                  .then((response) => {
+                                    setIsFollowing(true);
+                                  })
+                                  .catch((err) => console.log(err));
+                              }}
+                            >
+                              <PersonAddIcon color="primary" />
+                            </IconButton>
+                          )}
                         </Grid>
                         <Grid item xs={12}>
                           {" "}
@@ -557,7 +638,7 @@ function Detail() {
                 >
                   Reviews
                 </Typography>
-                {!isLoading && !reviewed && (
+                {!isLoading && !reviewed && !loading && (
                   <IconButton
                     color="primary"
                     size="small"
@@ -567,12 +648,20 @@ function Detail() {
                     <Add sx={{}} />
                   </IconButton>
                 )}
+                {loading && (
+                  <Box sx={{ px: 3, mt: 1 }} component="span">
+                    <CircularProgress size={20} />
+                  </Box>
+                )}
                 <Dialog
                   open={open}
                   onClose={handleClose}
                   sx={{ borderRadius: 6 }}
                 >
-                  <DialogTitle>Add a review</DialogTitle>
+                  <DialogTitle>
+                    {state == 2 ? "Delete" : state == 1 ? "Edit" : "Add"} your
+                    review
+                  </DialogTitle>
                   <DialogContent>
                     <Typography variant="subtitle1" sx={{}}>
                       Rating
@@ -580,6 +669,7 @@ function Detail() {
                     <Rating
                       sx={{ ml: -0.3 }}
                       value={rating}
+                      readOnly={state === 2 ? true : false}
                       onChange={(event, newValue) => setRating(newValue)}
                     />
 
@@ -590,21 +680,20 @@ function Detail() {
                       variant="standard"
                       placeholder="Comment"
                       value={comment}
+                      disabled={state === 2 ? true : false}
                       onChange={(e) => setComment(e.target.value)}
                     />
                   </DialogContent>
                   <DialogActions>
-                    {loading ? (
-                      <Box sx={{ px: 3, mt: 1 }}>
-                        <CircularProgress size={20} />
-                      </Box>
-                    ) : (
+                    {
                       <>
                         <Button onClick={handleClose}>Cancel</Button>
                         {!reviewed && (
                           <Button
                             onClick={() => {
+                              handleClose();
                               setLoading(true);
+
                               axios({
                                 method: "POST",
                                 url: `posts/${idPost}/reviews`,
@@ -614,11 +703,7 @@ function Detail() {
                                 },
                               })
                                 .then((response) => {
-                                  handleClose();
-                                  // setSkip(true);
-                                  // setSkip(false);
-                                  // setLoading(false);
-                                  setReviewed(true);
+                                  window.location.reload();
                                 })
                                 .catch((err) => console.log(err));
                             }}
@@ -629,21 +714,18 @@ function Detail() {
                         {reviewed && state === 1 && (
                           <Button
                             onClick={() => {
+                              handleClose();
                               setLoading(true);
                               axios({
-                                method: "POST",
-                                url: `posts/${idPost}/reviews/`,
+                                method: "PUT",
+                                url: `posts/${idPost}/reviews/${reviewId}`,
                                 headers: { Authorization: `Bearer ${token}` },
                                 data: {
                                   review: { body: comment, rating: rating },
                                 },
                               })
                                 .then((response) => {
-                                  handleClose();
-                                  setState(0);
-                                  // setSkip(false);
-                                  // setLoading(false);
-                                  // setReviewed(true);
+                                  window.location.reload();
                                 })
                                 .catch((err) => console.log(err));
                             }}
@@ -654,21 +736,15 @@ function Detail() {
                         {reviewed && state === 2 && (
                           <Button
                             onClick={() => {
+                              handleClose();
                               setLoading(true);
                               axios({
-                                method: "POST",
-                                url: `posts/${idPost}/reviews`,
+                                method: "DELETE",
+                                url: `posts/${idPost}/reviews/${reviewId}`,
                                 headers: { Authorization: `Bearer ${token}` },
-                                data: {
-                                  review: { body: comment, rating: rating },
-                                },
                               })
                                 .then((response) => {
-                                  handleClose();
-                                  setState(0);
-                                  // setSkip(false);
-                                  // setLoading(false);
-                                  setReviewed(false);
+                                  window.location.reload();
                                 })
                                 .catch((err) => console.log(err));
                             }}
@@ -677,7 +753,7 @@ function Detail() {
                           </Button>
                         )}
                       </>
-                    )}
+                    }
                   </DialogActions>
                 </Dialog>
                 {isLoading ? (
@@ -691,62 +767,6 @@ function Detail() {
                   </Box>
                 ) : (
                   <Box sx={{ pb: 5, mx: 6, mt: 2.5 }}>
-                    {reviewed && comment && rating && state === 0 && (
-                      <Paper
-                        elevation={4}
-                        sx={{
-                          borderRadius: 8,
-                          width: "100%",
-                          p: 2,
-                          pb: 0.5,
-                          mb: 3,
-                        }}
-                      >
-                        <Grid container spacing={0}>
-                          <Grid item sx={{ ml: 1.5 }}>
-                            <Stack>
-                              <IconButton sx={{ mt: -0.7 }}>
-                                <Avatar src={localStorage.getItem("avatar")} />
-                              </IconButton>
-                            </Stack>
-                          </Grid>
-                          <Grid item xs={10}>
-                            <Box sx={{}}>
-                              {" "}
-                              <Typography
-                                variant="body1"
-                                sx={{ mb: 1, ml: 0.7, mt: 1.1 }}
-                              >
-                                {localStorage.getItem("UserName")}
-                              </Typography>
-                              <Rating
-                                readOnly
-                                size="small"
-                                value={rating}
-                                sx={{ mb: 1, ml: 0.5 }}
-                              />
-                              <Typography
-                                variant="subtitle1"
-                                sx={{ mb: 1, ml: 0.8 }}
-                              >
-                                {comment}
-                              </Typography>
-                            </Box>
-                          </Grid>
-                          <Grid item display="flex" justifyContent="right">
-                            {" "}
-                            <Stack spacing={0} sx={{ mt: 0 }} direction="row">
-                              <IconButton sx={{ height: 45 }}>
-                                <Edit color="primary" />
-                              </IconButton>
-                              <IconButton sx={{ height: 45 }}>
-                                <Delete color="primary" />
-                              </IconButton>
-                            </Stack>
-                          </Grid>
-                        </Grid>
-                      </Paper>
-                    )}
                     {data.post.reviews.map((review, i) => (
                       <Paper
                         elevation={4}
@@ -870,7 +890,7 @@ function Detail() {
                       {data.relatedPost.map((post, i) => (
                         <SplideSlide>
                           <Box sx={{ ml: 1.5, mr: 4 }}>
-                            <PostCard key={i} post={post} />
+                            <PostCard key={i} post={post} url={url} />
                           </Box>
                         </SplideSlide>
                       ))}

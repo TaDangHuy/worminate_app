@@ -5,7 +5,11 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
 
-function Map({ height, posts, location }) {
+function arePropsEqual(prevProps, nextProps) {
+  return prevProps.posts[0] === nextProps.posts[0];
+}
+
+const Map = React.memo(({ height, posts, location }) => {
   let longitude, latitude;
   if (typeof location === "object") {
     longitude = location[0];
@@ -149,6 +153,6 @@ function Map({ height, posts, location }) {
       <div id="map" style={{ height: height }}></div>
     </Card>
   );
-}
+}, arePropsEqual);
 
 export default Map;
