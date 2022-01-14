@@ -1,27 +1,14 @@
 import { Box } from "@mui/system";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import InputField from "../FormFields/InputField";
 import SelectField from "../FormFields/SelectField";
 
 export default function ResultForm(props) {
   const {
     formField: { title, location, description, category, price },
+    categories,
   } = props;
-  const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("/posts/new")
-      .then((res) => {
-        let tmp = res.data.category.map((category) => ({
-          value: category["_id"],
-          label: category.name,
-        }));
-        setCategories([...tmp]);
-      })
-      .catch((err) => console.error(err));
-  }, []);
   return (
     <React.Fragment>
       <Box

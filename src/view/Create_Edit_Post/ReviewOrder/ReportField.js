@@ -3,10 +3,14 @@ import React from "react";
 import Thumb from "../common/Thumb";
 
 const RenderData = (props) => {
-  const { field, value } = props;
+  const { field, value, categories } = props;
   switch (field.type) {
     case "select":
-      return <Typography gutterBottom>{`${value}`}</Typography>;
+      return (
+        <Typography gutterBottom>{`${
+          categories.find((category) => category.value === value).label
+        }`}</Typography>
+      );
     case "text":
       return `${value}`
         .split("\n")
@@ -33,7 +37,7 @@ const RenderData = (props) => {
 };
 
 function ReportField(props) {
-  const { formValues, formData } = props;
+  const { formValues, formData, categories } = props;
   return Object.values(formData).map((field) => {
     return (
       <Grid
@@ -45,7 +49,11 @@ function ReportField(props) {
         <Typography variant="h6" gutterBottom>
           {field.label}
         </Typography>
-        <RenderData field={field} value={formValues[field.name]}></RenderData>
+        <RenderData
+          field={field}
+          value={formValues[field.name]}
+          categories={categories}
+        ></RenderData>
       </Grid>
     );
   });

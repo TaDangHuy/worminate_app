@@ -85,7 +85,6 @@ function Create_Edit_Post({ post }) {
   }, [post]);
 
   const [categories, setCategories] = useState([]);
-  console.log(categories);
 
   useEffect(() => {
     axios
@@ -112,7 +111,7 @@ function Create_Edit_Post({ post }) {
   function _renderStepContent(step) {
     switch (step) {
       case 0:
-        return <ResultForm formField={formField} />;
+        return <ResultForm formField={formField} categories={categories} />;
       case 1:
         return (
           <UploadForm
@@ -123,7 +122,7 @@ function Create_Edit_Post({ post }) {
           />
         );
       case 2:
-        return <ReviewOrder />;
+        return <ReviewOrder categories={categories} />;
       default:
         return <div>Not Found</div>;
     }

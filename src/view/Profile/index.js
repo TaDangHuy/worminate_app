@@ -224,7 +224,7 @@ function Profile() {
                   }}
                 >
                   <EventNoteIcon fontSize="small" />
-                  <span>{`Active Date: ${createAccountDate.slice(
+                  <span>{`Activate Date: ${createAccountDate.slice(
                     0,
                     10
                   )}`}</span>
