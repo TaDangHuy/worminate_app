@@ -28,6 +28,7 @@ import { useEffect } from "react";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 import MapIcon from "@mui/icons-material/Map";
 import Add from "@mui/icons-material/Add";
+import { PersonAddAlt1, PersonRemoveAlt1 } from "@mui/icons-material";
 import LocalAtm from "@mui/icons-material/LocalAtm";
 import Heart from "react-animated-heart";
 import { Link } from "react-router-dom";
@@ -48,10 +49,12 @@ function Detail() {
   let { url } = useRouteMatch();
   let { idPost } = useParams();
   const [isHeartClicked, setIsHeartClicked] = useState(false);
-
+  const [following, setFollowing] = useState(false);
   const [rating, setRating] = useState(null);
   const token = localStorage.getItem("token");
   const [comment, setComment] = useState("");
+  const [newRating, setNewRating] = useState(null);
+  const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [reviewed, setReviewed] = useState(false);
   const [state, setState] = useState(0);
@@ -60,7 +63,7 @@ function Detail() {
   const { data, isLoading } = useGetPostQuery(`posts/${idPost}`);
   const images = data ? data.post.images : [];
   let price;
-  const [authorId, setAuthorId] = useState("");
+  // const [authorId, setAuthorId] = useState("");
   if (data) price = Math.floor((data.post.price * 100) / 100);
   const [image, setImage] = useState(
     "https://www.viet247.net/images/noimage_food_viet247.jpg"
@@ -80,8 +83,8 @@ function Detail() {
           response.data.user.favoritesProduct.forEach((post) => {
             if (post._id === data.post._id) setIsHeartClicked(true);
           });
-          response.data.user.manageFollowers.forEach((post) => {
-            if (post._id === data.post._id) setIsHeartClicked(true);
+          response.data.user.manageFollowers.follow.forEach((user) => {
+            if (user._id === data.post.author._id) setFollowing(true);
           });
         })
         .catch((error) => {
@@ -90,7 +93,8 @@ function Detail() {
       data.post.reviews.forEach((review) => {
         if (review.author._id === localStorage.getItem("_id")) {
           setReviewed(true);
-          setAuthorId(review.author._id);
+          setRating(review.rating);
+          setComment(review.body);
         }
       });
     }
@@ -129,9 +133,9 @@ function Detail() {
                   px: 2,
                   pt: 3,
                   pb: 3,
-                  borderRadius: 6,
+                  borderRadius: 3,
                 }}
-                elevation={8}
+                elevation={2}
               >
                 <Grid container>
                   <Grid item xs={1}>
@@ -160,12 +164,25 @@ function Detail() {
                             sx={{ mb: 0.5, ml: 0.2, mt: -1 }}
                           />
                         ) : (
-                          <Typography
-                            variant="h5"
-                            sx={{ mb: 0.5, ml: 0.2, mt: 0.2 }}
-                          >
-                            {data.post.title}
-                          </Typography>
+                          <Grid container>
+                            <Grid item xs={9}>
+                              <Typography
+                                variant="h5"
+                                sx={{ mb: 0.5, ml: 0.2, mt: 0.2 }}
+                              >
+                                {data.post.title}
+                              </Typography>
+                            </Grid>
+                            <Grid item>
+                              {/* <Button
+                                sx={{ mb: 0.5, ml: 0.2, mt: 0.2 }}
+                                variant="outlined"
+                                disabled
+                              >
+                                Sold
+                              </Button> */}
+                            </Grid>
+                          </Grid>
                         )}
                         {isLoading ? (
                           <Skeleton
@@ -186,7 +203,7 @@ function Detail() {
                           </>
                         )}
                       </Grid>
-                      <Grid item xs={4} sx={{ mt: 0.3, pl: 0.4 }}>
+                      <Grid item xs={4} sx={{ mt: 0.3, ml: -0.9 }}>
                         <Typography
                           variant="body1"
                           sx={{ color: "rgb(170,183,199)", fontSize: 20 }}
@@ -324,7 +341,7 @@ function Detail() {
                           mt: -1,
                           width: 600,
                           height: 370,
-                          borderRadius: 6,
+                          borderRadius: 3,
                           boxShadow:
                             "0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)",
                           objectFit: "scale-down",
@@ -344,20 +361,19 @@ function Detail() {
                               top: "-0.6%",
                               left: "3%",
                               width: 460,
-                              borderRadius: 6,
+                              borderRadius: 3,
                             }}
                           >
                             <Skeleton
                               variant="retangular"
                               width="315px"
                               height="285px"
-                              sx={{ ml: -2.2, mt: -0.4 }}
+                              sx={{ ml: -3.1, mt: -0.4 }}
                             />
                           </Box>
                         ) : (
                           <Box
                             sx={{
-                              pb: 0.5,
                               mt: -1,
                               ml: -1.3,
                               width: 350,
@@ -367,6 +383,7 @@ function Detail() {
                               posts={[data.post]}
                               location={data.post.geometry.coordinates}
                               height="300px"
+                              zoom={12.5}
                             />
                           </Box>
                         )}
@@ -374,13 +391,13 @@ function Detail() {
                       <Grid item sx={{ mt: 1.3 }}>
                         <Grid container>
                           <Grid item xs={4}>
-                            <Box>
+                            <Box sx={{ mt: 1.7, ml: -1.2 }}>
                               {" "}
                               <Typography
                                 variant="body1"
                                 sx={{
                                   color: "rgb(170,183,199)",
-                                  fontSize: 22,
+                                  fontSize: 24,
                                 }}
                               >
                                 Location
@@ -424,9 +441,12 @@ function Detail() {
                               variant="text"
                               width="200px"
                               height="40px"
+                              sx={{ ml: -1.3 }}
                             />
                           ) : (
-                            <Typography>{data.post.location} </Typography>
+                            <Typography sx={{ mt: 1, ml: -1.2 }}>
+                              {data.post.location}{" "}
+                            </Typography>
                           )}
                         </Grid>
                       </Grid>
@@ -459,7 +479,7 @@ function Detail() {
                                 width: 100,
                                 height: 100,
                                 ml: 1.65,
-                                borderRadius: 6,
+                                borderRadius: 3,
                                 objectFit: "cover",
                               }}
                               component="img"
@@ -477,7 +497,7 @@ function Detail() {
                     )}
                   </Grid>
 
-                  <Grid item sx={{ mt: 3, ml: -1 }}>
+                  <Grid item sx={{ mt: 3, ml: -2.2 }}>
                     <Typography
                       variant="body1"
                       sx={{ color: "rgb(170,183,199)", fontSize: 22 }}
@@ -502,7 +522,7 @@ function Detail() {
                       <Skeleton variant="text" width="200px" height="40px" />
                     ) : (
                       <Grid container sx={{ mt: 1 }}>
-                        <Grid item xs={1}>
+                        <Grid item>
                           {" "}
                           <Link
                             to={`/profile/${data.post.author._id}`}
@@ -513,25 +533,62 @@ function Detail() {
                               {" "}
                               <Avatar
                                 src={data.post.author.image.path}
-                                sx={{ display: "flex" }}
+                                sx={{ display: "flex", ml: -0.8 }}
                               />
                             </IconButton>
                           </Link>
                         </Grid>
-                        <Grid item xs={5} sx={{ ml: -3, mt: 1.5 }}>
+                        <Grid item sx={{ mt: 1.8, ml: 1 }}>
                           <Typography>{data.post.author.fullName}</Typography>
-                          {/* <Button
-                            startIcon={<Add />}
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            sx={{ mt: 1 }}
-                          >
-                            Follow
-                          </Button> */}
                         </Grid>
-                        <Grid item xs={12}>
-                          {" "}
+                        <Grid item sx={{ ml: 2, mt: 0.3 }}>
+                          {data.post.author._id !==
+                            localStorage.getItem("_id") &&
+                            (following ? (
+                              <Button
+                                startIcon={<PersonRemoveAlt1 />}
+                                variant="outlined"
+                                color="primary"
+                                size="small"
+                                sx={{ mt: 1 }}
+                                onClick={() => {
+                                  axios({
+                                    method: "DELETE",
+                                    url: "/user/followers",
+                                    headers: {
+                                      Authorization: `Bearer ${token}`,
+                                    },
+                                    data: { userId: data.post.author._id },
+                                  }).then(() => {
+                                    setFollowing(false);
+                                  });
+                                }}
+                              >
+                                Unfollow
+                              </Button>
+                            ) : (
+                              <Button
+                                startIcon={<PersonAddAlt1 />}
+                                variant="outlined"
+                                color="primary"
+                                size="small"
+                                sx={{ mt: 1 }}
+                                onClick={() => {
+                                  axios({
+                                    method: "POST",
+                                    url: "/user/followers",
+                                    headers: {
+                                      Authorization: `Bearer ${token}`,
+                                    },
+                                    data: { userId: data.post.author._id },
+                                  }).then(() => {
+                                    setFollowing(true);
+                                  });
+                                }}
+                              >
+                                Follow
+                              </Button>
+                            ))}
                         </Grid>
                       </Grid>
                     )}
@@ -575,9 +632,9 @@ function Detail() {
                   px: 2,
                   pt: 3,
 
-                  borderRadius: 6,
+                  borderRadius: 3,
                 }}
-                elevation={8}
+                elevation={2}
               >
                 <Typography
                   variant="h6"
@@ -585,6 +642,11 @@ function Detail() {
                 >
                   Reviews
                 </Typography>
+                {loading && (
+                  <Box sx={{ px: 3, mt: 1 }} component="span">
+                    <CircularProgress size={20} />
+                  </Box>
+                )}
                 {!isLoading && !reviewed && (
                   <IconButton
                     color="primary"
@@ -598,27 +660,37 @@ function Detail() {
                 <Dialog
                   open={open}
                   onClose={handleClose}
-                  sx={{ borderRadius: 6 }}
+                  sx={{ borderRadius: 3 }}
                 >
-                  <DialogTitle>Add a review</DialogTitle>
+                  <DialogTitle>
+                    {state === 0 ? "Add " : state === 1 ? "Edit " : "Delete "} a
+                    review
+                  </DialogTitle>
                   <DialogContent>
                     <Typography variant="subtitle1" sx={{}}>
                       Rating
                     </Typography>
                     <Rating
                       sx={{ ml: -0.3 }}
-                      value={rating}
-                      onChange={(event, newValue) => setRating(newValue)}
+                      value={newRating}
+                      readOnly={state === 2 ? true : false}
+                      onChange={(event, newValue) => setNewRating(newValue)}
                     />
-
+                    <Typography variant="subtitle1" sx={{}}>
+                      Comment
+                    </Typography>
                     <TextField
+                      sx={{ width: 500 }}
                       autoFocus
                       margin="dense"
                       fullWidth
-                      variant="standard"
-                      placeholder="Comment"
-                      value={comment}
-                      onChange={(e) => setComment(e.target.value)}
+                      multiline
+                      rows={8}
+                      // maxRows={8}
+                      placeholder=""
+                      value={newComment}
+                      disabled={state === 2 ? true : false}
+                      onChange={(e) => setNewComment(e.target.value)}
                     />
                   </DialogContent>
                   <DialogActions>
@@ -632,20 +704,22 @@ function Detail() {
                         {!reviewed && (
                           <Button
                             onClick={() => {
+                              handleClose();
                               setLoading(true);
                               axios({
                                 method: "POST",
                                 url: `posts/${idPost}/reviews`,
                                 headers: { Authorization: `Bearer ${token}` },
                                 data: {
-                                  review: { body: comment, rating: rating },
+                                  review: {
+                                    body: newComment,
+                                    rating: newRating,
+                                  },
                                 },
                               })
                                 .then((response) => {
-                                  handleClose();
-                                  // setSkip(true);
-                                  // setSkip(false);
-                                  // setLoading(false);
+                                  setRating(newRating);
+                                  setComment(newComment);
                                   setReviewed(true);
                                 })
                                 .catch((err) => console.log(err));
@@ -663,7 +737,10 @@ function Detail() {
                                 url: `posts/${idPost}/reviews/`,
                                 headers: { Authorization: `Bearer ${token}` },
                                 data: {
-                                  review: { body: comment, rating: rating },
+                                  review: {
+                                    body: newComment,
+                                    rating: newRating,
+                                  },
                                 },
                               })
                                 .then((response) => {
@@ -688,7 +765,10 @@ function Detail() {
                                 url: `posts/${idPost}/reviews`,
                                 headers: { Authorization: `Bearer ${token}` },
                                 data: {
-                                  review: { body: comment, rating: rating },
+                                  review: {
+                                    body: newComment,
+                                    rating: newRating,
+                                  },
                                 },
                               })
                                 .then((response) => {
@@ -719,11 +799,11 @@ function Detail() {
                   </Box>
                 ) : (
                   <Box sx={{ pb: 5, mx: 6, mt: 2.5 }}>
-                    {reviewed && comment && rating && state === 0 && (
+                    {reviewed && (
                       <Paper
-                        elevation={4}
+                        elevation={3}
                         sx={{
-                          borderRadius: 8,
+                          borderRadius: 3,
                           width: "100%",
                           p: 2,
                           pb: 0.5,
@@ -765,98 +845,87 @@ function Detail() {
                             {" "}
                             <Stack spacing={0} sx={{ mt: 0 }} direction="row">
                               <IconButton sx={{ height: 45 }}>
-                                <Edit color="primary" />
+                                <Edit
+                                  color="primary"
+                                  onClick={() => {
+                                    setNewRating(rating);
+                                    setNewComment(comment);
+                                    setState(1);
+                                    setOpen(true);
+                                  }}
+                                />
                               </IconButton>
                               <IconButton sx={{ height: 45 }}>
-                                <Delete color="primary" />
+                                <Delete
+                                  color="primary"
+                                  onClick={() => {
+                                    setNewRating(rating);
+                                    setNewComment(comment);
+                                    setState(2);
+                                    setOpen(true);
+                                  }}
+                                />
                               </IconButton>
                             </Stack>
                           </Grid>
                         </Grid>
                       </Paper>
                     )}
-                    {data.post.reviews.map((review, i) => (
-                      <Paper
-                        elevation={4}
-                        sx={{
-                          borderRadius: 8,
-                          width: "100%",
-                          px: 2,
-                          pt: 2.5,
-                          pb: 0.5,
-                          mb: 3,
-                        }}
-                      >
-                        <Grid container spacing={0}>
-                          <Grid item sx={{ ml: 1.5 }}>
-                            <Stack>
-                              <Link
-                                to={`/profile/${review.author._id}`}
-                                style={{ textDecoration: "none" }}
-                              >
-                                {" "}
-                                <IconButton sx={{ mt: -0.7 }}>
-                                  <Avatar src={review.author.image.path} />
-                                </IconButton>
-                              </Link>
-                            </Stack>
-                          </Grid>
-                          <Grid item xs={10}>
-                            <Box sx={{}}>
-                              {" "}
-                              <Typography
-                                variant="body1"
-                                sx={{ mb: 1, ml: 0.7, mt: 1.1 }}
-                              >
-                                {review.author.fullName}
-                              </Typography>
-                              <Rating
-                                readOnly
-                                size="small"
-                                value={review.rating}
-                                sx={{ mb: 1, ml: 0.5 }}
-                              />
-                              <Typography
-                                variant="subtitle1"
-                                sx={{ mb: 1, ml: 0.8 }}
-                              >
-                                {review.body}
-                              </Typography>
-                            </Box>
-                          </Grid>
-                          {review.author._id ===
-                            localStorage.getItem("_id") && (
-                            <Grid item display="flex" justifyContent="right">
-                              {" "}
-                              <Stack spacing={0} sx={{ mt: 0 }} direction="row">
-                                <IconButton sx={{ height: 45 }}>
-                                  <Edit
-                                    color="primary"
-                                    onClick={() => {
-                                      setRating(review.rating);
-                                      setComment(review.body);
-                                      setState(1);
-                                      setOpen(true);
-                                    }}
+                    {data.post.reviews.map(
+                      (review, i) =>
+                        review.author._id !== localStorage.getItem("_id") && (
+                          <Paper
+                            elevation={3}
+                            sx={{
+                              borderRadius: 3,
+                              width: "100%",
+                              px: 2,
+                              pt: 2.5,
+                              pb: 0.5,
+                              mb: 3,
+                            }}
+                          >
+                            <Grid container spacing={0}>
+                              <Grid item sx={{ ml: 1.5 }}>
+                                <Stack>
+                                  <Link
+                                    to={`/profile/${review.author._id}`}
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    {" "}
+                                    <IconButton sx={{ mt: -0.7 }}>
+                                      <Avatar src={review.author.image.path} />
+                                    </IconButton>
+                                  </Link>
+                                </Stack>
+                              </Grid>
+                              <Grid item xs={10}>
+                                <Box sx={{}}>
+                                  {" "}
+                                  <Typography
+                                    variant="body1"
+                                    sx={{ mb: 1, ml: 0.7, mt: 1.1 }}
+                                  >
+                                    {review.author.fullName}
+                                  </Typography>
+                                  <Rating
+                                    readOnly
+                                    size="small"
+                                    value={review.rating}
+                                    sx={{ mb: 1, ml: 0.5 }}
                                   />
-                                </IconButton>
-                                <IconButton sx={{ height: 45 }}>
-                                  <Delete
-                                    color="primary"
-                                    onClick={() => {
-                                      setRating(review.rating);
-                                      setComment(review.body);
-                                      setState(2);
-                                      setOpen(true);
-                                    }}
-                                  />
-                                </IconButton>
-                              </Stack>
+                                  <Typography
+                                    variant="subtitle1"
+                                    sx={{ mb: 1, ml: 0.8 }}
+                                  >
+                                    {review.body}
+                                  </Typography>
+                                </Box>
+                              </Grid>
                             </Grid>
-                          )}
-                        </Grid>
-                      </Paper>
-                    ))}
+                          </Paper>
+                        )
+                    )}
                   </Box>
                 )}
               </Paper>
@@ -868,9 +937,9 @@ function Detail() {
                   px: 2,
                   pt: 3,
 
-                  borderRadius: 6,
+                  borderRadius: 3,
                 }}
-                elevation={8}
+                elevation={2}
               >
                 <Typography variant="h6" sx={{ mb: 1, ml: 6.8 }}>
                   Related Posts

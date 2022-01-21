@@ -83,7 +83,7 @@ function Navigation() {
     <AppBar
       position="static"
       color="inherit"
-      elevation={3}
+      elevation={1}
       sx={{ bgcolor: "#fff", mb: 2 }}
     >
       <Toolbar>

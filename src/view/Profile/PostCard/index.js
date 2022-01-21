@@ -175,7 +175,7 @@ function PostCard({
                     .catch((err) => console.log(err));
                 }}
               >
-                Da Ban
+                Sold
               </Button>
             )}
             {type === "recent" && (
@@ -215,7 +215,7 @@ function PostCard({
                     .catch((err) => console.log(err));
                 }}
               >
-                Chua ban
+                For sale
               </Button>
             )}
             {type === "sold" && (

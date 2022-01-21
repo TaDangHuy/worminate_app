@@ -51,7 +51,7 @@ function LeftContent() {
     >
       <Card
         sx={{ height: "100%", pt: 2, pb: 1.5, px: 3, borderRadius: 6 }}
-        elevation={4}
+        elevation={3}
       >
         <CardContent sx={{ pl: 2.2 }}>
           <Grid container gridAutoFlow="column" gap={2}>

@@ -75,9 +75,8 @@ function RightContent() {
         <Typography
           sx={{
             fontSize: 22,
-            position: "relative",
-            top: "49%",
-            left: "39%",
+            mx: 36.3,
+            my: 29,
           }}
         >
           No Posts Found
