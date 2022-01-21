@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 
 import { Box } from "@mui/system";
 import ProfileForm from "./ProfileForm";
-import { Button, Stack, Typography } from "@mui/material";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import { Avatar, Button, Stack, Typography } from "@mui/material";
 import PostPart from "./PostPart";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import ChangeAvatarButton from "./ChangeAvatarButton/ChangeAvatarButton";
 import SimpleDialog from "./SimpleDialog";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
 function Profile() {
+  const history = useHistory();
   const [posts, setPosts] = useState([]);
   const [favoritesProduct, setFavoritesProduct] = useState([]);
   const [fullName, setFullName] = useState(localStorage.getItem("UserName"));
@@ -46,22 +46,78 @@ function Profile() {
         setUserRank(response.data.user.userRank);
       })
       .catch((error) => {
-        console.log(error);
+        history.push("/login");
+        localStorage.clear();
       });
   }, []);
 
   function renderRank() {
     switch (userRank) {
       case "S":
-        return "Legendary";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/legendary.jpg").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Legendary
+            </span>
+          </>
+        );
       case "A":
-        return "Master";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/master.jpg").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Master
+            </span>
+          </>
+        );
       case "B":
-        return "Pro";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/pro.jpg").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Pro
+            </span>
+          </>
+        );
       case "C":
-        return "Elite";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/elite.jpg").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Elite
+            </span>
+          </>
+        );
       default:
-        return "Rookie";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/rookie-i.png").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Rookie
+            </span>
+          </>
+        );
     }
   }
   return (
@@ -115,7 +171,7 @@ function Profile() {
           <Box
             sx={{
               width: 400,
-              height: 450,
+              height: 490,
               background: "white",
               position: "relative",
               borderRadius: "10px",
@@ -206,7 +262,7 @@ function Profile() {
                 </Typography>
               </Stack>
 
-              <Stack sx={{ mt: 2 }}>
+              <Stack sx={{ mt: 1 }}>
                 <Typography
                   style={{
                     display: "flex",
@@ -214,7 +270,12 @@ function Profile() {
                   }}
                 >
                   <StarOutlineIcon fontSize="small" />
-                  <span>Rank: {renderRank()}</span>
+                  <Typography>
+                    <Stack direction="row" alignItems="center">
+                      {"Rank:  "}
+                      {renderRank()}
+                    </Stack>
+                  </Typography>
                 </Typography>
                 <Typography
                   style={{
@@ -224,10 +285,7 @@ function Profile() {
                   }}
                 >
                   <EventNoteIcon fontSize="small" />
-                  <span>{`Activate Date: ${createAccountDate.slice(
-                    0,
-                    10
-                  )}`}</span>
+                  <span>{`Joined : ${createAccountDate.slice(0, 10)}`}</span>
                 </Typography>
               </Stack>
 
@@ -255,7 +313,11 @@ function Profile() {
           </Box>
         </Stack>
 
-        <PostPart posts={posts} favoritesProduct={favoritesProduct} />
+        <PostPart
+          posts={posts}
+          favoritesProduct={favoritesProduct}
+          setPostsProp={(newPosts) => setPosts(newPosts)}
+        />
       </Box>
     </div>
   );

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -26,10 +26,16 @@ function CustomPanel(props) {
     </div>
   );
 }
-export default function PostPart({ posts, favoritesProduct }) {
+export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
   const [value, setValue] = useState("1");
-  const recentPosts = posts.filter((post) => post.status);
-  const soldPosts = posts.filter((post) => !post.status);
+  const [recentPosts, setRecentPosts] = useState([]);
+  const [soldPosts, setSoldPosts] = useState([]);
+
+  useEffect(() => {
+    setRecentPosts(posts.filter((post) => post.status));
+    setSoldPosts(posts.filter((post) => !post.status));
+  }, [posts]);
+
   const [pageAll, setPageAll] = useState(1);
   return (
     <Box
@@ -125,7 +131,13 @@ export default function PostPart({ posts, favoritesProduct }) {
                       </CustomPanel>
                     )
                   )}
-                  <Box sx={{ pt: "20px" }}>
+                  <Box
+                    sx={{
+                      pt: "20px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <Pagination
                       count={Math.ceil(posts.length / 8)}
                       page={pageAll}
@@ -140,58 +152,12 @@ export default function PostPart({ posts, favoritesProduct }) {
           </div>
         </TabPanel>
         <TabPanel value="2">
-          {/* <Box>
-            <Grid container spacing={2}>
-              {recentPosts.length === 0 ? (
-                <Grid item>
-                  <Typography>No posts</Typography>
-                </Grid>
-              ) : (
-                recentPosts.map((post, id) => (
-                  <Grid item key={id}>
-                    <PostCard post={post} id={id} />
-                  </Grid>
-                ))
-              )}
-            </Grid>
-          </Box> */}
           <div>
             {recentPosts.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No recentPosts</Typography>
+                  <Typography>No recent posts</Typography>
                 </Grid>
-              </Grid>
-            ) : recentPosts.length < 8 ? (
-              <Grid container spacing={2}>
-                <Grid item>
-                  <Button
-                    component={Link}
-                    to="/posts/new"
-                    variant="outlined"
-                    sx={{ width: 270, height: 340 }}
-                  >
-                    <Stack
-                      spacing={1}
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <AddIcon />
-                      <Typography
-                        variant="subtitle1"
-                        color="text.secondary"
-                        fontWeight="700"
-                      >
-                        Create a New Post
-                      </Typography>
-                    </Stack>
-                  </Button>
-                </Grid>
-                {recentPosts.map((post, id) => (
-                  <Grid item key={id}>
-                    <PostCard post={post} id={id} />
-                  </Grid>
-                ))}
               </Grid>
             ) : (
               <>
@@ -206,14 +172,31 @@ export default function PostPart({ posts, favoritesProduct }) {
                           .map((post, id) => {
                             return (
                               <Grid item key={num * 8 + id}>
-                                <PostCard post={post} id={num * 8 + id} />
+                                <PostCard
+                                  post={post}
+                                  id={num * 8 + id}
+                                  setRecentPostsProp={(newPosts) =>
+                                    setRecentPosts(newPosts)
+                                  }
+                                  setSoldPostsProp={(newPosts) =>
+                                    setSoldPosts(newPosts)
+                                  }
+                                  setPostsProp={setPostsProp}
+                                  type="recent"
+                                />
                               </Grid>
                             );
                           })}
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box sx={{ pt: "20px" }}>
+                  <Box
+                    sx={{
+                      pt: "20px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <Pagination
                       count={Math.ceil(recentPosts.length / 8)}
                       page={pageAll}
@@ -228,35 +211,12 @@ export default function PostPart({ posts, favoritesProduct }) {
           </div>
         </TabPanel>
         <TabPanel value="3">
-          {/* <Box>
-            <Grid container spacing={2}>
-              {soldPosts.length === 0 ? (
-                <Grid item>
-                  <Typography>No sold posts</Typography>
-                </Grid>
-              ) : (
-                soldPosts.map((post, id) => (
-                  <Grid item key={id}>
-                    <PostCard post={post} id={id} />
-                  </Grid>
-                ))
-              )}
-            </Grid>
-          </Box> */}
           <div>
             {soldPosts.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No soldPosts</Typography>
+                  <Typography>No sold posts</Typography>
                 </Grid>
-              </Grid>
-            ) : soldPosts.length < 8 ? (
-              <Grid container spacing={2}>
-                {soldPosts.map((post, id) => (
-                  <Grid item key={id}>
-                    <PostCard post={post} id={id} />
-                  </Grid>
-                ))}
               </Grid>
             ) : (
               <>
@@ -271,14 +231,30 @@ export default function PostPart({ posts, favoritesProduct }) {
                           .map((post, id) => {
                             return (
                               <Grid item key={num * 8 + id}>
-                                <PostCard post={post} id={num * 8 + id} />
+                                <PostCard
+                                  post={post}
+                                  id={num * 8 + id}
+                                  setRecentPostsProp={(newPosts) =>
+                                    setRecentPosts(newPosts)
+                                  }
+                                  setSoldPostsProp={(newPosts) =>
+                                    setSoldPosts(newPosts)
+                                  }
+                                  type="sold"
+                                />
                               </Grid>
                             );
                           })}
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box sx={{ pt: "20px" }}>
+                  <Box
+                    sx={{
+                      pt: "20px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <Pagination
                       count={Math.ceil(soldPosts.length / 8)}
                       page={pageAll}
@@ -300,14 +276,6 @@ export default function PostPart({ posts, favoritesProduct }) {
                   <Typography>No favorite posts</Typography>
                 </Grid>
               </Grid>
-            ) : favoritesProduct.length < 8 ? (
-              <Grid container spacing={2}>
-                {favoritesProduct.map((post, id) => (
-                  <Grid item key={id}>
-                    <PostCard post={post} id={id} />
-                  </Grid>
-                ))}
-              </Grid>
             ) : (
               <>
                 <Box>
@@ -321,7 +289,11 @@ export default function PostPart({ posts, favoritesProduct }) {
                           .map((post, id) => {
                             return (
                               <Grid item key={num * 8 + id}>
-                                <PostCard post={post} id={num * 8 + id} />
+                                <PostCard
+                                  post={post}
+                                  id={num * 8 + id}
+                                  type="favorite"
+                                />
                               </Grid>
                             );
                           })}

@@ -70,11 +70,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
       </div>
 
       {!isLoggedIn ? (
-        <Button
-          variant="outlined"
-          size="small"
-          sx={{ height: 39, width: 80, mb: 0.5, mt: 1 }}
-        >
+        <Button size="small" sx={{ height: 39, width: 80, mb: 0.5, mt: 1 }}>
           <Link
             to="/login"
             style={{ textDecoration: "none", color: "inherit" }}
@@ -85,7 +81,6 @@ function User({ userName, isAdmin, setUserNameProps }) {
       ) : (
         <Button
           onClick={handleLogout}
-          variant="outlined"
           size="small"
           sx={{ height: 39, width: 100, ml: 0 }}
         >
