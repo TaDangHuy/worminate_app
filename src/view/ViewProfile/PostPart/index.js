@@ -83,7 +83,13 @@ export default function PostPart({ posts }) {
                       </CustomPanel>
                     )
                   )}
-                  <Box sx={{ pt: "20px" }}>
+                  <Box
+                    sx={{
+                      pt: "20px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <Pagination
                       count={Math.ceil(posts.length / 12)}
                       page={pageAll}
@@ -105,14 +111,6 @@ export default function PostPart({ posts }) {
                   <Typography>No recentPosts</Typography>
                 </Grid>
               </Grid>
-            ) : recentPosts.length < 12 ? (
-              <Grid container spacing={2}>
-                {recentPosts.map((post, id) => (
-                  <Grid item key={id}>
-                    <PostCard post={post} id={id} />
-                  </Grid>
-                ))}
-              </Grid>
             ) : (
               <>
                 <Box>
@@ -133,7 +131,13 @@ export default function PostPart({ posts }) {
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box sx={{ pt: "20px" }}>
+                  <Box
+                    sx={{
+                      pt: "20px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <Pagination
                       count={Math.ceil(recentPosts.length / 12)}
                       page={pageAll}
@@ -155,14 +159,6 @@ export default function PostPart({ posts }) {
                   <Typography>No soldPosts</Typography>
                 </Grid>
               </Grid>
-            ) : soldPosts.length < 12 ? (
-              <Grid container spacing={2}>
-                {soldPosts.map((post, id) => (
-                  <Grid item key={id}>
-                    <PostCard post={post} id={id} />
-                  </Grid>
-                ))}
-              </Grid>
             ) : (
               <>
                 <Box>
@@ -183,7 +179,13 @@ export default function PostPart({ posts }) {
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box sx={{ pt: "20px" }}>
+                  <Box
+                    sx={{
+                      pt: "20px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <Pagination
                       count={Math.ceil(soldPosts.length / 12)}
                       page={pageAll}

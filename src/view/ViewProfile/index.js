@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Box } from "@mui/system";
-import { Button, Skeleton, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Skeleton, Stack, Typography } from "@mui/material";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import PostPart from "./PostPart";
 import axios from "axios";
@@ -30,15 +30,70 @@ function ViewProfile() {
   function renderRank() {
     switch (user?.userRank) {
       case "S":
-        return "Legendary";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/legendary.jpg").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Legendary
+            </span>
+          </>
+        );
       case "A":
-        return "Master";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/master.jpg").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Master
+            </span>
+          </>
+        );
       case "B":
-        return "Pro";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/pro.jpg").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Pro
+            </span>
+          </>
+        );
       case "C":
-        return "Elite";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/elite.jpg").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Elite
+            </span>
+          </>
+        );
       default:
-        return "Rookie";
+        return (
+          <>
+            <Avatar
+              alt="Elite"
+              src={require("../../assets/images/rank/rookie-i.png").default}
+              sx={{ width: "60px", height: "60px" }}
+            />
+            <span style={{ fontFamily: "The Nautigal", fontSize: "30px" }}>
+              Rookie
+            </span>
+          </>
+        );
     }
   }
   return (
@@ -46,6 +101,7 @@ function ViewProfile() {
       style={{
         background: "#f5f8fb",
         width: "100%",
+        minHeight: "100vh",
         padding: 0,
         margin: 0,
       }}
@@ -142,27 +198,11 @@ function ViewProfile() {
               )}
               {user ? (
                 <Stack direction="row" spacing={2}>
-                  <Typography
-                    variant="small"
-                    sx={{
-                      "&:hover": {
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                      },
-                    }}
-                  >
+                  <Typography variant="small">
                     {user?.manageFollowers.follow.length || 0} Following
                   </Typography>
 
-                  <Typography
-                    variant="small"
-                    sx={{
-                      "&:hover": {
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                      },
-                    }}
-                  >
+                  <Typography variant="small">
                     {user?.manageFollowers.followBy.length || 0} Followers
                   </Typography>
                 </Stack>
@@ -179,7 +219,12 @@ function ViewProfile() {
                     }}
                   >
                     <StarOutlineIcon fontSize="small" />
-                    <span>Rank: {renderRank()}</span>
+                    <Typography>
+                      <Stack direction="row" alignItems="center">
+                        {"Rank:  "}
+                        {renderRank()}
+                      </Stack>
+                    </Typography>
                   </Typography>
                   <Typography
                     style={{
@@ -189,10 +234,7 @@ function ViewProfile() {
                     }}
                   >
                     <EventNoteIcon fontSize="small" />
-                    <span>{`Active Date: ${user?.createdAt.slice(
-                      0,
-                      10
-                    )}`}</span>
+                    <span>{`Joined: ${user?.createdAt.slice(0, 10)}`}</span>
                   </Typography>
                 </Stack>
               ) : (
