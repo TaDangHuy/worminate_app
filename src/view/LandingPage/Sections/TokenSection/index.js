@@ -17,7 +17,7 @@ function TokenSection() {
                 width: 250,
                 marginLeft: 6,
               }}
-              src={require("../../../../assets/images/logo.png").default}
+              src={require("../../../../assets/images/token.png").default}
               alt="worminate-token"
             />
           </Grid>

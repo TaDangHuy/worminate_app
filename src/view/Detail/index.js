@@ -19,6 +19,11 @@ import {
   Stack,
 } from "@mui/material";
 
+import SimpleReactLightbox, {
+  SRLWrapper,
+  useLightbox,
+} from "simple-react-lightbox";
+
 import React, { useState } from "react";
 import Header from "../../components/Header";
 import { Route, Switch, useParams, useRouteMatch } from "react-router-dom";
@@ -112,6 +117,8 @@ function Detail() {
     setOpen(false);
     // setSelectedValue(value);
   };
+
+  const { openLightbox } = useLightbox();
 
   return (
     <>
@@ -327,27 +334,52 @@ function Detail() {
                       >
                         <Skeleton
                           variant="retangular"
-                          height="370px"
+                          height="388px"
                           width="600px"
                           style={{ borderRadius: 6 }}
                         />
                       </Box>
                     ) : (
-                      <Box
-                        component="img"
-                        src={image}
-                        sx={{
-                          ml: 7,
-                          mt: -1,
-                          width: 600,
-                          height: 370,
-                          borderRadius: 3,
-                          boxShadow:
-                            "0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)",
-                          objectFit: "scale-down",
-                          backgroundColor: "#f4f4f4",
-                        }}
-                      />
+                      <Box sx={{ ml: 6, mt: -0.7 }}>
+                        <SimpleReactLightbox>
+                          <SRLWrapper>
+                            <Splide
+                              options={{
+                                width: 610,
+                                height: 400,
+                                perPage: 1,
+                                pagination: false,
+                                // focus: "center",
+                              }}
+                            >
+                              {" "}
+                              {images.map((image, i) => (
+                                <SplideSlide>
+                                  {" "}
+                                  <Box
+                                    sx={{
+                                      width: 600,
+                                      height: 388,
+                                      ml: 0.7,
+                                      mr: 1.8,
+                                      borderRadius: 3,
+                                      objectFit: "cover",
+                                    }}
+                                    component="img"
+                                    src={
+                                      image.path
+                                        ? image.path
+                                        : "https://onlinecrm.vn/media/default.jpg"
+                                    }
+                                    alt=""
+                                    onClick={() => setImage(image.path)}
+                                  />
+                                </SplideSlide>
+                              ))}
+                            </Splide>
+                          </SRLWrapper>
+                        </SimpleReactLightbox>
+                      </Box>
                     )}
                   </Grid>
                   <Grid item xs={4}>
@@ -452,48 +484,55 @@ function Detail() {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={7} sx={{ ml: 12.5, my: 3 }}>
+                  <Grid item xs={7} sx={{ ml: 12.3, mb: 3, mt: 1 }}>
                     {isLoading ? (
                       <Skeleton
                         variant="retangular"
-                        width="460px"
-                        height="100px"
-                        sx={{ ml: 3 }}
+                        width="500px"
+                        height="75px"
+                        sx={{ ml: 0.5, mt: 1.5 }}
                       />
                     ) : (
-                      <Splide
-                        options={{
-                          width: 500,
-                          height: 100,
-                          perPage: 4,
-                          pagination: false,
-                          focus: "center",
-                        }}
-                      >
-                        {" "}
-                        {images.map((image, i) => (
-                          <SplideSlide>
-                            {" "}
-                            <Box
-                              sx={{
-                                width: 100,
-                                height: 100,
-                                ml: 1.65,
-                                borderRadius: 3,
-                                objectFit: "cover",
+                      <>
+                        <SimpleReactLightbox>
+                          <SRLWrapper>
+                            <Splide
+                              options={{
+                                width: 500,
+                                height: 75,
+                                perPage: 5,
+                                pagination: false,
+                                // focus: "center",
                               }}
-                              component="img"
-                              src={
-                                image.path
-                                  ? image.path
-                                  : "https://onlinecrm.vn/media/default.jpg"
-                              }
-                              alt=""
-                              onClick={() => setImage(image.path)}
-                            />
-                          </SplideSlide>
-                        ))}
-                      </Splide>
+                            >
+                              {" "}
+                              {images.map((image, i) => (
+                                <SplideSlide>
+                                  {" "}
+                                  <Box
+                                    sx={{
+                                      width: 75,
+                                      height: 75,
+                                      ml: 1.6,
+                                      mr: 1,
+                                      borderRadius: 3,
+                                      objectFit: "cover",
+                                    }}
+                                    component="img"
+                                    src={
+                                      image.path
+                                        ? image.path
+                                        : "https://onlinecrm.vn/media/default.jpg"
+                                    }
+                                    alt=""
+                                    onClick={() => setImage(image.path)}
+                                  />
+                                </SplideSlide>
+                              ))}
+                            </Splide>
+                          </SRLWrapper>
+                        </SimpleReactLightbox>
+                      </>
                     )}
                   </Grid>
 
@@ -647,7 +686,7 @@ function Detail() {
                     <CircularProgress size={20} />
                   </Box>
                 )}
-                {!isLoading && !reviewed && (
+                {!isLoading && !reviewed && !loading && (
                   <IconButton
                     color="primary"
                     size="small"
@@ -718,6 +757,7 @@ function Detail() {
                                 },
                               })
                                 .then((response) => {
+                                  setLoading(false);
                                   setRating(newRating);
                                   setComment(newComment);
                                   setReviewed(true);
@@ -747,7 +787,7 @@ function Detail() {
                                   handleClose();
                                   setState(0);
                                   // setSkip(false);
-                                  // setLoading(false);
+                                  setLoading(false);
                                   // setReviewed(true);
                                 })
                                 .catch((err) => console.log(err));
@@ -961,7 +1001,7 @@ function Detail() {
                         width: 1000,
                         perPage: 4,
                         pagination: false,
-                        focus: "center",
+                        // focus: "center",
                       }}
                     >
                       {data.relatedPost.map((post, i) => (

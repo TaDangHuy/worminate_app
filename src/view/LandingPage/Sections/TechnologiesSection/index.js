@@ -9,47 +9,13 @@ export default function TechnologiesSection() {
           <Typography variant="h3">Technologies</Typography>
         </Box>
         <Grid container sx={{ padding: 5, marginLeft: 5 }}>
-          <Grid item sm={3}>
+          <Grid item sx={{ ml: 20 }}>
             <Box
               component="img"
               sx={{
-                height: 150,
-                width: 150,
+                width: "75%",
               }}
-              src={require("../../../../assets/images/logo.png").default}
-              alt="worminate-token"
-            />
-          </Grid>
-          <Grid item sm={3}>
-            <Box
-              component="img"
-              sx={{
-                height: 150,
-                width: 150,
-              }}
-              src={require("../../../../assets/images/logo.png").default}
-              alt="worminate-token"
-            />
-          </Grid>
-          <Grid item sm={3}>
-            <Box
-              component="img"
-              sx={{
-                height: 150,
-                width: 150,
-              }}
-              src={require("../../../../assets/images/logo.png").default}
-              alt="worminate-token"
-            />
-          </Grid>
-          <Grid item sm={3}>
-            <Box
-              component="img"
-              sx={{
-                height: 150,
-                width: 150,
-              }}
-              src={require("../../../../assets/images/logo.png").default}
+              src={require("../../../../assets/images/mern.png").default}
               alt="worminate-token"
             />
           </Grid>
