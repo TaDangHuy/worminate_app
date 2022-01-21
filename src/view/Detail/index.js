@@ -42,6 +42,7 @@ import { BiDollar } from "react-icons/bi";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
+import { FaMapMarkedAlt } from "react-icons/fa";
 
 function Detail() {
   let { url } = useRouteMatch();
@@ -69,13 +70,30 @@ function Detail() {
     if (data && data.post.images.length > 0) {
       setImage(data.post.images[0].path);
     }
-    if (data)
-      data.post.reviews.map((review) => {
+    if (data) {
+      axios({
+        method: "GET",
+        url: `/user`,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+        .then((response) => {
+          response.data.user.favoritesProduct.forEach((post) => {
+            if (post._id === data.post._id) setIsHeartClicked(true);
+          });
+          response.data.user.manageFollowers.forEach((post) => {
+            if (post._id === data.post._id) setIsHeartClicked(true);
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      data.post.reviews.forEach((review) => {
         if (review.author._id === localStorage.getItem("_id")) {
           setReviewed(true);
           setAuthorId(review.author._id);
         }
       });
+    }
     //eslint-disable-next-line
   }, [data]);
 
@@ -355,26 +373,23 @@ function Detail() {
                       </Grid>
                       <Grid item sx={{ mt: 1.3 }}>
                         <Grid container>
-                          <Grid item xs={10}>
-                            <Typography
-                              variant="body1"
-                              sx={{ color: "rgb(170,183,199)", fontSize: 22 }}
-                            >
-                              Location
-                            </Typography>
-                            {isLoading ? (
-                              <Skeleton
-                                variant="text"
-                                width="200px"
-                                height="40px"
-                              />
-                            ) : (
-                              <Typography>{data.post.location} </Typography>
-                            )}
+                          <Grid item xs={4}>
+                            <Box>
+                              {" "}
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: "rgb(170,183,199)",
+                                  fontSize: 22,
+                                }}
+                              >
+                                Location
+                              </Typography>
+                            </Box>
                           </Grid>
-                          <Grid item xs={2} sx={{ mt: -1, ml: -0.4 }}>
-                            {!isLoading && (
-                              <Box sx={{}}>
+                          {!isLoading && (
+                            <Grid item xs={8}>
+                              <Box>
                                 <a
                                   href={`https://www.google.com/maps/search/${data.post.location}/${data.post.geometry.coordinates[1]},${data.post.geometry.coordinates[0]}`}
                                   target="_blank"
@@ -384,22 +399,35 @@ function Detail() {
                                     color: "white",
                                   }}
                                 >
-                                  {/* <Button
-                                    startIcon={<MapIcon />}
+                                  <Button
+                                    startIcon={<FaMapMarkedAlt />}
                                     variant="contained"
                                     color="primary"
                                     size="small"
-                                    sx={{ mt: 1, width: 100 }}
+                                    sx={{ mt: 1, ml: 5 }}
+                                  >
+                                    Google map
+                                  </Button>
+                                  {/* <Button
+                                    startIcon={}
+                                    variant="contained"
+                                    size="small"
                                   >
                                     Google map
                                   </Button> */}
-                                  <IconButton>
-                                    <MapIcon color="primary" />
-                                  </IconButton>
                                 </a>
                               </Box>
-                            )}
-                          </Grid>
+                            </Grid>
+                          )}
+                          {isLoading ? (
+                            <Skeleton
+                              variant="text"
+                              width="200px"
+                              height="40px"
+                            />
+                          ) : (
+                            <Typography>{data.post.location} </Typography>
+                          )}
                         </Grid>
                       </Grid>
                     </Grid>

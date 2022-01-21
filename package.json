@@ -16,6 +16,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.24.0",
+    "better-react-spinkit": "^2.0.4",
     "formik": "^2.2.9",
     "history": "^4.10.1",
     "mapbox-gl": "^2.6.1",

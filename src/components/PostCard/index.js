@@ -13,7 +13,7 @@ import { BiDollar } from "react-icons/bi";
 function PostCard({ post }) {
   const price = Math.floor((post.price * 100) / 100);
   return (
-    <Link to={`/posts/${post._id}`} style={{ textDecoration: "none" }}>
+    <a href={`/posts/${post._id}`} style={{ textDecoration: "none" }}>
       <Card sx={{ width: 225, borderRadius: 8, height: 330 }} elevation={4}>
         <CardMedia
           component="img"
@@ -77,7 +77,7 @@ function PostCard({ post }) {
           </Typography>
         </CardContent>
       </Card>
-    </Link>
+    </a>
   );
 }
 
