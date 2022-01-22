@@ -12,7 +12,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   TextField,
   Avatar,
@@ -31,10 +30,9 @@ import Footer from "../../components/Footer";
 import { useGetPostQuery } from "../../api/posts";
 import { useEffect } from "react";
 import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
-import MapIcon from "@mui/icons-material/Map";
 import Add from "@mui/icons-material/Add";
 import { PersonAddAlt1, PersonRemoveAlt1 } from "@mui/icons-material";
-import LocalAtm from "@mui/icons-material/LocalAtm";
+
 import Heart from "react-animated-heart";
 import { Link } from "react-router-dom";
 import Map from "../../components/Map";
@@ -49,10 +47,12 @@ import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import { FaMapMarkedAlt } from "react-icons/fa";
+import Menu from "./Menu";
 
 function Detail() {
   let { url } = useRouteMatch();
   let { idPost } = useParams();
+  const [status, setStatus] = useState(true);
   const [isHeartClicked, setIsHeartClicked] = useState(false);
   const [following, setFollowing] = useState(false);
   const [rating, setRating] = useState(null);
@@ -102,6 +102,7 @@ function Detail() {
           setComment(review.body);
         }
       });
+      setStatus(data.post.status);
     }
     //eslint-disable-next-line
   }, [data]);
@@ -181,13 +182,33 @@ function Detail() {
                               </Typography>
                             </Grid>
                             <Grid item>
-                              {/* <Button
-                                sx={{ mb: 0.5, ml: 0.2, mt: 0.2 }}
-                                variant="outlined"
-                                disabled
-                              >
-                                Sold
-                              </Button> */}
+                              {data.post.author._id ===
+                              localStorage.getItem("_id") ? (
+                                status ? (
+                                  <Button
+                                    sx={{ mb: 0.5, ml: -3, mt: 0.1 }}
+                                    variant="outlined"
+                                    disableRipple
+                                    disableElevation
+                                    disableFocusRipple
+                                  >
+                                    For sale
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    sx={{ mb: 0.5, ml: 0.8, mt: 0.1 }}
+                                    variant="outlined"
+                                    disableRipple
+                                    disableElevation
+                                    disableFocusRipple
+                                    color="error"
+                                  >
+                                    Sold
+                                  </Button>
+                                )
+                              ) : (
+                                ""
+                              )}
                             </Grid>
                           </Grid>
                         )}
@@ -210,10 +231,10 @@ function Detail() {
                           </>
                         )}
                       </Grid>
-                      <Grid item xs={4} sx={{ mt: 0.3, ml: -0.9 }}>
+                      <Grid item xs={3} sx={{ mt: 0.6, ml: -0.9 }}>
                         <Typography
                           variant="body1"
-                          sx={{ color: "rgb(170,183,199)", fontSize: 20 }}
+                          sx={{ color: "rgb(170,183,199)", fontSize: 22 }}
                         >
                           Price
                         </Typography>
@@ -275,15 +296,16 @@ function Detail() {
                       {!isLoading &&
                         localStorage.getItem("_id") ===
                           data.post.author._id && (
-                          <Box
-                            sx={{
-                              position: "absolute",
-                              top: "19.6%",
-                              left: "83%",
-                            }}
-                          >
-                            <Stack spacing={0} sx={{ mt: 0 }} direction="row">
-                              {/* <IconButton sx={{ height: 45 }}>
+                          <Grid item xs={1} sx={{ pl: 2 }}>
+                            <Menu
+                              status={status}
+                              setStatus={setStatus}
+                              idPost={idPost}
+                              token={token}
+                              url={url}
+                            />
+                            {/* <Stack spacing={0} sx={{ mt: 0 }} direction="row">
+                              <IconButton sx={{ height: 45 }}>
                                 <LocalAtm
                                   sx={{
                                     ":hover": {
@@ -291,7 +313,7 @@ function Detail() {
                                     },
                                   }}
                                 />
-                              </IconButton> */}
+                              </IconButton>
                               <Link
                                 to={`${url}/edit`}
                                 style={{ textDecoration: "none" }}
@@ -308,7 +330,7 @@ function Detail() {
                                 </IconButton>
                               </Link>
 
-                              {/* <IconButton sx={{ height: 45 }}>
+                              <IconButton sx={{ height: 45 }}>
                                 <Delete
                                   sx={{
                                     ":hover": {
@@ -316,9 +338,9 @@ function Detail() {
                                     },
                                   }}
                                 />
-                              </IconButton> */}
-                            </Stack>
-                          </Box>
+                              </IconButton>
+                            </Stack> */}
+                          </Grid>
                         )}
                       {/* </Grid> */}
                     </Grid>
@@ -340,7 +362,7 @@ function Detail() {
                         />
                       </Box>
                     ) : (
-                      <Box sx={{ ml: 6, mt: -0.7 }}>
+                      <Box sx={{ ml: 6, mt: -1 }}>
                         <SimpleReactLightbox>
                           <SRLWrapper>
                             <Splide
@@ -364,6 +386,8 @@ function Detail() {
                                       mr: 1.8,
                                       borderRadius: 3,
                                       objectFit: "cover",
+                                      boxShadow:
+                                        "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)",
                                     }}
                                     component="img"
                                     src={
@@ -423,7 +447,7 @@ function Detail() {
                       <Grid item sx={{ mt: 1.3 }}>
                         <Grid container>
                           <Grid item xs={4}>
-                            <Box sx={{ mt: 1.7, ml: -1.2 }}>
+                            <Box sx={{ mt: 1.5, ml: -1.2 }}>
                               {" "}
                               <Typography
                                 variant="body1"
@@ -499,7 +523,7 @@ function Detail() {
                             <Splide
                               options={{
                                 width: 500,
-                                height: 75,
+                                height: 80,
                                 perPage: 5,
                                 pagination: false,
                                 // focus: "center",
@@ -517,6 +541,8 @@ function Detail() {
                                       mr: 1,
                                       borderRadius: 3,
                                       objectFit: "cover",
+                                      boxShadow:
+                                        "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)",
                                     }}
                                     component="img"
                                     src={
@@ -536,17 +562,19 @@ function Detail() {
                     )}
                   </Grid>
 
-                  <Grid item sx={{ mt: 3, ml: -2.2 }}>
+                  <Grid item sx={{ mt: 2.2, ml: -2 }}>
                     <Typography
                       variant="body1"
-                      sx={{ color: "rgb(170,183,199)", fontSize: 22 }}
+                      sx={{ color: "rgb(170,183,199)", fontSize: 24 }}
                     >
                       Category
                     </Typography>
                     {isLoading ? (
                       <Skeleton variant="text" width="200px" height="40px" />
                     ) : (
-                      <Typography>{data.post.category.name}</Typography>
+                      <Typography sx={{ mt: 0.7 }}>
+                        {data.post.category.name}
+                      </Typography>
                     )}
                   </Grid>
 

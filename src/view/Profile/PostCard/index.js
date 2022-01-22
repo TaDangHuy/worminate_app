@@ -56,8 +56,8 @@ function PostCard({
   return (
     <>
       <Card sx={{ maxWidth: 270 }}>
-        <Link
-          to={`/posts/${post["_id"]}`}
+        <a
+          href={`/posts/${post["_id"]}`}
           style={{
             textDecoration: "none",
             "&:hover": {
@@ -121,7 +121,7 @@ function PostCard({
               {post.description}
             </Typography>
           </CardContent>
-        </Link>
+        </a>
         <CardActions>
           <Stack
             sx={{ width: "100%" }}
