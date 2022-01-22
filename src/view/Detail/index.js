@@ -63,6 +63,8 @@ function Detail() {
   const [loading, setLoading] = useState(false);
   const [reviewed, setReviewed] = useState(false);
   const [state, setState] = useState(0);
+  const [reviewId, setReviewId] = useState("");
+  const [reviewsScore, setReviewsScore] = useState(null);
 
   // const [skip, setSkip] = useState(false);
   const { data, isLoading } = useGetPostQuery(`posts/${idPost}`);
@@ -100,8 +102,10 @@ function Detail() {
           setReviewed(true);
           setRating(review.rating);
           setComment(review.body);
+          setReviewId(review._id);
         }
       });
+      setReviewsScore(data.post.reviewsScore);
       setStatus(data.post.status);
     }
     //eslint-disable-next-line
@@ -175,7 +179,7 @@ function Detail() {
                           <Grid container>
                             <Grid item xs={9}>
                               <Typography
-                                variant="h5"
+                                variant="h4"
                                 sx={{ mb: 0.5, ml: 0.2, mt: 0.2 }}
                               >
                                 {data.post.title}
@@ -223,7 +227,7 @@ function Detail() {
                           <>
                             <Box sx={{ ml: -0.3 }}>
                               <Rating
-                                value={data.post.reviewsScore}
+                                value={reviewsScore}
                                 readOnly
                                 size="large"
                               />
@@ -231,7 +235,7 @@ function Detail() {
                           </>
                         )}
                       </Grid>
-                      <Grid item xs={3} sx={{ mt: 0.6, ml: -0.9 }}>
+                      <Grid item xs={3} sx={{ mt: 0.3, ml: -0.5 }}>
                         <Typography
                           variant="body1"
                           sx={{ color: "rgb(170,183,199)", fontSize: 22 }}
@@ -248,15 +252,18 @@ function Detail() {
                           <>
                             {" "}
                             <BiDollar
-                              size={40}
+                              size={26}
                               color="#3b8767"
-                              style={{ margin: "0px -3px 18px -8px" }}
+                              style={{ margin: "0px -3px 9px -6px" }}
                             />
                             <Typography
                               variant="h4"
                               color="primary"
                               noWrap
-                              sx={{ fontWeight: "500", display: "inline" }}
+                              sx={{
+                                fontWeight: "500",
+                                display: "inline",
+                              }}
                             >
                               {price}
                             </Typography>
@@ -277,18 +284,35 @@ function Detail() {
                             <Heart
                               isClick={isHeartClicked}
                               onClick={() => {
-                                setIsHeartClicked(!isHeartClicked);
                                 const id = data.post._id;
-                                axios({
-                                  method: "POST",
-                                  url: `posts/favorite`,
-                                  headers: { Authorization: `Bearer ${token}` },
-                                  data: {
-                                    id,
-                                  },
-                                })
-                                  .then((response) => {})
-                                  .catch((err) => console.log(err));
+                                if (isHeartClicked) {
+                                  axios({
+                                    method: "DELETE",
+                                    url: `posts/favorite`,
+                                    headers: {
+                                      Authorization: `Bearer ${token}`,
+                                    },
+                                    data: {
+                                      id,
+                                    },
+                                  })
+                                    .then((response) => {})
+                                    .catch((err) => console.log(err));
+                                } else {
+                                  axios({
+                                    method: "POST",
+                                    url: `posts/favorite`,
+                                    headers: {
+                                      Authorization: `Bearer ${token}`,
+                                    },
+                                    data: {
+                                      id,
+                                    },
+                                  })
+                                    .then((response) => {})
+                                    .catch((err) => console.log(err));
+                                }
+                                setIsHeartClicked(!isHeartClicked);
                               }}
                             />
                           </Box>
@@ -447,7 +471,7 @@ function Detail() {
                       <Grid item sx={{ mt: 1.3 }}>
                         <Grid container>
                           <Grid item xs={4}>
-                            <Box sx={{ mt: 1.5, ml: -1.2 }}>
+                            <Box sx={{ mt: 0.75, ml: -1.2 }}>
                               {" "}
                               <Typography
                                 variant="body1"
@@ -477,7 +501,7 @@ function Detail() {
                                     variant="contained"
                                     color="primary"
                                     size="small"
-                                    sx={{ mt: 1, ml: 5 }}
+                                    sx={{ mt: 1, ml: 8 }}
                                   >
                                     Google map
                                   </Button>
@@ -500,7 +524,9 @@ function Detail() {
                               sx={{ ml: -1.3 }}
                             />
                           ) : (
-                            <Typography sx={{ mt: 1, ml: -1.2 }}>
+                            <Typography
+                              sx={{ mt: 1, ml: -1.2, fontSize: "17px" }}
+                            >
                               {data.post.location}{" "}
                             </Typography>
                           )}
@@ -562,7 +588,7 @@ function Detail() {
                     )}
                   </Grid>
 
-                  <Grid item sx={{ mt: 2.2, ml: -2 }}>
+                  <Grid item sx={{ mt: 1.5, ml: -2 }}>
                     <Typography
                       variant="body1"
                       sx={{ color: "rgb(170,183,199)", fontSize: 24 }}
@@ -572,7 +598,7 @@ function Detail() {
                     {isLoading ? (
                       <Skeleton variant="text" width="200px" height="40px" />
                     ) : (
-                      <Typography sx={{ mt: 0.7 }}>
+                      <Typography sx={{ mt: 0.7, fontSize: "17px" }}>
                         {data.post.category.name}
                       </Typography>
                     )}
@@ -606,7 +632,9 @@ function Detail() {
                           </Link>
                         </Grid>
                         <Grid item sx={{ mt: 1.8, ml: 1 }}>
-                          <Typography>{data.post.author.fullName}</Typography>
+                          <Typography variant="subtitle1">
+                            {data.post.author.fullName}
+                          </Typography>
                         </Grid>
                         <Grid item sx={{ ml: 2, mt: 0.3 }}>
                           {data.post.author._id !==
@@ -784,10 +812,12 @@ function Detail() {
                                   },
                                 },
                               })
-                                .then((response) => {
+                                .then(({ data }) => {
                                   setLoading(false);
                                   setRating(newRating);
                                   setComment(newComment);
+                                  setReviewId(data.id);
+                                  setReviewsScore(data.reviewsScore);
                                   setReviewed(true);
                                 })
                                 .catch((err) => console.log(err));
@@ -799,10 +829,11 @@ function Detail() {
                         {reviewed && state === 1 && (
                           <Button
                             onClick={() => {
+                              handleClose();
                               setLoading(true);
                               axios({
-                                method: "POST",
-                                url: `posts/${idPost}/reviews/`,
+                                method: "PUT",
+                                url: `posts/${idPost}/reviews/${reviewId}`,
                                 headers: { Authorization: `Bearer ${token}` },
                                 data: {
                                   review: {
@@ -811,12 +842,13 @@ function Detail() {
                                   },
                                 },
                               })
-                                .then((response) => {
-                                  handleClose();
+                                .then(({ data }) => {
                                   setState(0);
-                                  // setSkip(false);
                                   setLoading(false);
-                                  // setReviewed(true);
+                                  setRating(newRating);
+                                  setComment(newComment);
+
+                                  setReviewsScore(data.reviewsScore);
                                 })
                                 .catch((err) => console.log(err));
                             }}
@@ -827,23 +859,22 @@ function Detail() {
                         {reviewed && state === 2 && (
                           <Button
                             onClick={() => {
+                              handleClose();
                               setLoading(true);
                               axios({
-                                method: "POST",
-                                url: `posts/${idPost}/reviews`,
+                                method: "DELETE",
+                                url: `posts/${idPost}/reviews/${reviewId}`,
                                 headers: { Authorization: `Bearer ${token}` },
                                 data: {
-                                  review: {
-                                    body: newComment,
-                                    rating: newRating,
-                                  },
+                                  review: {},
                                 },
                               })
-                                .then((response) => {
-                                  handleClose();
+                                .then(({ data }) => {
                                   setState(0);
-                                  // setSkip(false);
-                                  // setLoading(false);
+                                  setLoading(false);
+                                  setNewRating(null);
+                                  setNewComment("");
+                                  setReviewsScore(data.reviewsScore);
                                   setReviewed(false);
                                 })
                                 .catch((err) => console.log(err));
@@ -890,7 +921,7 @@ function Detail() {
                             <Box sx={{}}>
                               {" "}
                               <Typography
-                                variant="body1"
+                                variant="subtitle1"
                                 sx={{ mb: 1, ml: 0.7, mt: 1.1 }}
                               >
                                 {localStorage.getItem("UserName")}
@@ -902,7 +933,7 @@ function Detail() {
                                 sx={{ mb: 1, ml: 0.5 }}
                               />
                               <Typography
-                                variant="subtitle1"
+                                variant="body1"
                                 sx={{ mb: 1, ml: 0.8 }}
                               >
                                 {comment}
@@ -971,7 +1002,7 @@ function Detail() {
                                 <Box sx={{}}>
                                   {" "}
                                   <Typography
-                                    variant="body1"
+                                    variant="subtitle1"
                                     sx={{ mb: 1, ml: 0.7, mt: 1.1 }}
                                   >
                                     {review.author.fullName}
@@ -983,7 +1014,7 @@ function Detail() {
                                     sx={{ mb: 1, ml: 0.5 }}
                                   />
                                   <Typography
-                                    variant="subtitle1"
+                                    variant="body1"
                                     sx={{ mb: 1, ml: 0.8 }}
                                   >
                                     {review.body}
@@ -1009,7 +1040,7 @@ function Detail() {
                 }}
                 elevation={2}
               >
-                <Typography variant="h6" sx={{ mb: 1, ml: 6.8 }}>
+                <Typography variant="h6" sx={{ mb: 1, ml: 7.6 }}>
                   Related Posts
                 </Typography>
                 {isLoading ? (

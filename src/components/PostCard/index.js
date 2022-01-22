@@ -26,19 +26,19 @@ function PostCard({ post }) {
               : "https://onlinecrm.vn/media/default.jpg"
           }
         />
-        <CardContent sx={{ height: 100, ml: 1.4 }}>
+        <CardContent sx={{ height: 100, ml: 0.7 }}>
           <Typography
             variant="h6"
             color="textPrimary"
             noWrap
-            sx={{ width: 165, fontSize: "20px" }}
+            sx={{ width: 165, fontSize: "20px", mb: 0.5, mt: -0.3 }}
           >
             {post.title}
           </Typography>
           <BiDollar
-            size={23}
+            size={22}
             color="#3b8767"
-            style={{ margin: "0px -3px 6.5px -4px" }}
+            style={{ margin: "0px -3px 7.3px -4px" }}
           />
           <Typography
             sx={{
@@ -64,12 +64,12 @@ function PostCard({ post }) {
           </Box>
 
           <Typography
-            variant="subtitle1"
+            variant="body1"
             sx={{
               textAlign: "right",
               mr: 2,
               mt: 1,
-              fontSize: 17,
+              fontWeight: 599,
             }}
             noWrap
           >

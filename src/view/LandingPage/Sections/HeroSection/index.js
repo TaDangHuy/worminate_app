@@ -39,7 +39,7 @@ function HeroSection() {
         >
           <Grid sm={8} sx={{ ml: 20, mt: 6 }} item>
             <Typography
-              variant="h4"
+              variant="h3"
               sx={{
                 textAlign: "center",
                 textShadow: "#fff 1px 1px",
@@ -48,25 +48,25 @@ function HeroSection() {
               Welcome to Worminate
             </Typography>
             <Typography
-              variant="h6"
+              variant="h4"
               sx={{ textAlign: "center", textShadow: "#fff 1px 1px" }}
             >
               Everything you want is right here
             </Typography>
             <Box my={2} sx={{ textAlign: "center" }}>
-              <Button
-                startIcon={<Home />}
-                variant="contained"
-                color="primary"
-                size="medium"
+              <Link
+                to="/home"
+                style={{ textDecoration: "none", color: "white" }}
               >
-                <Link
-                  to="/home"
-                  style={{ textDecoration: "none", color: "white" }}
+                <Button
+                  startIcon={<Home />}
+                  variant="contained"
+                  color="primary"
+                  // size="large"
                 >
                   Home
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </Box>
           </Grid>
         </Grid>

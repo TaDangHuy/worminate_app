@@ -92,10 +92,10 @@ function Navigation() {
             component="img"
             sx={{
               height: 46,
-              width: 41,
+              width: 36,
               marginRight: 1,
               marginLeft: 1,
-              marginTop: -0.9,
+              marginTop: -1,
             }}
             src={require("../../assets/images/logo.png").default}
             alt="worminate-token"
@@ -122,22 +122,22 @@ function Navigation() {
 
         <Box sx={{ flexGrow: 1 }} />
         {useLocation().pathname === "/home" && (
-          <Button
-            color="primary"
-            variant="contained"
-            sx={{ height: 39, width: 150, mr: 3, mb: 0.5 }}
-            size="small"
+          <Link
+            to="/main"
+            style={{
+              textDecoration: "none",
+              color: "#fff",
+            }}
           >
-            <Link
-              to="/main"
-              style={{
-                textDecoration: "none",
-                color: "#fff",
-              }}
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{ height: 39, width: 100, mr: 3, mb: 0.5 }}
+              size="small"
             >
               <Typography variant="text">Shop now</Typography>
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           // <Button
           //   variant="contained"
           //   startIcon={<ShoppingCartIcon />}
