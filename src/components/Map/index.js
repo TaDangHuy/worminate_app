@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Card } from "@mui/material";
 import mapboxgl from "mapbox-gl";
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
+// mapboxgl.accessToken =
+//   "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
 
 function areEqual(prevProps, nextProps) {
   return prevProps.posts[0] === nextProps.posts[0];
@@ -22,6 +22,9 @@ function Map({ height, posts, location, zoom }) {
   posts = { features: posts };
 
   useEffect(() => {
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
+
     var map = new mapboxgl.Map({
       container: "map",
       style: "mapbox://styles/mapbox/streets-v11",
