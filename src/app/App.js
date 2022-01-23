@@ -27,7 +27,7 @@ const Login = Loadable(
 const Register = Loadable(
   lazy(() => import("../view/pages/authentication/Register"))
 );
-
+const Token = Loadable(lazy(() => import("../view/Token")));
 function App() {
   const pathname = useLocation().pathname || "";
 
@@ -46,6 +46,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/forgot-password" component={ForgotPassword} />
+        <Route path="/token" component={Token} />
 
         <Route path="*">
           <FileNotFound />
