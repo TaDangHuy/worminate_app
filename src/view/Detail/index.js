@@ -238,7 +238,10 @@ function Detail() {
                       <Grid item xs={3} sx={{ mt: 0.3, ml: -0.5 }}>
                         <Typography
                           variant="body1"
-                          sx={{ color: "rgb(170,183,199)", fontSize: 22 }}
+                          sx={{
+                            color: "rgb(170,183,199)",
+                            fontSize: 22,
+                          }}
                         >
                           Price
                         </Typography>
@@ -254,14 +257,16 @@ function Detail() {
                             <BiDollar
                               size={26}
                               color="#3b8767"
-                              style={{ margin: "0px -3px 9px -6px" }}
+                              style={{
+                                margin: "0px -3px 9px -6px",
+                              }}
                             />
                             <Typography
                               variant="h4"
                               color="primary"
                               noWrap
                               sx={{
-                                fontWeight: "500",
+                                fontWeight: 580,
                                 display: "inline",
                               }}
                             >
@@ -271,7 +276,8 @@ function Detail() {
                         )}
                       </Grid>
                       {/* <Grid item xs={2} sx={{ mt: 0.3 }}> */}
-                      {!isLoading &&
+                      {token &&
+                        !isLoading &&
                         localStorage.getItem("_id") !==
                           data.post.author._id && (
                           <Box
@@ -637,8 +643,9 @@ function Detail() {
                           </Typography>
                         </Grid>
                         <Grid item sx={{ ml: 2, mt: 0.6 }}>
-                          {data.post.author._id !==
-                            localStorage.getItem("_id") &&
+                          {token &&
+                            data.post.author._id !==
+                              localStorage.getItem("_id") &&
                             (following ? (
                               <Button
                                 startIcon={<PersonRemoveAlt1 />}
@@ -742,7 +749,7 @@ function Detail() {
                     <CircularProgress size={20} />
                   </Box>
                 )}
-                {!isLoading && !reviewed && !loading && (
+                {token && !isLoading && !reviewed && !loading && (
                   <IconButton
                     color="primary"
                     size="small"
