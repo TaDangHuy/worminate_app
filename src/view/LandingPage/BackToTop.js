@@ -47,7 +47,7 @@ ScrollTop.propTypes = {
 function Backtotop(props) {
   return (
     <ScrollTop {...props}>
-      <Fab color="secondary" size="small" aria-label="scroll back to top">
+      <Fab color="primary" size="small">
         <KeyboardArrowUpIcon />
       </Fab>
     </ScrollTop>

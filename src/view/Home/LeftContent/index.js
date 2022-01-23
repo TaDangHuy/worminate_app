@@ -63,6 +63,7 @@ function LeftContent({ posts }) {
                 left: "26%",
                 mt: 23,
               }}
+              variant="subtitle1"
             >
               No Products Found
             </Typography>

@@ -2,6 +2,7 @@ import React from "react";
 import { Paper, Button, Container, Typography, Grid, Box } from "@mui/material";
 import Home from "@mui/icons-material/HomeRounded";
 import { Link } from "react-router-dom";
+import TypeAnimation from "react-type-animation";
 
 function HeroSection() {
   return (
@@ -9,17 +10,17 @@ function HeroSection() {
       sx={{
         height: "100vh",
       }}
-      elevation={24}
+      elevation={4}
     >
       <Box
         component="img"
         sx={{
-          backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundSize: "cover",
           height: "100%",
           width: "100%",
           position: "absolute",
-          filter: "opacity(90%)",
+          filter: "opacity(100%)",
         }}
         src={require("../../../../assets/images/background.jpg").default}
       />
@@ -37,32 +38,52 @@ function HeroSection() {
           }}
           container
         >
-          <Grid sm={8} sx={{ ml: 20, mt: 6 }} item>
+          <Grid sm={8} sx={{ ml: 18, mt: 13 }} item>
             <Typography
-              variant="h3"
+              variant="h2"
               sx={{
                 textAlign: "center",
-                textShadow: "#fff 1px 1px",
+                color: "white",
+                //textShadow: "#fff 1px 1px",
               }}
             >
               Welcome to Worminate
             </Typography>
-            <Typography
-              variant="h4"
-              sx={{ textAlign: "center", textShadow: "#fff 1px 1px" }}
-            >
-              Everything you want is right here
-            </Typography>
+            <Box ml={2} sx={{ textAlign: "center", mt: 0.3 }}>
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "white",
+                  //textShadow: "#fff 1px 1px"
+                }}
+              >
+                <TypeAnimation
+                  cursor={true}
+                  sequence={[
+                    " Everything you want is right here ! Suprise 🥳",
+                    2000,
+                    " Have a nice day 🤟",
+                    2000,
+                    " What are you looking for ? 👀",
+                    2000,
+                    " Click me 👇",
+                    2000,
+                  ]}
+                  wrapper="h4"
+                  // repeat={1}
+                />
+              </Typography>
+            </Box>
             <Box my={2} sx={{ textAlign: "center" }}>
               <Link
                 to="/home"
                 style={{ textDecoration: "none", color: "white" }}
               >
                 <Button
-                  startIcon={<Home />}
+                  startIcon={<Home sx={{ mb: 0.5 }} />}
                   variant="contained"
                   color="primary"
-                  // size="large"
+                  sx={{ pt: 1.1 }}
                 >
                   Home
                 </Button>

@@ -4,7 +4,7 @@ import { Container, Grid, Typography, Box, Button, Paper } from "@mui/material";
 function TokenSection() {
   return (
     <Container maxWidth="lg" sx={{ marginTop: 10 }}>
-      <Paper elevation={24} sx={{ paddingBottom: 5, paddingX: 5 }}>
+      <Paper elevation={4} sx={{ pb: 5, px: 5, borderRadius: 3 }}>
         <Box pt={5} mb={5} sx={{ textAlign: "center" }}>
           <Typography variant="h3">Token</Typography>
         </Box>
@@ -34,7 +34,7 @@ function TokenSection() {
               optio minima in, atque unde quasi.
             </Typography>
             <Box my={3}>
-              <Button variant="contained" size="large" color="primary">
+              <Button variant="contained" size="medium" color="primary">
                 Buy now
               </Button>
             </Box>

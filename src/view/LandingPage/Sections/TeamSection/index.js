@@ -2,15 +2,10 @@ import React from "react";
 import { Container, Grid, Typography, Box, Paper } from "@mui/material";
 import TeamMember from "./TeamMember";
 
-import MemberImage1 from "../../../../assets/images/members/member-1.png";
-import MemberImage2 from "../../../../assets/images/members/member-2.png";
-import MemberImage3 from "../../../../assets/images/members/member-3.png";
-import MemberImage4 from "../../../../assets/images/members/member-4.png";
-
 function TeamSection() {
   return (
     <Container maxWidth="lg" sx={{ mt: 10 }}>
-      <Paper elevation={24} sx={{ px: 3, pb: 3 }}>
+      <Paper elevation={4} sx={{ px: 3, pb: 3, borderRadius: 3 }}>
         <Box pt={4} mb={4} sx={{ textAlign: "center" }}>
           <Typography variant="h3">Team</Typography>
         </Box>
@@ -28,7 +23,7 @@ export default TeamSection;
 
 const teamItems = [
   {
-    image: MemberImage1,
+    image: require("../../../../assets/images/members/member-1.png").default,
     name: "Nguyen Viet Hoang",
     job: "Backend Developer",
     socialLinks: {
@@ -38,7 +33,7 @@ const teamItems = [
     },
   },
   {
-    image: MemberImage2,
+    image: require("../../../../assets/images/members/member-2.png").default,
     name: "Nguyen Tien Dung",
     job: "Backend Developer",
     socialLinks: {
@@ -48,7 +43,7 @@ const teamItems = [
     },
   },
   {
-    image: MemberImage3,
+    image: require("../../../../assets/images/members/member-3.png").default,
     name: "Ta Dang Huy",
     job: "Frontend Developer",
     socialLinks: {
@@ -58,7 +53,7 @@ const teamItems = [
     },
   },
   {
-    image: MemberImage4,
+    image: require("../../../../assets/images/members/THB.jpg").default,
     name: "Tran Huu Binh",
     job: "Frontend Developer",
     socialLinks: {

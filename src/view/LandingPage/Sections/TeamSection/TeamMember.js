@@ -17,23 +17,22 @@ function TeamMember({ image, name, job, socialLinks }) {
           mb: 3,
           mx: 3,
         }}
-        variant="outlined"
+        elevation={4}
       >
         <CardMedia
           sx={{
-            width: 250,
-            height: 225,
+            width: "100%",
+            height: 200,
           }}
           image={image}
         ></CardMedia>
         <CardContent
           sx={{
-            mt: 1,
             textAlign: "center",
           }}
         >
           <Typography variant="h6">{name}</Typography>
-          <Typography variant="subtitle1">{job}</Typography>
+          <Typography variant="body1">{job}</Typography>
         </CardContent>
         <CardActions>
           <SocialLinks socialLinks={socialLinks} />

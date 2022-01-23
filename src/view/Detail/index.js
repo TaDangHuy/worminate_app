@@ -147,7 +147,7 @@ function Detail() {
                   pb: 3,
                   borderRadius: 3,
                 }}
-                elevation={2}
+                elevation={4}
               >
                 <Grid container>
                   <Grid item xs={1}>
@@ -636,7 +636,7 @@ function Detail() {
                             {data.post.author.fullName}
                           </Typography>
                         </Grid>
-                        <Grid item sx={{ ml: 2, mt: 0.3 }}>
+                        <Grid item sx={{ ml: 2, mt: 0.6 }}>
                           {data.post.author._id !==
                             localStorage.getItem("_id") &&
                             (following ? (
@@ -729,7 +729,7 @@ function Detail() {
 
                   borderRadius: 3,
                 }}
-                elevation={2}
+                elevation={4}
               >
                 <Typography
                   variant="h6"
@@ -1038,7 +1038,7 @@ function Detail() {
 
                   borderRadius: 3,
                 }}
-                elevation={2}
+                elevation={4}
               >
                 <Typography variant="h6" sx={{ mb: 1, ml: 7.6 }}>
                   Related Posts

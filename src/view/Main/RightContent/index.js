@@ -78,6 +78,7 @@ function RightContent() {
             mx: 36.3,
             my: 29,
           }}
+          variant="subtitle1"
         >
           No Posts Found
         </Typography>

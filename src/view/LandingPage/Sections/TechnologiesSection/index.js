@@ -4,7 +4,7 @@ import { Container, Grid, Typography, Box, Paper } from "@mui/material";
 export default function TechnologiesSection() {
   return (
     <Container maxWidth="lg" sx={{ marginY: 10 }}>
-      <Paper elevation={24}>
+      <Paper elevation={4} sx={{ borderRadius: 3 }}>
         <Box pt={5} sx={{ textAlign: "center" }}>
           <Typography variant="h3">Technologies</Typography>
         </Box>
