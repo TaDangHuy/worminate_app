@@ -730,6 +730,7 @@ function Token() {
   };
 
   useEffect(() => {
+    ICO.init();
     axios
       .get(
         "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=0x5380bbaf10f886d38c3b33e9b90d835599c44cd3&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=6YCB5E1U3ITRC6R4JVD9E918ZGEU19VTSP"
@@ -749,43 +750,60 @@ function Token() {
       });
   }, []);
   useEffect(() => {
-    ICO.init();
-    var provider = new Web3.providers.WebsocketProvider(
-      "wss://rinkeby.infura.io/ws/v3/d08eb4809d32405fb077572d83aedd8f"
-    );
-    var web3Infura = new Web3(provider);
-    var tokenSaleContractInfura = new web3Infura.eth.Contract(
-      ICO.worTokenSaleContractAbi,
-      ICO.worTokenSaleContractAddr
-    );
+    if (transactions.length) {
+      var provider = new Web3.providers.WebsocketProvider(
+        "wss://rinkeby.infura.io/ws/v3/d08eb4809d32405fb077572d83aedd8f"
+      );
+      var web3Infura = new Web3(provider);
+      var tokenSaleContractInfura = new web3Infura.eth.Contract(
+        ICO.worTokenSaleContractAbi,
+        ICO.worTokenSaleContractAddr
+      );
 
-    tokenSaleContractInfura.events.Sell(
-      { filter: {}, fromBlock: "latest" },
-      function (err, event) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(event);
-          axios
-            .get(
-              "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=0x5380bbaf10f886d38c3b33e9b90d835599c44cd3&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=6YCB5E1U3ITRC6R4JVD9E918ZGEU19VTSP"
-            )
-            .then((response) => {
-              console.log(response);
-              if (response.data.status === "1") {
-                let tmpTransactions = response.data.result.map((e) => ({
-                  hash: e.hash,
-                  address: e.from,
-                  age: moment.unix(e.timeStamp).fromNow(),
-                  quantity: e.value.slice(0, e.value.length - 15),
-                }));
-                setTransactions([...tmpTransactions]);
-              }
-            });
+      tokenSaleContractInfura.events.Sell(
+        { filter: {}, fromBlock: "latest" },
+        function (err, event) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(event);
+            let count = 0;
+            const reGet = setInterval(() => {
+              count += 1;
+              console.log(count);
+              axios
+                .get(
+                  "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=0x5380bbaf10f886d38c3b33e9b90d835599c44cd3&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=6YCB5E1U3ITRC6R4JVD9E918ZGEU19VTSP"
+                )
+                .then((response) => {
+                  console.log(response);
+                  if (response.data.status === "1") {
+                    let tmpTransactions = response.data.result.map((e) => ({
+                      hash: e.hash,
+                      address: e.from,
+                      age: moment.unix(e.timeStamp).fromNow(),
+                      quantity: e.value.slice(0, e.value.length - 15),
+                    }));
+                    console.log(transactions[0]);
+                    console.log(tmpTransactions[0]);
+                    if (
+                      transactions[0] &&
+                      transactions[0].hash !== tmpTransactions[0].hash
+                    ) {
+                      setTransactions([...tmpTransactions]);
+                      clearInterval(reGet);
+                    } else if (count === 10) {
+                      clearInterval(reGet);
+                    }
+                  }
+                });
+            }, 30000);
+          }
         }
-      }
-    );
-  }, []);
+      );
+    }
+  }, [transactions]);
+
   useEffect(() => {
     connectToWallet(ethereumButton);
   }, [ICOState.contracts]);
@@ -1204,7 +1222,7 @@ function Token() {
                     Your Account Status
                   </Typography>
                   {isConnected && <Chip label="CONNECTED" color="secondary" />}
-                  {!isConnected && <Chip label="INCONNECTED" color="error" />}
+                  {!isConnected && <Chip label="UNCONNECTED" color="error" />}
                 </Stack>
                 <Button
                   variant="contained"
