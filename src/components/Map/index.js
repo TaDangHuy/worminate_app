@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Card } from "@mui/material";
 import mapboxgl from "mapbox-gl";
 
-// mapboxgl.accessToken =
-//   "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiaHV1YmluaCIsImEiOiJja3V6ZmFkbTMwMGpnMm9xc2tldGxnMXp3In0.HiID1TqQ9YH8QHEFB6xjFg";
 
 function areEqual(prevProps, nextProps) {
   return prevProps.posts[0] === nextProps.posts[0];
