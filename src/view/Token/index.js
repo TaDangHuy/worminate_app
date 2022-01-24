@@ -29,6 +29,8 @@ import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import $ from "jquery";
 import Countdown from "./Countdown";
+import axios from "axios";
+import moment from "moment";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -42,706 +44,712 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 
-const ICO = {
-  worTokenSaleContractAbi: [
-    {
-      inputs: [
-        {
-          internalType: "contract WorToken",
-          name: "_tokenContract",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "_tokenPrice",
-          type: "uint256",
-        },
-      ],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "constructor",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "_totalAmountSold",
-          type: "uint256",
-        },
-      ],
-      name: "EndSale",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "address",
-          name: "_buyer",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "_amount",
-          type: "uint256",
-        },
-      ],
-      name: "Sell",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "_value",
-          type: "uint256",
-        },
-      ],
-      name: "Withdraw",
-      type: "event",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "tokenContract",
-      outputs: [
-        {
-          internalType: "contract WorToken",
-          name: "",
-          type: "address",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "tokenPrice",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "tokensSold",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "_numberOfTokens",
-          type: "uint256",
-        },
-      ],
-      name: "buyTokens",
-      outputs: [],
-      payable: true,
-      stateMutability: "payable",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [],
-      name: "endSale",
-      outputs: [],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [],
-      name: "withdraw",
-      outputs: [],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ],
-  worTokenSaleContractAddr: "0x5380bbAf10f886D38c3b33E9B90d835599C44CD3",
+function Token() {
+  const [value, setValue] = useState(1);
+  const [isConnected, setIsConnected] = useState(false);
+  const [ICOState, setICOState] = useState({
+    contracts: {},
+    tokenPrice: "1000000000000000",
+    tokensSold: 0,
+    tokensAvailable: 10000000,
+    admin: "",
+    currentAccount: "",
+    currentBalance: 0,
+  });
 
-  worTokenContractAbi: [
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "_initialSupply",
-          type: "uint256",
-        },
-      ],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "constructor",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "_owner",
-          type: "address",
-        },
-        {
-          indexed: true,
-          internalType: "address",
-          name: "_spender",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "_value",
-          type: "uint256",
-        },
-      ],
-      name: "Approval",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "_burner",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "_value",
-          type: "uint256",
-        },
-      ],
-      name: "Burn",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "_oldOwner",
-          type: "address",
-        },
-        {
-          indexed: true,
-          internalType: "address",
-          name: "_newOwner",
-          type: "address",
-        },
-      ],
-      name: "OwnerSet",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "_from",
-          type: "address",
-        },
-        {
-          indexed: true,
-          internalType: "address",
-          name: "_to",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "_value",
-          type: "uint256",
-        },
-      ],
-      name: "Transfer",
-      type: "event",
-    },
-    {
-      constant: true,
-      inputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      name: "allowance",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      name: "balanceOf",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "name",
-      outputs: [
-        {
-          internalType: "string",
-          name: "",
-          type: "string",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "standard",
-      outputs: [
-        {
-          internalType: "string",
-          name: "",
-          type: "string",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "symbol",
-      outputs: [
-        {
-          internalType: "string",
-          name: "",
-          type: "string",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "totalSupply",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "transferable",
-      outputs: [
-        {
-          internalType: "bool",
-          name: "",
-          type: "bool",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: true,
-      inputs: [],
-      name: "getOwner",
-      outputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      payable: false,
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [
-        {
-          internalType: "address",
-          name: "_newOwner",
-          type: "address",
-        },
-      ],
-      name: "changeOwner",
-      outputs: [],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [
-        {
-          internalType: "bool",
-          name: "_choice",
-          type: "bool",
-        },
-      ],
-      name: "isTransferable",
-      outputs: [],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [
-        {
-          internalType: "address",
-          name: "_to",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "_value",
-          type: "uint256",
-        },
-      ],
-      name: "transfer",
-      outputs: [
-        {
-          internalType: "bool",
-          name: "success",
-          type: "bool",
-        },
-      ],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [
-        {
-          internalType: "address",
-          name: "_spender",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "_value",
-          type: "uint256",
-        },
-      ],
-      name: "approve",
-      outputs: [
-        {
-          internalType: "bool",
-          name: "success",
-          type: "bool",
-        },
-      ],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [
-        {
-          internalType: "address",
-          name: "_from",
-          type: "address",
-        },
-        {
-          internalType: "address",
-          name: "_to",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "_value",
-          type: "uint256",
-        },
-      ],
-      name: "transferFrom",
-      outputs: [
-        {
-          internalType: "bool",
-          name: "success",
-          type: "bool",
-        },
-      ],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      constant: false,
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "_value",
-          type: "uint256",
-        },
-      ],
-      name: "burn",
-      outputs: [],
-      payable: false,
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ],
-  worTokenContractAddr: "0x6DCb6b24459DF0f197203C1a7A9390CB39a6F718",
+  const [transactions, setTransactions] = useState([]);
 
-  contracts: {},
-  tokenPrice: 1000000000000000,
-  tokensSold: 0,
-  tokensAvailable: 10000000,
-  admin: "",
-  currentAccount: "",
-  currentBalance: 0,
+  const ethereumButton = useRef(null);
 
-  init: function () {
-    console.log("App initialized...");
-    // let web3 = new Web3('http://localhost:8545');
-    let web3 = new Web3(window.ethereum);
-    ICO.contracts.tokenSaleContract = new web3.eth.Contract(
-      ICO.worTokenSaleContractAbi,
-      ICO.worTokenSaleContractAddr
-    );
-    ICO.contracts.worTokenContract = new web3.eth.Contract(
-      ICO.worTokenContractAbi,
-      ICO.worTokenContractAddr
-    );
+  const ICO = {
+    worTokenSaleContractAbi: [
+      {
+        inputs: [
+          {
+            internalType: "contract WorToken",
+            name: "_tokenContract",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "_tokenPrice",
+            type: "uint256",
+          },
+        ],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "constructor",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "_totalAmountSold",
+            type: "uint256",
+          },
+        ],
+        name: "EndSale",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "address",
+            name: "_buyer",
+            type: "address",
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "_amount",
+            type: "uint256",
+          },
+        ],
+        name: "Sell",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "_value",
+            type: "uint256",
+          },
+        ],
+        name: "Withdraw",
+        type: "event",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "tokenContract",
+        outputs: [
+          {
+            internalType: "contract WorToken",
+            name: "",
+            type: "address",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "tokenPrice",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "tokensSold",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "_numberOfTokens",
+            type: "uint256",
+          },
+        ],
+        name: "buyTokens",
+        outputs: [],
+        payable: true,
+        stateMutability: "payable",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [],
+        name: "endSale",
+        outputs: [],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [],
+        name: "withdraw",
+        outputs: [],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ],
+    worTokenSaleContractAddr: "0x5380bbAf10f886D38c3b33E9B90d835599C44CD3",
 
-    ICO.contracts.worTokenContract.methods
-      .getOwner()
-      .call()
-      .then(function (owner) {
-        console.log("Admin: " + owner);
-        ICO.admin = owner;
-      });
+    worTokenContractAbi: [
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "_initialSupply",
+            type: "uint256",
+          },
+        ],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "constructor",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "_owner",
+            type: "address",
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "_spender",
+            type: "address",
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "_value",
+            type: "uint256",
+          },
+        ],
+        name: "Approval",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "_burner",
+            type: "address",
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "_value",
+            type: "uint256",
+          },
+        ],
+        name: "Burn",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "_oldOwner",
+            type: "address",
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "_newOwner",
+            type: "address",
+          },
+        ],
+        name: "OwnerSet",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: "address",
+            name: "_from",
+            type: "address",
+          },
+          {
+            indexed: true,
+            internalType: "address",
+            name: "_to",
+            type: "address",
+          },
+          {
+            indexed: false,
+            internalType: "uint256",
+            name: "_value",
+            type: "uint256",
+          },
+        ],
+        name: "Transfer",
+        type: "event",
+      },
+      {
+        constant: true,
+        inputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        name: "allowance",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        name: "balanceOf",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "name",
+        outputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "standard",
+        outputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "symbol",
+        outputs: [
+          {
+            internalType: "string",
+            name: "",
+            type: "string",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "totalSupply",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "transferable",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: true,
+        inputs: [],
+        name: "getOwner",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        payable: false,
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "address",
+            name: "_newOwner",
+            type: "address",
+          },
+        ],
+        name: "changeOwner",
+        outputs: [],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "bool",
+            name: "_choice",
+            type: "bool",
+          },
+        ],
+        name: "isTransferable",
+        outputs: [],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "address",
+            name: "_to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "_value",
+            type: "uint256",
+          },
+        ],
+        name: "transfer",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "success",
+            type: "bool",
+          },
+        ],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "address",
+            name: "_spender",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "_value",
+            type: "uint256",
+          },
+        ],
+        name: "approve",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "success",
+            type: "bool",
+          },
+        ],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "address",
+            name: "_from",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "_to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "_value",
+            type: "uint256",
+          },
+        ],
+        name: "transferFrom",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "success",
+            type: "bool",
+          },
+        ],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        constant: false,
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "_value",
+            type: "uint256",
+          },
+        ],
+        name: "burn",
+        outputs: [],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ],
+    worTokenContractAddr: "0x6DCb6b24459DF0f197203C1a7A9390CB39a6F718",
 
-    ICO.contracts.tokenSaleContract.methods
-      .tokenPrice()
-      .call()
-      .then(function (_tokenPrice) {
-        ICO.tokenPrice = _tokenPrice;
-        $(".token-price").html(web3.utils.fromWei(ICO.tokenPrice, "ether"));
-      });
+    init: function () {
+      console.log("App initialized...");
+      let web3 = new Web3(window.ethereum);
+      const contractsTmp = {};
+      contractsTmp.tokenSaleContract = new web3.eth.Contract(
+        ICO.worTokenSaleContractAbi,
+        ICO.worTokenSaleContractAddr
+      );
+      contractsTmp.worTokenContract = new web3.eth.Contract(
+        ICO.worTokenContractAbi,
+        ICO.worTokenContractAddr
+      );
+      contractsTmp.worTokenContract.methods
+        .getOwner()
+        .call()
+        .then(function (owner) {
+          setICOState((prev) => ({ ...prev, admin: owner }));
+        });
+      contractsTmp.tokenSaleContract.methods
+        .tokenPrice()
+        .call()
+        .then(function (_tokenPrice) {
+          setICOState((prev) => ({ ...prev, tokenPrice: _tokenPrice }));
+          $(".token-price").html(
+            web3.utils.fromWei(ICOState.tokenPrice, "ether")
+          );
+        });
+      contractsTmp.tokenSaleContract.methods
+        .tokensSold()
+        .call()
+        .then(function (_tokenSold) {
+          // console.log(_tokenSold);
+          // $(".tokens-sold").html(_tokenSold + " WOR");
+          setICOState((prev) => ({ ...prev, tokensSold: _tokenSold }));
+          $(".tokens-available").html(ICOState.tokensAvailable + " WOR");
+        });
 
-    ICO.contracts.tokenSaleContract.methods
-      .tokensSold()
-      .call()
-      .then(function (_tokenSold) {
-        // console.log(_tokenSold);
-        $(".tokens-sold").html(_tokenSold + " WOR");
-        $(".tokens-available").html(ICO.tokensAvailable + " WOR");
-      });
-  },
-
-  buyTokens: function (event) {
+      setICOState((prev) => ({ ...prev, contracts: contractsTmp }));
+    },
+  };
+  console.log(transactions);
+  const buyTokens = (event) => {
     // $('#content').hide();
     // $('#loader').show();
     var numberOfTokens = $("#numberOfTokens").val();
-    // var numberOfTokens = value;
     console.log("Quantity: " + numberOfTokens);
-    // event.preventDefault();
-    if (ICO.currentAccount.length === 0) {
+    if (ICOState.currentAccount.length === 0) {
       event.preventDefault();
       alert("Please connect to MetaMask");
     } else {
       event.preventDefault();
-      ICO.contracts.tokenSaleContract.methods
+      ICOState.contracts.tokenSaleContract.methods
         .buyTokens(numberOfTokens)
         .send({
-          from: ICO.currentAccount,
-          value: numberOfTokens * ICO.tokenPrice,
+          from: ICOState.currentAccount,
+          value: numberOfTokens * ICOState.tokenPrice,
           gas: 500000,
         })
         .then((eve) => {
           console.log("Tokens bought...");
           // $(".wor-balance").html(numberOfTokens);
-          ICO.contracts.worTokenContract.methods
-            .balanceOf(ICO.currentAccount)
+          ICOState.contracts.worTokenContract.methods
+            .balanceOf(ICOState.currentAccount)
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              console.log(_balance);
-              // setBalance(_balance);
-              // $(".wor-balance").html(_balance);
+              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
             });
         })
         .catch((eve) => {
           console.log("Error...");
         });
     }
-  },
-
-  basicPlan: function (event) {
-    if (ICO.currentAccount.length === 0) {
+  };
+  const basicPlan = (event) => {
+    if (ICOState.currentAccount.length === 0) {
       event.preventDefault();
       alert("Please connect to MetaMask");
     } else {
       event.preventDefault();
-      ICO.contracts.worTokenContract.methods
-        .transfer(ICO.admin, 1)
+      ICOState.contracts.worTokenContract.methods
+        .transfer(ICOState.admin, 1)
         .send({
-          from: ICO.currentAccount,
+          from: ICOState.currentAccount,
         })
         .then((result) => {
           console.log("Successfully registered for basic plan");
-          ICO.contracts.worTokenContract.methods
-            .balanceOf(ICO.currentAccount)
+          ICOState.contracts.worTokenContract.methods
+            .balanceOf(ICOState.currentAccount)
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              // setBalance(_balance);
-              // $(".wor-balance").html(_balance);
+              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
             });
         })
         .catch((error) => {
           console.log("Error...");
         });
     }
-  },
-
-  plusPlan: function (event) {
-    if (ICO.currentAccount.length === 0) {
+  };
+  const plusPlan = (event) => {
+    if (ICOState.currentAccount.length === 0) {
       event.preventDefault();
       alert("Please connect to MetaMask");
     } else {
       event.preventDefault();
-      ICO.contracts.worTokenContract.methods
-        .transfer(ICO.admin, 3)
+      ICOState.contracts.worTokenContract.methods
+        .transfer(ICOState.admin, 3)
         .send({
-          from: ICO.currentAccount,
+          from: ICOState.currentAccount,
         })
         .then((result) => {
           console.log("Successfully registered for plus plan");
-          ICO.contracts.worTokenContract.methods
-            .balanceOf(ICO.currentAccount)
+          ICOState.contracts.worTokenContract.methods
+            .balanceOf(ICOState.currentAccount)
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              // setBalance(_balance);
-              // $(".wor-balance").html(_balance);
+              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
             });
         })
         .catch((error) => {
           console.log("Error...");
         });
     }
-  },
+  };
 
-  visionaryPlan: function (event) {
-    if (ICO.currentAccount.length === 0) {
+  const visionaryPlan = (event) => {
+    if (ICOState.currentAccount.length === 0) {
       event.preventDefault();
       alert("Please connect to MetaMask");
     } else {
       event.preventDefault();
-      ICO.contracts.worTokenContract.methods
-        .transfer(ICO.admin, 5)
+      ICOState.contracts.worTokenContract.methods
+        .transfer(ICOState.admin, 5)
         .send({
-          from: ICO.currentAccount,
+          from: ICOState.currentAccount,
         })
         .then((result) => {
           console.log("Successfully registered for visionary plan");
-          ICO.contracts.worTokenContract.methods
-            .balanceOf(ICO.currentAccount)
+          ICOState.contracts.worTokenContract.methods
+            .balanceOf(ICOState.currentAccount)
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              // setBalance(_balance);
-              // $(".wor-balance").html(_balance);
+              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
             });
         })
         .catch((error) => {
           console.log("Error...");
         });
     }
-  },
-};
-
-function Token() {
-  const [value, setValue] = useState(1);
-  const [isConnected, setIsConnected] = useState(false);
-  const [account, setAccount] = useState(null);
-  const [balance, setBalance] = useState(0);
-  const [transactions, setTransactions] = useState(
-    JSON.parse(localStorage.getItem("transactions")) || []
-  );
-  // console.log(transactions.length);
-
-  const ethereumButton = useRef(null);
+  };
 
   useEffect(() => {
+    axios
+      .get(
+        "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=0x5380bbaf10f886d38c3b33e9b90d835599c44cd3&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=6YCB5E1U3ITRC6R4JVD9E918ZGEU19VTSP"
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === "1") {
+          let tmpTransactions = response.data.result.map((e) => ({
+            hash: e.hash,
+            address: e.from,
+            // age: calculateTime(e.timeStamp),
+            age: moment.unix(e.timeStamp).fromNow(),
+            quantity: e.value.slice(0, e.value.length - 15),
+          }));
+          setTransactions([...tmpTransactions]);
+        }
+      });
+  }, []);
+  useEffect(() => {
     ICO.init();
-    connectToWallet(ethereumButton);
-
     var provider = new Web3.providers.WebsocketProvider(
       "wss://rinkeby.infura.io/ws/v3/d08eb4809d32405fb077572d83aedd8f"
     );
@@ -750,7 +758,7 @@ function Token() {
       ICO.worTokenSaleContractAbi,
       ICO.worTokenSaleContractAddr
     );
-    // console.log(tokenSaleContractInfura)
+
     tokenSaleContractInfura.events.Sell(
       { filter: {}, fromBlock: "latest" },
       function (err, event) {
@@ -758,63 +766,29 @@ function Token() {
           console.log(err);
         } else {
           console.log(event);
-          setTransactions((prev) => {
-            if (prev.length > 10) {
-              localStorage.setItem(
-                "transactions",
-                JSON.stringify(
-                  [
-                    ...prev,
-                    {
-                      address: event.returnValues[0],
-                      quantity: event.returnValues[1],
-                    },
-                  ].slice(1)
-                )
-              );
-              return [
-                ...prev,
-                {
-                  address: event.returnValues[0],
-                  quantity: event.returnValues[1],
-                },
-              ].slice(1);
-            } else {
-              localStorage.setItem(
-                "transactions",
-                JSON.stringify([
-                  ...prev,
-                  {
-                    address: event.returnValues[0],
-                    quantity: event.returnValues[1],
-                  },
-                ])
-              );
-              return [
-                ...prev,
-                {
-                  address: event.returnValues[0],
-                  quantity: event.returnValues[1],
-                },
-              ];
-            }
-          });
-          //   $("#tableList").append(
-          //     `
-          //   <tr className="rowTable">
-          //     <td>` +
-          //       event.returnValues[0] +
-          //       `</td>
-          //     <td>` +
-          //       event.returnValues[1] +
-          //       `</td>
-          //   </tr>
-          // `
-          //   );
+          axios
+            .get(
+              "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=0x5380bbaf10f886d38c3b33e9b90d835599c44cd3&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=6YCB5E1U3ITRC6R4JVD9E918ZGEU19VTSP"
+            )
+            .then((response) => {
+              console.log(response);
+              if (response.data.status === "1") {
+                let tmpTransactions = response.data.result.map((e) => ({
+                  hash: e.hash,
+                  address: e.from,
+                  age: moment.unix(e.timeStamp).fromNow(),
+                  quantity: e.value.slice(0, e.value.length - 15),
+                }));
+                setTransactions([...tmpTransactions]);
+              }
+            });
         }
       }
     );
   }, []);
+  useEffect(() => {
+    connectToWallet(ethereumButton);
+  }, [ICOState.contracts]);
 
   async function connectToWallet(ethereumButton) {
     // Detect the MetaMask Ethereum provider
@@ -862,29 +836,28 @@ function Token() {
         // MetaMask is locked or the user has not connected any accounts
         console.log("Please connect to MetaMask.");
         localStorage.removeItem("user_balance");
-        setAccount("");
-        setBalance(0);
+        setICOState((prev) => ({
+          ...prev,
+          currentAccount: "",
+          currentBalance: 0,
+        }));
         setIsConnected(false);
-      } else if (accounts[0] !== ICO.currentAccount) {
-        ICO.currentAccount = accounts[0];
-        // console.log("In func: " + ICO.currentAccount)
-        // document.querySelector(".showAccount").innerHTML = ICO.currentAccount;
-        setAccount(ICO.currentAccount);
-        setIsConnected(true);
-        // console.log(ICO.currentAccount);
+      } else if (accounts[0] !== ICOState.currentAccount) {
+        setICOState((prev) => ({ ...prev, currentAccount: accounts[0] }));
+
         // $("#after-connected").show();
         // $("#intro-price").hide();
-        if (ICO.currentAccount !== "") {
-          ICO.contracts.worTokenContract.methods
-            .balanceOf(ICO.currentAccount)
+        // if (ICOState.currentAccount !== "") {
+        if (accounts[0] !== "") {
+          ICOState.contracts?.worTokenContract?.methods
+            .balanceOf(accounts[0])
             .call()
             .then(function (_balance) {
-              // console.log(_balance)
-              // currentBalance = _balance.toNumber();
               localStorage.setItem("user_balance", _balance);
-              setBalance(_balance);
+              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
             });
         }
+        setIsConnected(true);
       }
     }
 
@@ -943,7 +916,7 @@ function Token() {
   }
 
   async function connectToAnotherAccount(ethereumButton) {
-    ICO.currentAccount = "";
+    setICOState((prev) => ({ ...prev, currentAccount: "" }));
 
     const accounts = await window.ethereum
       .request({
@@ -960,8 +933,7 @@ function Token() {
         })
       );
 
-    // console.log(accounts[0])
-    ICO.currentAccount = accounts[0];
+    setICOState((prev) => ({ ...prev, currentAccount: accounts[0] }));
   }
 
   return (
@@ -1120,7 +1092,10 @@ function Token() {
                     }
                     secondary={
                       <Typography variant="h6">
-                        <span className="wor-balance">{balance}</span> WOR
+                        <span className="wor-balance">
+                          {ICOState.currentBalance}
+                        </span>{" "}
+                        WOR
                       </Typography>
                     }
                   />
@@ -1180,7 +1155,7 @@ function Token() {
                 </div>
                 <form
                   onSubmit={(event) => {
-                    ICO.buyTokens(event);
+                    buyTokens(event);
                     return false;
                   }}
                   name="buyForm"
@@ -1243,10 +1218,10 @@ function Token() {
                   Connect to MetaMask
                 </Button>
                 <div>
-                  {account && (
+                  {ICOState.currentAccount && (
                     <>
                       <Typography variant="h5">Your account:</Typography>
-                      <h4 className="showAccount">{account}</h4>
+                      <h4 className="showAccount">{ICOState.currentAccount}</h4>
                     </>
                   )}
                 </div>
@@ -1264,21 +1239,36 @@ function Token() {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
+                        <TableCell>Hash</TableCell>
                         <TableCell>Address</TableCell>
+                        <TableCell>Age</TableCell>
                         <TableCell align="center">Quantity</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {transactions.length ? (
-                        transactions
-                          .slice()
-                          .reverse()
-                          .map((e, index) => (
-                            <TableRow key={index}>
-                              <TableCell>{e.address}</TableCell>
-                              <TableCell align="center">{e.quantity}</TableCell>
-                            </TableRow>
-                          ))
+                        transactions.map((e, index) => (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <a
+                                style={{ textDecoration: "none" }}
+                                href={`https://rinkeby.etherscan.io/tx/${e.hash}`}
+                              >
+                                {e.hash.substr(0, 19) + "..."}
+                              </a>
+                            </TableCell>
+                            <TableCell>
+                              <a
+                                style={{ textDecoration: "none" }}
+                                href={`https://rinkeby.etherscan.io/address/${e.address}`}
+                              >
+                                {e.address.substr(0, 19) + "..."}
+                              </a>
+                            </TableCell>
+                            <TableCell>{e.age}</TableCell>
+                            <TableCell align="center">{e.quantity}</TableCell>
+                          </TableRow>
+                        ))
                       ) : (
                         <TableRow>
                           <TableCell></TableCell>
@@ -1321,7 +1311,9 @@ function Token() {
                       variant="body1"
                       sx={{ fontSize: "14px", fontWeight: "500" }}
                       className="tokens-sold"
-                    ></Typography>
+                    >
+                      {ICOState.tokensSold + " WOR"}
+                    </Typography>
                   </Stack>
                   <Stack>
                     <Typography
@@ -1339,7 +1331,7 @@ function Token() {
                 </Stack>
                 <BorderLinearProgress
                   variant="determinate"
-                  value={balance / 10000000}
+                  value={parseFloat(ICOState.tokensSold) / 100000} // thang 100
                   sx={{ width: "100%" }}
                 />
                 <Typography variant="h6" sx={{ mt: 2, fontSize: "18px" }}>

@@ -62,7 +62,7 @@ const Countdown = () => {
           flexDirection: "column",
         }}
       >
-        <div style={{ color: "#00f9b9", fontSize: "20px", fontWeight: "bold" }}>
+        <div style={{ color: "#8b2be2", fontSize: "20px", fontWeight: "bold" }}>
           {countdownTimer.days}
         </div>
         <div>Days</div>
@@ -78,7 +78,7 @@ const Countdown = () => {
           flexDirection: "column",
         }}
       >
-        <div style={{ color: "#00f9b9", fontSize: "20px", fontWeight: "bold" }}>
+        <div style={{ color: "#8b2be2", fontSize: "20px", fontWeight: "bold" }}>
           {countdownTimer.hours}
         </div>
         <div>Hours</div>
@@ -94,7 +94,7 @@ const Countdown = () => {
           flexDirection: "column",
         }}
       >
-        <div style={{ color: "#00f9b9", fontSize: "20px", fontWeight: "bold" }}>
+        <div style={{ color: "#8b2be2", fontSize: "20px", fontWeight: "bold" }}>
           {countdownTimer.mins}
         </div>
         <div>Mins</div>
@@ -110,7 +110,7 @@ const Countdown = () => {
           flexDirection: "column",
         }}
       >
-        <div style={{ color: "#00f9b9", fontSize: "20px", fontWeight: "bold" }}>
+        <div style={{ color: "#8b2be2", fontSize: "20px", fontWeight: "bold" }}>
           {countdownTimer.secs}
         </div>
         <div>Secs</div>

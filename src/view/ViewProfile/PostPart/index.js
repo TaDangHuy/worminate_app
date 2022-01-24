@@ -2,13 +2,11 @@ import * as React from "react";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Button, Grid, Pagination, Stack } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Grid, Pagination } from "@mui/material";
 import PostCard from "../PostCard";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function CustomPanel(props) {
@@ -36,7 +34,7 @@ export default function PostPart({ posts }) {
       sx={{
         background: "white",
         width: "950px",
-        minHeight: "433px",
+        minHeight: "995px",
         boxSizing: "border-box",
         pl: "40px",
         borderRadius: "10px",
@@ -65,7 +63,7 @@ export default function PostPart({ posts }) {
               </Grid>
             ) : (
               <>
-                <Box>
+                <Box sx={{ height: 858 }}>
                   {Array.from(Array(Math.ceil(posts.length / 12)).keys()).map(
                     (num) => (
                       <CustomPanel value={pageAll} index={num + 1}>
@@ -83,21 +81,21 @@ export default function PostPart({ posts }) {
                       </CustomPanel>
                     )
                   )}
-                  <Box
-                    sx={{
-                      pt: "20px",
-                      display: "flex",
-                      justifyContent: "center",
+                </Box>
+                <Box
+                  sx={{
+                    pt: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Pagination
+                    count={Math.ceil(posts.length / 12)}
+                    page={pageAll}
+                    onChange={(event, newValue) => {
+                      setPageAll(newValue);
                     }}
-                  >
-                    <Pagination
-                      count={Math.ceil(posts.length / 12)}
-                      page={pageAll}
-                      onChange={(event, newValue) => {
-                        setPageAll(newValue);
-                      }}
-                    />
-                  </Box>
+                  />
                 </Box>
               </>
             )}
@@ -113,7 +111,7 @@ export default function PostPart({ posts }) {
               </Grid>
             ) : (
               <>
-                <Box>
+                <Box sx={{ height: 858 }}>
                   {Array.from(
                     Array(Math.ceil(recentPosts.length / 12)).keys()
                   ).map((num) => (
@@ -131,21 +129,21 @@ export default function PostPart({ posts }) {
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box
-                    sx={{
-                      pt: "20px",
-                      display: "flex",
-                      justifyContent: "center",
+                </Box>
+                <Box
+                  sx={{
+                    pt: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Pagination
+                    count={Math.ceil(recentPosts.length / 12)}
+                    page={pageAll}
+                    onChange={(event, newValue) => {
+                      setPageAll(newValue);
                     }}
-                  >
-                    <Pagination
-                      count={Math.ceil(recentPosts.length / 12)}
-                      page={pageAll}
-                      onChange={(event, newValue) => {
-                        setPageAll(newValue);
-                      }}
-                    />
-                  </Box>
+                  />
                 </Box>
               </>
             )}
@@ -161,7 +159,7 @@ export default function PostPart({ posts }) {
               </Grid>
             ) : (
               <>
-                <Box>
+                <Box sx={{ height: 858 }}>
                   {Array.from(
                     Array(Math.ceil(soldPosts.length / 12)).keys()
                   ).map((num) => (
@@ -179,21 +177,21 @@ export default function PostPart({ posts }) {
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box
-                    sx={{
-                      pt: "20px",
-                      display: "flex",
-                      justifyContent: "center",
+                </Box>
+                <Box
+                  sx={{
+                    pt: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Pagination
+                    count={Math.ceil(soldPosts.length / 12)}
+                    page={pageAll}
+                    onChange={(event, newValue) => {
+                      setPageAll(newValue);
                     }}
-                  >
-                    <Pagination
-                      count={Math.ceil(soldPosts.length / 12)}
-                      page={pageAll}
-                      onChange={(event, newValue) => {
-                        setPageAll(newValue);
-                      }}
-                    />
-                  </Box>
+                  />
                 </Box>
               </>
             )}
