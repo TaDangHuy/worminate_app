@@ -29,7 +29,7 @@ const Loadable = (Component) => (props) =>
           style={{
             position: "absolute",
             top: "46%",
-            left: "46%",
+            left: "46.4%",
           }}
         >
           <ThreeBounce

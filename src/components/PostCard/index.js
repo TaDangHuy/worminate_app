@@ -36,9 +36,9 @@ function PostCard({ post }) {
             {post.title}
           </Typography>
           <BiDollar
-            size={22}
+            size={21}
             color="#3b8767"
-            style={{ margin: "0px -3px 7.3px -4px" }}
+            style={{ margin: "0px -3px 6.5px -4px" }}
           />
           <Typography
             sx={{
