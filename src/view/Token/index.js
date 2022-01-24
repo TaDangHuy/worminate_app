@@ -13,6 +13,12 @@ import {
   Avatar,
   ListItemText,
   Chip,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@mui/material";
 import LinearProgress, {
   linearProgressClasses,
@@ -22,6 +28,7 @@ import { styled } from "@mui/system";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import $ from "jquery";
+import Countdown from "./Countdown";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -617,6 +624,16 @@ const ICO = {
         })
         .then((eve) => {
           console.log("Tokens bought...");
+          // $(".wor-balance").html(numberOfTokens);
+          ICO.contracts.worTokenContract.methods
+            .balanceOf(ICO.currentAccount)
+            .call()
+            .then(function (_balance) {
+              localStorage.setItem("user_balance", _balance);
+              console.log(_balance);
+              // setBalance(_balance);
+              // $(".wor-balance").html(_balance);
+            });
         })
         .catch((eve) => {
           console.log("Error...");
@@ -679,6 +696,7 @@ const ICO = {
         });
     }
   },
+
   visionaryPlan: function (event) {
     if (ICO.currentAccount.length === 0) {
       event.preventDefault();
@@ -713,6 +731,11 @@ function Token() {
   const [isConnected, setIsConnected] = useState(false);
   const [account, setAccount] = useState(null);
   const [balance, setBalance] = useState(0);
+  const [transactions, setTransactions] = useState(
+    JSON.parse(localStorage.getItem("transactions")) || []
+  );
+  // console.log(transactions.length);
+
   const ethereumButton = useRef(null);
 
   useEffect(() => {
@@ -735,18 +758,59 @@ function Token() {
           console.log(err);
         } else {
           console.log(event);
-          $("#tableList").append(
-            `
-          <tr className="rowTable">
-            <td>` +
-              event.returnValues[0] +
-              `</td>
-            <td>` +
-              event.returnValues[1] +
-              `</td>
-          </tr>
-        `
-          );
+          setTransactions((prev) => {
+            if (prev.length > 10) {
+              localStorage.setItem(
+                "transactions",
+                JSON.stringify(
+                  [
+                    ...prev,
+                    {
+                      address: event.returnValues[0],
+                      quantity: event.returnValues[1],
+                    },
+                  ].slice(1)
+                )
+              );
+              return [
+                ...prev,
+                {
+                  address: event.returnValues[0],
+                  quantity: event.returnValues[1],
+                },
+              ].slice(1);
+            } else {
+              localStorage.setItem(
+                "transactions",
+                JSON.stringify([
+                  ...prev,
+                  {
+                    address: event.returnValues[0],
+                    quantity: event.returnValues[1],
+                  },
+                ])
+              );
+              return [
+                ...prev,
+                {
+                  address: event.returnValues[0],
+                  quantity: event.returnValues[1],
+                },
+              ];
+            }
+          });
+          //   $("#tableList").append(
+          //     `
+          //   <tr className="rowTable">
+          //     <td>` +
+          //       event.returnValues[0] +
+          //       `</td>
+          //     <td>` +
+          //       event.returnValues[1] +
+          //       `</td>
+          //   </tr>
+          // `
+          //   );
         }
       }
     );
@@ -847,35 +911,35 @@ function Token() {
       localStorage.removeItem("user_balance");
     });
 
-    const tokenAddress = "0x6dcb6b24459df0f197203c1a7a9390cb39a6f718";
-    const tokenSymbol = "WOR";
-    const tokenDecimals = 0;
-    const tokenImage =
-      "https://res.cloudinary.com/dzxazbuwe/image/upload/v1633839287/worminate/r84og4jih7evxa5uawr1.png";
+    // const tokenAddress = "0x6dcb6b24459df0f197203c1a7a9390cb39a6f718";
+    // const tokenSymbol = "WOR";
+    // const tokenDecimals = 0;
+    // const tokenImage =
+    //   "https://res.cloudinary.com/dzxazbuwe/image/upload/v1633839287/worminate/r84og4jih7evxa5uawr1.png";
 
-    try {
-      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
-      const wasAdded = await window.ethereum.request({
-        method: "wallet_watchAsset",
-        params: {
-          type: "ERC20", // Initially only supports ERC20, but eventually more!
-          options: {
-            address: tokenAddress, // The address that the token is at.
-            symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
-            decimals: tokenDecimals, // The number of decimals in the token
-            image: tokenImage, // A string url of the token logo
-          },
-        },
-      });
+    // try {
+    //   // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+    //   const wasAdded = await window.ethereum.request({
+    //     method: "wallet_watchAsset",
+    //     params: {
+    //       type: "ERC20", // Initially only supports ERC20, but eventually more!
+    //       options: {
+    //         address: tokenAddress, // The address that the token is at.
+    //         symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+    //         decimals: tokenDecimals, // The number of decimals in the token
+    //         image: tokenImage, // A string url of the token logo
+    //       },
+    //     },
+    //   });
 
-      if (wasAdded) {
-        console.log("Thanks for your interest!");
-      } else {
-        console.log("Your loss!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    //   if (wasAdded) {
+    //     console.log("Thanks for your interest!");
+    //   } else {
+    //     console.log("Your loss!");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 
   async function connectToAnotherAccount(ethereumButton) {
@@ -996,7 +1060,7 @@ function Token() {
       <div
         style={{
           width: "100vw",
-          height: "100vh",
+          minHeight: "100vh",
           background: "#f5f8fb",
           padding: "20px",
           boxSizing: "border-box",
@@ -1019,7 +1083,7 @@ function Token() {
               mb: 5,
             }}
           >
-            WORMINATE TOKEN ICO SALE
+            WORMINATE TOKENS SALE
           </Typography>
           <Grid container spacing={4}>
             <Grid item xs={4}>
@@ -1179,8 +1243,12 @@ function Token() {
                   Connect to MetaMask
                 </Button>
                 <div>
-                  <Typography variant="h5">Your account:</Typography>
-                  <h4 className="showAccount">{account || ""}</h4>
+                  {account && (
+                    <>
+                      <Typography variant="h5">Your account:</Typography>
+                      <h4 className="showAccount">{account}</h4>
+                    </>
+                  )}
                 </div>
               </Box>
             </Grid>
@@ -1192,7 +1260,34 @@ function Token() {
                   background: "white",
                 }}
               >
-                deyal
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Address</TableCell>
+                        <TableCell align="center">Quantity</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {transactions.length ? (
+                        transactions
+                          .slice()
+                          .reverse()
+                          .map((e, index) => (
+                            <TableRow key={index}>
+                              <TableCell>{e.address}</TableCell>
+                              <TableCell align="center">{e.quantity}</TableCell>
+                            </TableRow>
+                          ))
+                      ) : (
+                        <TableRow>
+                          <TableCell></TableCell>
+                          <TableCell></TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Box>
             </Grid>
             <Grid item xs={5}>
@@ -1206,7 +1301,11 @@ function Token() {
               >
                 <Typography
                   variant="h6"
-                  sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+                  sx={{
+                    textTransform: "capitalize",
+                    fontWeight: "bold",
+                    mb: 1,
+                  }}
                 >
                   Token Sale Progress
                 </Typography>
@@ -1214,36 +1313,39 @@ function Token() {
                   <Stack>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: "16px", fontWeoght: "300" }}
+                      sx={{ fontSize: "14px", fontWeight: "500" }}
                     >
-                      Rased Amount
+                      Raised Amount
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: "16px", fontWeoght: "300" }}
+                      sx={{ fontSize: "14px", fontWeight: "500" }}
                       className="tokens-sold"
                     ></Typography>
                   </Stack>
                   <Stack>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: "16px", fontWeoght: "300" }}
+                      sx={{ fontSize: "14px", fontWeight: "500" }}
                     >
                       Total Token
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: "16px", fontWeoght: "300" }}
+                      sx={{ fontSize: "14px", fontWeight: "500" }}
                       className="tokens-available"
                     ></Typography>
                   </Stack>
                 </Stack>
                 <BorderLinearProgress
                   variant="determinate"
-                  value={50}
+                  value={balance / 10000000}
                   sx={{ width: "100%" }}
                 />
-                <Typography variant="h6">Sale end in</Typography>
+                <Typography variant="h6" sx={{ mt: 2, fontSize: "18px" }}>
+                  Sale end in
+                </Typography>
+                <Countdown />
               </Box>
             </Grid>
           </Grid>
