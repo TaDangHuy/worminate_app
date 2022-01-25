@@ -85,18 +85,15 @@ function Detail() {
         method: "GET",
         url: `/user`,
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-        .then((response) => {
-          response.data.user.favoritesProduct.forEach((post) => {
-            if (post._id === data.post._id) setIsHeartClicked(true);
-          });
-          response.data.user.manageFollowers.follow.forEach((user) => {
-            if (user._id === data.post.author._id) setFollowing(true);
-          });
-        })
-        .catch((error) => {
-          console.log(error);
+      }).then((response) => {
+        response.data.user.favoritesProduct.forEach((post) => {
+          if (post._id === data.post._id) setIsHeartClicked(true);
         });
+        response.data.user.manageFollowers.follow.forEach((user) => {
+          if (user._id === data.post.author._id) setFollowing(true);
+        });
+      });
+
       data.post.reviews.forEach((review) => {
         if (review.author._id === localStorage.getItem("_id")) {
           setReviewed(true);

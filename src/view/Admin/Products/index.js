@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MUIDataTable from "mui-datatables";
 import { useGetPostsQuery } from "../../../api/posts";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,25 +6,28 @@ import { setPosts } from "../../../features/posts/postsSlice";
 import { useEffect } from "react";
 import { setPageIndex } from "../../../features/search/searchSlice";
 import { Box, Container } from "@mui/material";
+import axios from "axios";
 
 function Products() {
   const search = useSelector((state) => state.search);
   const dispatch = useDispatch();
-  const { data } = useGetPostsQuery(search);
+  let data;
   let maxPageIndex = 1;
-  let posts = [];
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    if (data && data.posts) {
-      dispatch(setPosts(data.posts.docs));
-    }
+    axios({
+      method: "GET",
+      url: `/admin/posts`,
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }).then((response) => {
+      //dispatch(setPosts(response.data.posts.docs));
+      setPosts(response.data.posts.docs);
+      maxPageIndex = response.data.posts.pages;
+    });
     //eslint-disable-next-line
   }, [data]);
 
-  if (data && data.posts) {
-    posts = data.posts.docs;
-    maxPageIndex = data.posts.pages;
-  }
   const updatePosts = (newPageIndex) => {
     dispatch(setPageIndex(newPageIndex));
   };

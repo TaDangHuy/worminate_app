@@ -70,7 +70,7 @@ export default function CustomizedMenus({
     setAnchorEl(null);
     if (value) {
       if (value === 0) {
-      } else if (value === 2) {
+      } else if (value === 1) {
         axios({
           method: "POST",
           url: `posts/${idPost}/sale`,
@@ -81,7 +81,7 @@ export default function CustomizedMenus({
         }).then((response) => {
           setStatus(false);
         });
-      } else if (value === 3) {
+      } else if (value === 2) {
         axios({
           method: "POST",
           url: `posts/${idPost}/sale`,
@@ -92,7 +92,13 @@ export default function CustomizedMenus({
         }).then((response) => {
           setStatus(true);
         });
-      } else if (value === 4) {
+      } else if (value === 3) {
+        axios({
+          method: "DELETE",
+          url: `posts/${idPost}`,
+          headers: { Authorization: `Bearer ${token}` },
+          data: {},
+        }).then((response) => {});
       }
     }
   };
@@ -119,24 +125,24 @@ export default function CustomizedMenus({
               to={`${url}/edit`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <MenuItem onClick={() => handleClose(0)} disableRipple>
+              <MenuItem onClick={() => handleClose()} disableRipple>
                 <Edit fontSize="large" sx={{ mb: 0.3 }} /> Edit post
               </MenuItem>
             </Link>
-            <MenuItem onClick={() => handleClose(1)} disableRipple>
+            <MenuItem onClick={() => handleClose(0)} disableRipple>
               <LocalAtm fontSize="large" sx={{ mb: 0.3 }} />
               Push post
             </MenuItem>
-            <MenuItem onClick={() => handleClose(2)} disableRipple>
+            <MenuItem onClick={() => handleClose(1)} disableRipple>
               <Done fontSize="large" sx={{ mb: 0.3 }} /> Mark as sold
             </MenuItem>
-            <MenuItem onClick={() => handleClose(4)} disableRipple>
+            <MenuItem onClick={() => handleClose(3)} disableRipple>
               <Delete fontSize="large" sx={{ mb: 0.3 }} />
               Delete post
             </MenuItem>
           </>
         ) : (
-          <MenuItem onClick={() => handleClose(3)} disableRipple>
+          <MenuItem onClick={() => handleClose(2)} disableRipple>
             <Sell fontSize="large" sx={{ mb: 0.3 }} /> Mark as for sale
           </MenuItem>
         )}
