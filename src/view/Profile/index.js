@@ -26,10 +26,8 @@ function Profile() {
     follow: [],
     followBy: [],
   });
-  // const [openFollowers, setOpenFollowers] = useState(false);
   const [userRank, setUserRank] = useState("");
   const [openFollowing, setOpenFollowing] = useState(false);
-  // const [isChangedAvatar, setIsChangedAvatar] = useState(true);
 
   useEffect(() => {
     axios({
@@ -131,13 +129,14 @@ function Profile() {
     >
       <Box
         sx={{
-          width: 1240,
+          width: 1380,
           boxSizing: "border-box",
           m: "auto",
           display: "flex",
           flexWrap: "wrap",
           flexDirection: "column",
           justifyContent: "center",
+          // alignItems: "center",
           py: 5,
         }}
       >
@@ -153,7 +152,7 @@ function Profile() {
         <Stack direction="row">
           <Box
             sx={{
-              width: 810,
+              width: 900,
               background: "white",
               mr: "30px",
               p: "40px",
@@ -174,7 +173,7 @@ function Profile() {
           </Box>
           <Box
             sx={{
-              width: 400,
+              width: 450,
               height: 490,
               background: "white",
               position: "relative",
@@ -188,7 +187,7 @@ function Profile() {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 height: 200,
-                width: 400,
+                width: "100%",
                 // position: "absolute",
               }}
               src={require("../../assets/images/backgroundProfile.jpg").default}

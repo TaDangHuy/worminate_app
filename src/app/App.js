@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 // import { ThemeProvider } from "@mui/material/styles";
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 import { PrivateRoute } from "../components/PrivateRoute";
 import { lazy } from "react";
-import Loadable from "../ui-component/Loadable";
 import FileNotFound from "../view/FileNotFound";
 
 import ThemeConfig from "../theme";
 import ScrollToTop from "../components/ScrollToTop";
+import Loadable from "../components/Loadable";
 
 const LandingPage = Loadable(lazy(() => import("../view/LandingPage")));
 const Home = Loadable(lazy(() => import("../view/Home")));
@@ -48,7 +48,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/forgot-password" component={ForgotPassword} />
-        <Route path="/token" component={Token} />
+        <Route path="/token" render={() => <Token />} />
         <Route path="/admin" component={Admin} />
         <Route path="*">
           <FileNotFound />

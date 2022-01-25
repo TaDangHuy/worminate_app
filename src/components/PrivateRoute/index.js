@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 
-function PrivateRoute({ component: Component, ...rest }) {
+function PrivateRoute({ component: Component, propsP, ...rest }) {
   return (
     <Route
       {...rest}
@@ -15,7 +15,7 @@ function PrivateRoute({ component: Component, ...rest }) {
           );
         }
         // authorized so return component
-        return <Component {...props} />;
+        return <Component {...propsP} {...props} />;
       }}
     />
   );

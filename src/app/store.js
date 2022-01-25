@@ -4,7 +4,7 @@ import { baseApi } from "../api/base";
 import postSlice from "../features/posts/postSlice";
 import postsSlice from "../features/posts/postsSlice";
 import searchSlice from "../features/search/searchSlice";
-// import userSlice from "../features/posts/userSlice";
+import ICOSlice from "../features/ICO/ICOSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +13,7 @@ export const store = configureStore({
     post: postSlice,
     // user: userSlice,
     search: searchSlice,
+    ICO: ICOSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(baseApi.middleware),
