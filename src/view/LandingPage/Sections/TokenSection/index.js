@@ -10,7 +10,7 @@ function TokenSection() {
     transform: translateY(0px);
   }
   to {
-    transform: translateY(20px);
+    transform: translateY(28px);
   }
 `;
 
@@ -24,7 +24,7 @@ function TokenSection() {
           <Grid item xs={6}>
             <Grid container spacing={2}>
               <Grid xs={12} item sx={{ mb: 0 }}>
-                <Paper elevation={4} sx={{ py: 4.1, px: 3 }}>
+                <Paper elevation={4} sx={{ py: 4.5, px: 3 }}>
                   <Typography variant="h4" sx={{ mb: 1 }}>
                     Worminate Token ICO
                   </Typography>
@@ -39,7 +39,7 @@ function TokenSection() {
                 </Paper>
               </Grid>
               <Grid xs={6} item>
-                <Paper elevation={4} sx={{ px: 3, py: 1.5 }}>
+                <Paper elevation={4} sx={{ px: 3, py: 1.7 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
                     ERC 20 standard token
                   </Typography>
@@ -99,8 +99,8 @@ function TokenSection() {
                   <Box
                     component="img"
                     sx={{
-                      height: 400,
-                      width: 400,
+                      height: 410,
+                      width: 410,
                       p: 7,
                       mt: -6.6,
                       animation: `${move} 2s infinite alternate`,
