@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   Grid,
   TextField,
+  Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Form, Formik } from "formik";
@@ -87,6 +88,7 @@ function FormikForm({ history }) {
         return (
           <Form>
             <FormControl fullWidth>
+              <Typography sx={{ mb: 1 }}>Email</Typography>
               <TextField
                 // margin="normal"
                 required
@@ -96,12 +98,13 @@ function FormikForm({ history }) {
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                label="Email"
+                // label="Email"
               />
             </FormControl>
-            <FormControl fullWidth>
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <Typography sx={{ mb: 1 }}>Password</Typography>
               <TextField
-                margin="normal"
+                // margin="normal"
                 required
                 fullWidth
                 type="password"
@@ -109,7 +112,7 @@ function FormikForm({ history }) {
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                label="Password"
+                // label="Password"
               />
             </FormControl>
             <FormControlLabel
@@ -134,12 +137,14 @@ function FormikForm({ history }) {
             <Grid container>
               <Grid item xs>
                 <Link to="/forgot-password" className={classes.link2}>
-                  Forgot Password
+                  <Typography color="primary">Forgot Password</Typography>
                 </Link>
               </Grid>
               <Grid item>
                 <Link to="/register" className={classes.link2}>
-                  {"Don't have an account? Sign Up"}
+                  <Typography color="primary">
+                    Don't have an account? Sign Up
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>

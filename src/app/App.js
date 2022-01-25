@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ThemeProvider } from "@mui/material/styles";
+// import { ThemeProvider } from "@mui/material/styles";
 import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 import { PrivateRoute } from "../components/PrivateRoute";
@@ -8,7 +8,7 @@ import { lazy } from "react";
 import Loadable from "../ui-component/Loadable";
 import FileNotFound from "../view/FileNotFound";
 
-import { theme } from "../theme/theme";
+import ThemeConfig from "../theme";
 import ScrollToTop from "../components/ScrollToTop";
 
 const LandingPage = Loadable(lazy(() => import("../view/LandingPage")));
@@ -28,11 +28,13 @@ const Register = Loadable(
   lazy(() => import("../view/pages/authentication/Register"))
 );
 const Token = Loadable(lazy(() => import("../view/Token")));
+const Admin = Loadable(lazy(() => import("../view/Admin")));
+
 function App() {
   const pathname = useLocation().pathname || "";
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeConfig>
       <ScrollToTop />
       <Switch>
         <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
@@ -47,12 +49,12 @@ function App() {
         <Route path="/register" component={Register} />
         <Route path="/forgot-password" component={ForgotPassword} />
         <Route path="/token" component={Token} />
-
+        <Route path="/admin" component={Admin} />
         <Route path="*">
           <FileNotFound />
         </Route>
       </Switch>
-    </ThemeProvider>
+    </ThemeConfig>
   );
 }
 

@@ -1039,7 +1039,7 @@ function Token() {
                     width: "446px",
                     mt: -10,
                   }}
-                  src={require("../../assets/images/token/bitcoin.png").default}
+                  src={require("../../assets/images/logo.png").default}
                 />
               </Grid>
             </Grid>
@@ -1221,7 +1221,7 @@ function Token() {
                   >
                     Your Account Status
                   </Typography>
-                  {isConnected && <Chip label="CONNECTED" color="secondary" />}
+                  {isConnected && <Chip label="CONNECTED" color="primary" />}
                   {!isConnected && <Chip label="UNCONNECTED" color="error" />}
                 </Stack>
                 <Button
@@ -1233,7 +1233,9 @@ function Token() {
                   }
                   sx={{ width: 300 }}
                 >
-                  Connect to MetaMask
+                  {isConnected
+                    ? "Switch MetaMask Account"
+                    : "Connect to MetaMask"}
                 </Button>
                 <div>
                   {ICOState.currentAccount && (

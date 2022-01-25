@@ -13,8 +13,8 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 function PostCard({ post, id }) {
   return (
-    <Link
-      to={`/posts/${post["_id"]}`}
+    <a
+      href={`/posts/${post["_id"]}`}
       style={{
         textDecoration: "none",
         "&:hover": {
@@ -70,7 +70,7 @@ function PostCard({ post, id }) {
           </Stack>
         </CardActions>
       </Card>
-    </Link>
+    </a>
   );
 }
 

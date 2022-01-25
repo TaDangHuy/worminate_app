@@ -45,13 +45,13 @@ function LeftContent() {
         pl: 1,
         pb: -3.5,
         ml: 4,
-        mt: 2,
+        mt: 1.6,
         width: 300,
       }}
     >
       <Card
-        sx={{ height: "100%", pt: 2, pb: 1.5, px: 3, borderRadius: 6 }}
-        elevation={4}
+        sx={{ height: "100%", pt: 1.3, pb: 1.5, px: 3, borderRadius: 6 }}
+        elevation={3}
       >
         <CardContent sx={{ pl: 2.2 }}>
           <Grid container gridAutoFlow="column" gap={2}>
@@ -63,8 +63,13 @@ function LeftContent() {
             </Grid>
             <Grid item xs={12}>
               <Typography
-                variant="subtitle1"
-                sx={{ position: "relative", top: "12%", left: "0%" }}
+                variant="body1"
+                sx={{
+                  position: "relative",
+                  top: "12%",
+                  left: "0%",
+                  fontSize: 17,
+                }}
               >
                 Rating
               </Typography>
@@ -74,7 +79,7 @@ function LeftContent() {
                 onChange={(event, newValue) => setRating(newValue)}
               />
             </Grid>
-            <Grid item xs={12} sx={{ mt: -5 }}>
+            <Grid item xs={12} sx={{ mt: -4 }}>
               <TextField
                 type="number"
                 label="Min price"
@@ -129,7 +134,7 @@ function LeftContent() {
               </IconButton>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="subtitle1">
+              <Typography variant="body1" sx={{ fontSize: 17 }}>
                 {"Around "}
                 <Typography
                   variant="subtitle1"

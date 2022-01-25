@@ -61,12 +61,14 @@ function LeftContent({ posts }) {
                 position: "relative",
                 top: "45%",
                 left: "26%",
+                mt: 23,
               }}
+              variant="subtitle1"
             >
               No Products Found
             </Typography>
           )}
-          <Grid container spacing={3} sx={{ px: 1.2 }}>
+          <Grid container spacing={3} sx={{ px: 1.2, mb: 0.9 }}>
             {posts.length > 0 &&
               posts.map((post, i) => (
                 <Grid item sx={4}>

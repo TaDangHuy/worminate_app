@@ -64,7 +64,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
       </Link>
 
       <div className={classes.user}>
-        <Typography variant="subtitle1" className={classes.typography}>
+        <Typography variant="body1" className={classes.typography}>
           {userName ? userName : "Guest"}
         </Typography>
         {/* <Typography variant="subtitle1" className={classes.typography}>
@@ -73,7 +73,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
       </div>
 
       {!isLoggedIn ? (
-        <Button size="small" sx={{ height: 39, width: 80, mb: 0.5, mt: 1 }}>
+        <Button sx={{ height: 39, width: 80, mb: 0.5, mt: 1 }}>
           <Link
             to="/login"
             style={{ textDecoration: "none", color: "inherit" }}
@@ -82,11 +82,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
           </Link>
         </Button>
       ) : (
-        <Button
-          onClick={handleLogout}
-          size="small"
-          sx={{ height: 39, width: 100, ml: 0 }}
-        >
+        <Button onClick={handleLogout} sx={{ height: 39, width: 100, ml: 0 }}>
           Sign out
         </Button>
       )}

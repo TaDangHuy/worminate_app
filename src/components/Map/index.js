@@ -5,7 +5,11 @@ import mapboxgl from "mapbox-gl";
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYnctZmxvdzA5IiwiYSI6ImNrc2p5N3B5cDA5YmkycG51ejZuYnFmY2QifQ.J9TQZlei1Jqg8R9Mn8zNmQ";
 
-function Map({ height, posts, location }) {
+function areEqual(prevProps, nextProps) {
+  return prevProps.posts[0] === nextProps.posts[0];
+}
+
+function Map({ height, posts, location, zoom }) {
   let longitude, latitude;
   if (typeof location === "object") {
     longitude = location[0];
@@ -20,9 +24,9 @@ function Map({ height, posts, location }) {
   useEffect(() => {
     var map = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/mapbox/satellite-streets-v11",
+      style: "mapbox://styles/mapbox/streets-v11",
       center: [longitude, latitude], // center of map
-      zoom: 12,
+      zoom: zoom,
     });
 
     map.addControl(new mapboxgl.NavigationControl());
@@ -145,10 +149,10 @@ function Map({ height, posts, location }) {
   });
 
   return (
-    <Card sx={{ width: "90%", borderRadius: 6 }} elevation={4}>
+    <Card sx={{ width: "90%", borderRadius: 3 }} elevation={4}>
       <div id="map" style={{ height: height }}></div>
     </Card>
   );
 }
 
-export default Map;
+export default React.memo(Map, areEqual);

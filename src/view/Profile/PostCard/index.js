@@ -21,15 +21,18 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Tooltip,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import PublishIcon from "@mui/icons-material/Publish";
 import axios from "axios";
 import { BiDollar } from "react-icons/bi";
 import { Box } from "@mui/lab/node_modules/@mui/system";
+import DoneIcon from "@mui/icons-material/Done";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SellIcon from "@mui/icons-material/Sell";
+import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 
 function createData(name, calories, fat, carbs) {
   return { name, calories, fat, carbs };
@@ -56,8 +59,8 @@ function PostCard({
   return (
     <>
       <Card sx={{ maxWidth: 270 }}>
-        <Link
-          to={`/posts/${post["_id"]}`}
+        <a
+          href={`/posts/${post["_id"]}`}
           style={{
             textDecoration: "none",
             "&:hover": {
@@ -121,122 +124,117 @@ function PostCard({
               {post.description}
             </Typography>
           </CardContent>
-        </Link>
+        </a>
         <CardActions>
           <Stack
             sx={{ width: "100%" }}
             direction="row"
             justifyContent="space-between"
           >
-            {/* <IconButton
-              color="secondary"
-              variant="outlined"
-              component={Link}
-              to={`/posts/${post["_id"]}`}
-              sx={{
-                "&:hover": { backgroundColor: "#f5f8fb" },
-              }}
-            >
-              <RemoveRedEyeIcon />
-            </IconButton> */}
-            {/* <IconButton
-              color="secondary"
-              variant="outlined"
-              component={Link}
-              // to={`/posts/${post["_id"]}`}
-              sx={{
-                "&:hover": { backgroundColor: "#f5f8fb" },
-              }}
-            >
-              <PublishIcon />
-            </IconButton> */}
             {type === "recent" && (
-              <Button
-                color="primary"
-                // variant="outlined"
-                sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-                onClick={() => {
-                  axios({
-                    method: "POST",
-                    url: `/posts/${post["_id"]}/sale`,
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                    data: {
-                      sale: "false",
-                    },
-                  })
-                    .then((res) => {
-                      setRecentPostsProp((oldRecent) => [
-                        ...oldRecent.filter((e) => e !== post),
-                      ]);
-                      setSoldPostsProp((oldSold) => [...oldSold, post]);
+              <Tooltip title="Mark as sold">
+                <IconButton
+                  color="primary"
+                  // variant="outlined"
+                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
+                  onClick={() => {
+                    axios({
+                      method: "POST",
+                      url: `/posts/${post["_id"]}/sale`,
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                      data: {
+                        sale: "false",
+                      },
                     })
-                    .catch((err) => console.log(err));
-                }}
-              >
-                Da Ban
-              </Button>
+                      .then((res) => {
+                        setRecentPostsProp((oldRecent) => [
+                          ...oldRecent.filter((e) => e !== post),
+                        ]);
+                        setSoldPostsProp((oldSold) => [...oldSold, post]);
+                      })
+                      .catch((err) => console.log(err));
+                  }}
+                >
+                  <DoneIcon />
+                </IconButton>
+              </Tooltip>
             )}
             {type === "recent" && (
-              <Button
-                color="primary"
-                // variant="outlined"
-                sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-                onClick={() => {
-                  setOpenDialog(true);
-                }}
-              >
-                DELETE
-              </Button>
+              <Tooltip title="Delete post">
+                <IconButton
+                  color="primary"
+                  // variant="outlined"
+                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
+                  onClick={() => {
+                    setOpenDialog(true);
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
             )}
+
+            {type === "recent" && (
+              <Tooltip title="Push post">
+                <Button
+                  onClick={() => setOpenPromotionDialog(true)}
+                  color="primary"
+                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
+                >
+                  <LocalAtmIcon />
+                </Button>
+              </Tooltip>
+            )}
+
             {type === "sold" && (
-              <Button
-                color="primary"
-                // variant="outlined"
-                sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-                onClick={() => {
-                  axios({
-                    method: "POST",
-                    url: `/posts/${post["_id"]}/sale`,
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                    data: {
-                      sale: "true",
-                    },
-                  })
-                    .then((res) => {
-                      setSoldPostsProp((oldSold) => [
-                        ...oldSold.filter((e) => e !== post),
-                      ]);
-                      setRecentPostsProp((oldRecent) => [...oldRecent, post]);
+              <Tooltip title="Mark as for sale">
+                <IconButton
+                  color="primary"
+                  // variant="outlined"
+                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
+                  onClick={() => {
+                    axios({
+                      method: "POST",
+                      url: `/posts/${post["_id"]}/sale`,
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                      data: {
+                        sale: "true",
+                      },
                     })
-                    .catch((err) => console.log(err));
-                }}
-              >
-                Chua ban
-              </Button>
+                      .then((res) => {
+                        setSoldPostsProp((oldSold) => [
+                          ...oldSold.filter((e) => e !== post),
+                        ]);
+                        setRecentPostsProp((oldRecent) => [...oldRecent, post]);
+                      })
+                      .catch((err) => console.log(err));
+                  }}
+                >
+                  <SellIcon />
+                </IconButton>
+              </Tooltip>
             )}
-            {type === "sold" && (
-              <Button
-                onClick={() => setOpenPromotionDialog(true)}
-                color="primary"
-                sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-              >
-                Push
-              </Button>
-            )}
+
             {type !== "favorite" && (
-              <IconButton
-                color="secondary"
-                variant="outlined"
-                component={Link}
-                to={`/posts/${post["_id"]}/edit`}
-                sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-              >
-                <EditIcon />
-              </IconButton>
+              <Tooltip title="Edit post">
+                <IconButton
+                  color="secondary"
+                  variant="outlined"
+                  component={Link}
+                  to={`/posts/${post["_id"]}/edit`}
+                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
             )}
           </Stack>
         </CardActions>

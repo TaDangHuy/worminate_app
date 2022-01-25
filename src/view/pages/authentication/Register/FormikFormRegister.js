@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   Grid,
   TextField,
+  Typography,
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import React from "react";
@@ -54,61 +55,50 @@ function FormikFormRegister() {
         const { values, handleChange, handleBlur } = formikProps;
         return (
           <Form sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    type="text"
-                    name="fullName"
-                    value={values.fullName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    label="Full Name"
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    type="text"
-                    name="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    label="Email"
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <TextField
-                    required
-                    margin="normal"
-                    type="password"
-                    name="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    label="Password"
-                  />
-                </FormControl>
-              </Grid>
+            <FormControl fullWidth>
+              <Typography sx={{ mb: -1 }}>Full Name</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                type="text"
+                name="fullName"
+                value={values.fullName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                // label="Full Name"
+              />
+            </FormControl>
 
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
-            </Grid>
+            <FormControl fullWidth>
+              <Typography sx={{ mb: -1 }}>Email</Typography>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                type="text"
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                // label="Email"
+              />
+            </FormControl>
+
+            <FormControl fullWidth>
+              <Typography sx={{ mb: -1 }}>Password</Typography>
+              <TextField
+                required
+                margin="normal"
+                type="password"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                // label="Password"
+              />
+            </FormControl>
+
             <Button
               type="submit"
               fullWidth
@@ -119,11 +109,10 @@ function FormikFormRegister() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link
-                  to="/login"
-                  style={{ textDecoration: "none", color: "blue" }}
-                >
-                  Already have an account? Sign in
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  <Typography color="primary">
+                    Already have an account? Sign in
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>

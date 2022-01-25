@@ -6,6 +6,7 @@ import {
   Toolbar,
 } from "@mui/material";
 // import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 import { Box, styled } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
@@ -15,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSearchContent } from "../../features/search/searchSlice";
 import { setPosts } from "../../features/posts/postsSlice";
 import { setPageIndex } from "../../features/search/searchSlice";
+import AdminTabs from "./AdminTabs";
 
 const StyledInputElement = styled("input")`
   width: 500px;
@@ -52,7 +54,7 @@ const CustomInput = React.forwardRef(function CustomInput(props, ref) {
   );
 });
 
-function Navigation() {
+function Navigation({ index, setIndex }) {
   const [userName, setUserName] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
@@ -83,7 +85,7 @@ function Navigation() {
     <AppBar
       position="static"
       color="inherit"
-      elevation={3}
+      elevation={1}
       sx={{ bgcolor: "#fff", mb: 2 }}
     >
       <Toolbar>
@@ -92,10 +94,10 @@ function Navigation() {
             component="img"
             sx={{
               height: 46,
-              width: 41,
+              width: 36,
               marginRight: 1,
               marginLeft: 1,
-              marginTop: -0.9,
+              marginTop: -1,
             }}
             src={require("../../assets/images/logo.png").default}
             alt="worminate-token"
@@ -107,37 +109,40 @@ function Navigation() {
             WORMINATE
           </Typography>
         </Link>
-
-        <CustomInput
-          aria-label="Demo input"
-          placeholder="Search..."
-          onKeyPress={(event) => {
-            if (event.key === "Enter") {
-              dispatch(setSearchContent(event.target.value));
-              dispatch(setPageIndex(1));
-              setSkip(false);
-            }
-          }}
-        />
-
+        {useLocation().pathname === "/admin" && (
+          <AdminTabs index={index} setIndex={setIndex} />
+        )}
+        {useLocation().pathname !== "/admin" && (
+          <CustomInput
+            aria-label="Demo input"
+            placeholder="Search..."
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                dispatch(setSearchContent(event.target.value));
+                dispatch(setPageIndex(1));
+                setSkip(false);
+              }
+            }}
+          />
+        )}
         <Box sx={{ flexGrow: 1 }} />
         {useLocation().pathname === "/home" && (
-          <Button
-            color="primary"
-            variant="contained"
-            sx={{ height: 39, width: 150, mr: 3, mb: 0.5 }}
-            size="small"
+          <Link
+            to="/main"
+            style={{
+              textDecoration: "none",
+              color: "#fff",
+            }}
           >
-            <Link
-              to="/main"
-              style={{
-                textDecoration: "none",
-                color: "#fff",
-              }}
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{ height: 39, width: 100, mr: 3, mb: 0.5 }}
+              size="small"
             >
               <Typography variant="text">Shop now</Typography>
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           // <Button
           //   variant="contained"
           //   startIcon={<ShoppingCartIcon />}

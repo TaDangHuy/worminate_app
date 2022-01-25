@@ -91,7 +91,7 @@ export default function SimpleDialog(props) {
               ))}
             </List>
           ) : (
-            <ListItemText primary={<h1>Danh sách đang còn trống</h1>} />
+            <ListItemText primary={<h1>Nothing to show</h1>} />
           )}
         </DialogContent>
       </Dialog>
