@@ -218,7 +218,6 @@ function Profile() {
               <Typography variant="h5">{fullName}</Typography>
               <Stack direction="row" spacing={2}>
                 <Typography
-                  variant="small"
                   sx={{
                     "&:hover": {
                       textDecoration: "underline",
@@ -249,13 +248,13 @@ function Profile() {
                 />
 
                 <Typography
-                  variant="small"
-                  sx={{
-                    "&:hover": {
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    },
-                  }}
+
+                // sx={{
+                //   "&:hover": {
+                //     textDecoration: "underline",
+                //     cursor: "pointer",
+                //   },
+                // }}
                 >
                   {manageFollowers.followBy.length} Followers
                 </Typography>

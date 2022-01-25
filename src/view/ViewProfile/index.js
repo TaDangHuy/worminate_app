@@ -130,7 +130,7 @@ function ViewProfile() {
           <Box
             sx={{
               width: 300,
-              height: 450,
+              height: 470,
               background: "white",
               position: "sticky",
               top: 100,
@@ -198,11 +198,11 @@ function ViewProfile() {
               )}
               {user ? (
                 <Stack direction="row" spacing={2}>
-                  <Typography variant="small">
+                  <Typography sx={{ fontSize: "14px" }}>
                     {user?.manageFollowers.follow.length || 0} Following
                   </Typography>
 
-                  <Typography variant="small">
+                  <Typography sx={{ fontSize: "14px" }}>
                     {user?.manageFollowers.followBy.length || 0} Followers
                   </Typography>
                 </Stack>
@@ -242,6 +242,14 @@ function ViewProfile() {
                   <Skeleton width={100} />
                   <Skeleton width={200} />
                 </Stack>
+              )}
+
+              {user ? (
+                <Typography variant="h6" sx={{ my: 1, color: "#629c94" }}>
+                  Contact: {user?.email}
+                </Typography>
+              ) : (
+                <Skeleton width={150} />
               )}
 
               {/* <Box sx={{ mt: "30px", display: "flex", alignItems: "center" }}>

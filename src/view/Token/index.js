@@ -1101,21 +1101,21 @@ function Token() {
               <Grid item xs={8}>
                 <Box sx={{ py: 7 }}>
                   <Typography
-                    variant="h3"
+                    variant="h2"
                     sx={{
                       textTransform: "uppercase",
                       fontWeight: "800",
                       color: "#454545",
                     }}
                   >
-                    Buy Btc, eth & bhc
+                    Worminate Token
                   </Typography>
                   <Typography
                     variant="subtitle1"
-                    sx={{ fontSize: "40px", color: "#4d4a47" }}
+                    sx={{ fontSize: "30px", color: "#4d4a47", mt: 2 }}
                   >
-                    Bitcoin is an invovate payment netword and a new kind of
-                    money
+                    Worminate transforms access to blockchain technology and
+                    enables it to be widely used in real economy
                   </Typography>
                   <Link
                     href="#main_part"
@@ -1305,7 +1305,7 @@ function Token() {
                   variant="h6"
                   sx={{ textTransform: "capitalize", fontWeight: "bold" }}
                 >
-                  Demo Stage 4
+                  Exchange Rate
                 </Typography>
                 <div>
                   <Typography variant="h6" id="intro-price">
