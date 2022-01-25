@@ -42,7 +42,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
       sx={{
         background: "white",
         width: "100%",
-        minHeight: "433px",
+        minHeight: "797px",
         boxSizing: "border-box",
         pl: "40px",
         mt: "30px",
@@ -76,7 +76,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
               </Grid>
             ) : (
               <>
-                <Box>
+                <Box sx={{ height: 659 }}>
                   {Array.from(Array(Math.ceil(posts.length / 8)).keys()).map(
                     (num) => (
                       <CustomPanel value={pageAll} index={num + 1}>
@@ -131,21 +131,21 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
                       </CustomPanel>
                     )
                   )}
-                  <Box
-                    sx={{
-                      pt: "20px",
-                      display: "flex",
-                      justifyContent: "center",
+                </Box>
+                <Box
+                  sx={{
+                    pt: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Pagination
+                    count={Math.ceil(posts.length / 8)}
+                    page={pageAll}
+                    onChange={(event, newValue) => {
+                      setPageAll(newValue);
                     }}
-                  >
-                    <Pagination
-                      count={Math.ceil(posts.length / 8)}
-                      page={pageAll}
-                      onChange={(event, newValue) => {
-                        setPageAll(newValue);
-                      }}
-                    />
-                  </Box>
+                  />
                 </Box>
               </>
             )}
@@ -161,7 +161,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
               </Grid>
             ) : (
               <>
-                <Box>
+                <Box sx={{ height: 659 }}>
                   {Array.from(
                     Array(Math.ceil(recentPosts.length / 8)).keys()
                   ).map((num) => (
@@ -220,7 +220,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
               </Grid>
             ) : (
               <>
-                <Box>
+                <Box sx={{ height: 659 }}>
                   {Array.from(
                     Array(Math.ceil(soldPosts.length / 8)).keys()
                   ).map((num) => (
@@ -248,21 +248,21 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box
-                    sx={{
-                      pt: "20px",
-                      display: "flex",
-                      justifyContent: "center",
+                </Box>
+                <Box
+                  sx={{
+                    pt: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Pagination
+                    count={Math.ceil(soldPosts.length / 8)}
+                    page={pageAll}
+                    onChange={(event, newValue) => {
+                      setPageAll(newValue);
                     }}
-                  >
-                    <Pagination
-                      count={Math.ceil(soldPosts.length / 8)}
-                      page={pageAll}
-                      onChange={(event, newValue) => {
-                        setPageAll(newValue);
-                      }}
-                    />
-                  </Box>
+                  />
                 </Box>
               </>
             )}
@@ -278,7 +278,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
               </Grid>
             ) : (
               <>
-                <Box>
+                <Box sx={{ height: 659 }}>
                   {Array.from(
                     Array(Math.ceil(favoritesProduct.length / 8)).keys()
                   ).map((num) => (

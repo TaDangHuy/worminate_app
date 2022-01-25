@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Grid, Typography, Box, Button, Paper } from "@mui/material";
 import { keyframes } from "@mui/system";
 import Countdown from "react-countdown";
+import { Link } from "react-router-dom";
 
 function TokenSection() {
   const move = keyframes`
@@ -128,9 +129,11 @@ function TokenSection() {
                     </Typography>
                   </Box>
                   <Box mt={2}>
-                    <Button variant="contained" size="large" color="primary">
-                      Buy now
-                    </Button>
+                    <Link to="/token">
+                      <Button variant="contained" size="large" color="primary">
+                        Buy now
+                      </Button>
+                    </Link>
                   </Box>
                 </Grid>
               </Paper>

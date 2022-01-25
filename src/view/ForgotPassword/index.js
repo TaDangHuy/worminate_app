@@ -1,10 +1,8 @@
 import { Button, Container, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { useRef } from "react";
 
 function ForgotPassWord() {
-  const ref = useRef();
   const [value, setValue] = useState("");
   console.log({ value });
   return (
@@ -29,7 +27,6 @@ function ForgotPassWord() {
           name="email"
           autoComplete="email"
           autoFocus
-          ref={ref}
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
@@ -37,7 +34,7 @@ function ForgotPassWord() {
           type="submit"
           variant="contained"
           sx={{ mt: 1, alignSelf: "flex-start" }}
-          onClick={() => console.log(ref.current)}
+          onClick={() => console.log(value)}
         >
           Reset Password
         </Button>

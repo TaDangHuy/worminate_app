@@ -7,6 +7,7 @@
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@mapbox/mapbox-gl-geocoder": "^4.7.4",
+    "@metamask/detect-provider": "^1.2.0",
     "@mui/icons-material": "^5.0.5",
     "@mui/lab": "^5.0.0-alpha.58",
     "@mui/material": "^5.0.4",
@@ -20,7 +21,9 @@
     "better-react-spinkit": "^2.0.4",
     "formik": "^2.2.9",
     "history": "^4.10.1",
+    "jquery": "^3.6.0",
     "mapbox-gl": "^2.6.1",
+    "moment": "^2.29.1",
     "mui-datatables": "^4.0.0",
     "qs": "^6.10.2",
     "react": "^17.0.2",
@@ -42,6 +45,8 @@
     "simple-react-lightbox": "^3.6.9-0",
     "simplebar-react": "^2.3.6",
     "web-vitals": "^1.1.2",
+    "web3": "^1.7.0",
+    "web3.js-browser": "^0.2.0",
     "yup": "^0.32.11"
   },
   "scripts": {

@@ -5,25 +5,23 @@ import { Button, Card, Stack, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import FormikFormLogin from "./FormikFormLogin";
-
-import { accountService } from "../../../../_services";
+import Footer from "../../../../components/Footer";
 
 const useStyles = makeStyles({
   container: {
-    padding: "20px 20px",
     color: "white",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    marginBottom: "-150px",
   },
   banner: {
     height: "450px",
     width: "100%",
     backgroundColor: "#3b8767",
-    borderRadius: "20px",
     padding: "30px 40px",
     display: "flex",
     flexDirection: "column",
@@ -46,7 +44,7 @@ const useStyles = makeStyles({
     width: "450px",
     zIndex: 2,
     position: "relative",
-    transform: "translateY(-100px)",
+    transform: "translateY(-250px)",
   },
   card: {
     padding: "50px 45px",
@@ -71,71 +69,63 @@ const useStyles = makeStyles({
 const Login = (history) => {
   const classes = useStyles();
 
-  useEffect(() => {
-    // redirect to home if already logged in
-    if (accountService.accountValue) {
-      history.push("/");
-    }
-  }, [history]);
-
   return (
-    <Box className={classes.container}>
-      <Box className={classes.banner}>
-        <Typography
-          variant="h5"
-          className={classes.banner_logo}
-          sx={{ mb: "50px" }}
-        >
-          <Link to="/" className={classes.link1}>
-            Worminate
-          </Link>
-        </Typography>
-        <Typography
-          variant="h3"
-          className={classes.banner_title}
-          sx={{ fontWeight: "bold", mb: "30px" }}
-        >
-          Welcome Back !
-        </Typography>
-        <Typography
-          variant="h6"
-          className={classes.banner_subtitle}
-        ></Typography>
-      </Box>
-      <Box className={classes.form_container}>
-        <Card className={classes.card}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: "30px" }}>
-            Sign In with
+    <>
+      <Box className={classes.container}>
+        <Box className={classes.banner}>
+          <Typography
+            variant="h5"
+            className={classes.banner_logo}
+            sx={{ mb: "50px" }}
+          >
+            <Link to="/" className={classes.link1}>
+              Worminate
+            </Link>
           </Typography>
-
-          <Stack direction="row" spacing={3} sx={{ mb: "30px" }}>
-            <Button className={classes.signInWithButton} variant="outlined">
-              <GoogleIcon />
-            </Button>
-
-            <Button className={classes.signInWithButton} variant="outlined">
-              <GitHubIcon />
-            </Button>
-
-            <Button
-              className={classes.signInWithButton}
-              variant="outlined"
-              onClick={accountService.login}
-            >
-              <FacebookIcon />
-            </Button>
-          </Stack>
-
-          <Divider>OR</Divider>
-
-          <Typography variant="subtitle1" sx={{ my: 2 }}>
-            Sign In with Email Address
+          <Typography
+            variant="h3"
+            className={classes.banner_title}
+            sx={{ fontWeight: "bold", mb: "30px" }}
+          >
+            Welcome Back !
           </Typography>
+          <Typography
+            variant="h6"
+            className={classes.banner_subtitle}
+          ></Typography>
+        </Box>
+        <Box className={classes.form_container}>
+          <Card className={classes.card} elevation={4}>
+            <Typography variant="h5" sx={{ fontWeight: "bold", mb: "30px" }}>
+              Sign In with
+            </Typography>
 
-          <FormikFormLogin history={history} />
-        </Card>
+            <Stack direction="row" spacing={3} sx={{ mb: "30px" }}>
+              <Button className={classes.signInWithButton} variant="outlined">
+                <GoogleIcon />
+              </Button>
+
+              <Button className={classes.signInWithButton} variant="outlined">
+                <GitHubIcon />
+              </Button>
+
+              <Button className={classes.signInWithButton} variant="outlined">
+                <FacebookIcon />
+              </Button>
+            </Stack>
+
+            <Divider>OR</Divider>
+
+            <Typography variant="subtitle1" sx={{ my: 2 }}>
+              Sign In with Email Address
+            </Typography>
+
+            <FormikFormLogin history={history} />
+          </Card>
+        </Box>
       </Box>
-    </Box>
+      <Footer />
+    </>
   );
 };
 

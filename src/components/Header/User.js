@@ -45,7 +45,10 @@ function User({ userName, isAdmin, setUserNameProps }) {
       });
 
       console.log(response);
+      const transactions = JSON.parse(localStorage.getItem("transactions"));
       localStorage.clear();
+      localStorage.setItem("transactions", JSON.stringify(transactions));
+
       setUserNameProps("");
       setisLoggedIn(false);
     } catch (e) {
