@@ -32,17 +32,7 @@ const Admin = Loadable(lazy(() => import("../view/Admin")));
 
 function App() {
   const pathname = useLocation().pathname || "";
-  // const [ICOState, setICOState] = useState({
-  //   contracts: {},
-  //   tokenPrice: "1000000000000000",
-  //   tokensSold: 0,
-  //   tokensAvailable: 10000000,
-  //   admin: "",
-  //   currentAccount: "",
-  //   currentBalance: 0,
-  // });
-  // console.log("aapp");
-  // console.log(ICOState);
+
   return (
     <ThemeConfig>
       <ScrollToTop />
@@ -51,18 +41,7 @@ function App() {
         <Route exact path="/" component={LandingPage} />
         <Route path="/home" component={Home} />
         <Route path="/main" component={Main} />
-        <PrivateRoute
-          exact
-          path="/profile"
-          // propsP={{ ICOState: ICOState, setICOState: setICOState }}
-          component={Profile}
-        />
-        {/* <Route
-          path="/profile"
-          render={() => (
-            <Profile ICOState={ICOState} setICOState={setICOState} />
-          )}
-        /> */}
+        <PrivateRoute exact path="/profile" component={Profile} />
         <Route path="/profile/:idUser" component={ViewProfile} />
         <PrivateRoute path="/posts/new" component={Create_Edit_Post} />
         <Route path="/posts/:idPost" component={Detail} />

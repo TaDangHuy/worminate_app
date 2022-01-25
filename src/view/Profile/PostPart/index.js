@@ -76,7 +76,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
               </Grid>
             ) : (
               <>
-                <Box sx={{ height: 659 }}>
+                <Box sx={{ height: 750 }}>
                   {Array.from(Array(Math.ceil(posts.length / 8)).keys()).map(
                     (num) => (
                       <CustomPanel value={pageAll} index={num + 1}>
@@ -87,7 +87,11 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
                               .map((post, id) => {
                                 return (
                                   <Grid item key={num * 8 + id}>
-                                    <PostCard post={post} id={num * 8 + id} />
+                                    <PostCard
+                                      type="all"
+                                      post={post}
+                                      id={num * 8 + id}
+                                    />
                                   </Grid>
                                 );
                               })
@@ -98,7 +102,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
                                   component={Link}
                                   to="/posts/new"
                                   variant="outlined"
-                                  sx={{ width: 270, height: 308 }}
+                                  sx={{ width: 305, height: 350 }}
                                 >
                                   <Stack
                                     spacing={1}
@@ -111,7 +115,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
                                       color="text.secondary"
                                       fontWeight="700"
                                     >
-                                      Create a New Post
+                                      Create a new post
                                     </Typography>
                                   </Stack>
                                 </Button>
@@ -121,7 +125,11 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
                                 .map((post, id) => {
                                   return (
                                     <Grid item key={num * 8 + id}>
-                                      <PostCard post={post} id={num * 8 + id} />
+                                      <PostCard
+                                        type="all"
+                                        post={post}
+                                        id={num * 8 + id}
+                                      />
                                     </Grid>
                                   );
                                 })}
@@ -161,7 +169,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
               </Grid>
             ) : (
               <>
-                <Box sx={{ height: 659 }}>
+                <Box sx={{ height: 750 }}>
                   {Array.from(
                     Array(Math.ceil(recentPosts.length / 8)).keys()
                   ).map((num) => (
@@ -190,21 +198,21 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box
-                    sx={{
-                      pt: "20px",
-                      display: "flex",
-                      justifyContent: "center",
+                </Box>
+                <Box
+                  sx={{
+                    pt: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Pagination
+                    count={Math.ceil(recentPosts.length / 8)}
+                    page={pageAll}
+                    onChange={(event, newValue) => {
+                      setPageAll(newValue);
                     }}
-                  >
-                    <Pagination
-                      count={Math.ceil(recentPosts.length / 8)}
-                      page={pageAll}
-                      onChange={(event, newValue) => {
-                        setPageAll(newValue);
-                      }}
-                    />
-                  </Box>
+                  />
                 </Box>
               </>
             )}
@@ -220,7 +228,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
               </Grid>
             ) : (
               <>
-                <Box sx={{ height: 659 }}>
+                <Box sx={{ height: 750 }}>
                   {Array.from(
                     Array(Math.ceil(soldPosts.length / 8)).keys()
                   ).map((num) => (
@@ -278,7 +286,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
               </Grid>
             ) : (
               <>
-                <Box sx={{ height: 659 }}>
+                <Box sx={{ height: 750 }}>
                   {Array.from(
                     Array(Math.ceil(favoritesProduct.length / 8)).keys()
                   ).map((num) => (
@@ -300,15 +308,21 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
                       </Grid>
                     </CustomPanel>
                   ))}
-                  <Box sx={{ pt: "20px" }}>
-                    <Pagination
-                      count={Math.ceil(favoritesProduct.length / 8)}
-                      page={pageAll}
-                      onChange={(event, newValue) => {
-                        setPageAll(newValue);
-                      }}
-                    />
-                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    pt: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Pagination
+                    count={Math.ceil(favoritesProduct.length / 8)}
+                    page={pageAll}
+                    onChange={(event, newValue) => {
+                      setPageAll(newValue);
+                    }}
+                  />
                 </Box>
               </>
             )}

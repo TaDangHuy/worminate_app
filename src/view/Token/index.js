@@ -18,12 +18,12 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Link,
 } from "@mui/material";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { styled } from "@mui/system";
-import { Link } from "react-router-dom";
 
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
@@ -32,16 +32,6 @@ import Countdown from "./Countdown";
 import axios from "axios";
 import moment from "moment";
 
-import {
-  setContracts,
-  setTokenPrice,
-  setTokensSold,
-  setTokensAvailable,
-  setAdmin,
-  setCurrentAccount,
-  setCurrentBalance,
-} from "../../features/ICO/ICOSlice";
-import { useDispatch, useSelector } from "react-redux";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -56,9 +46,15 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 function Token() {
-  const dispatch = useDispatch();
-  const ICOState = useSelector((state) => state.ICO);
-
+  const [ICOState, setICOState] = useState({
+    contracts: {},
+    tokenPrice: "1000000000000000",
+    tokensSold: 0,
+    tokensAvailable: 10000000,
+    admin: "",
+    currentAccount: "",
+    currentBalance: 0,
+  });
   const [value, setValue] = useState(1);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -596,15 +592,27 @@ function Token() {
         .getOwner()
         .call()
         .then(function (owner) {
-          // setICOState((prev) => ({ ...prev, admin: owner }));
-          dispatch(setAdmin(owner));
+          setICOState((prev) => {
+            // localStorage.setItem(
+            //   "ICO",
+            //   JSON.stringify({ ...prev, admin: owner })
+            // );
+            return { ...prev, admin: owner };
+          });
+          // dispatch(setAdmin(owner));
         });
       contractsTmp.tokenSaleContract.methods
         .tokenPrice()
         .call()
         .then(function (_tokenPrice) {
-          // setICOState((prev) => ({ ...prev, tokenPrice: _tokenPrice }));
-          dispatch(setTokenPrice(_tokenPrice));
+          setICOState((prev) => {
+            // localStorage.setItem(
+            //   "ICO",
+            //   JSON.stringify({ ...prev, tokenPrice: _tokenPrice })
+            // );
+            return { ...prev, tokenPrice: _tokenPrice };
+          });
+          // dispatch(setTokenPrice(_tokenPrice));
           $(".token-price").html(
             web3.utils.fromWei(ICOState.tokenPrice, "ether")
           );
@@ -615,18 +623,27 @@ function Token() {
         .then(function (_tokenSold) {
           // console.log(_tokenSold);
           // $(".tokens-sold").html(_tokenSold + " WOR");
-          // setICOState((prev) => ({ ...prev, tokensSold: _tokenSold }));
-          dispatch(setTokensSold(_tokenSold));
+          setICOState((prev) => {
+            // localStorage.setItem(
+            //   "ICO",
+            //   JSON.stringify({ ...prev, tokensSold: _tokenSold })
+            // );
+            return { ...prev, tokensSold: _tokenSold };
+          });
+          // dispatch(setTokensSold(_tokenSold));
           $(".tokens-available").html(ICOState.tokensAvailable + " WOR");
         });
 
-      // setICOState((prev) => ({ ...prev, contracts: contractsTmp }));
-      dispatch(setContracts(contractsTmp));
+      setICOState((prev) => {
+        // let obj = { ...prev, contracts: contractsTmp };
+        // console.log(obj);
+        // localStorage.setItem("ICO", JSON.stringify(obj));
+        return { ...prev, contracts: contractsTmp };
+      });
+      // dispatch(setContracts(contractsTmp));
     },
   };
   const buyTokens = (event) => {
-    // $('#content').hide();
-    // $('#loader').show();
     var numberOfTokens = $("#numberOfTokens").val();
     console.log("Quantity: " + numberOfTokens);
     if (ICOState.currentAccount.length === 0) {
@@ -649,8 +666,14 @@ function Token() {
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
-              dispatch(setCurrentBalance(_balance));
+              setICOState((prev) => {
+                // localStorage.setItem(
+                //   "ICO",
+                //   JSON.stringify({ ...prev, currentBalance: _balance })
+                // );
+                return { ...prev, currentBalance: _balance };
+              });
+              // dispatch(setCurrentBalance(_balance));
             });
         })
         .catch((eve) => {
@@ -658,91 +681,126 @@ function Token() {
         });
     }
   };
-  const basicPlan = (event) => {
-    if (ICOState.currentAccount.length === 0) {
-      event.preventDefault();
-      alert("Please connect to MetaMask");
-    } else {
-      event.preventDefault();
-      ICOState.contracts.worTokenContract.methods
-        .transfer(ICOState.admin, 1)
-        .send({
-          from: ICOState.currentAccount,
-        })
-        .then((result) => {
-          console.log("Successfully registered for basic plan");
-          ICOState.contracts.worTokenContract.methods
-            .balanceOf(ICOState.currentAccount)
-            .call()
-            .then(function (_balance) {
-              localStorage.setItem("user_balance", _balance);
-              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
-              dispatch(setCurrentBalance(_balance));
-            });
-        })
-        .catch((error) => {
-          console.log("Error...");
-        });
-    }
-  };
-  const plusPlan = (event) => {
-    if (ICOState.currentAccount.length === 0) {
-      event.preventDefault();
-      alert("Please connect to MetaMask");
-    } else {
-      event.preventDefault();
-      ICOState.contracts.worTokenContract.methods
-        .transfer(ICOState.admin, 3)
-        .send({
-          from: ICOState.currentAccount,
-        })
-        .then((result) => {
-          console.log("Successfully registered for plus plan");
-          ICOState.contracts.worTokenContract.methods
-            .balanceOf(ICOState.currentAccount)
-            .call()
-            .then(function (_balance) {
-              localStorage.setItem("user_balance", _balance);
-              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
-              dispatch(setCurrentBalance(_balance));
-            });
-        })
-        .catch((error) => {
-          console.log("Error...");
-        });
-    }
-  };
+  // const basicPlan = (event) => {
+  //   if (ICOState.currentAccount.length === 0) {
+  //     event.preventDefault();
+  //     alert("Please connect to MetaMask");
+  //   } else {
+  //     event.preventDefault();
+  //     ICOState.contracts.worTokenContract.methods
+  //       .transfer(ICOState.admin, 1)
+  //       .send({
+  //         from: ICOState.currentAccount,
+  //       })
+  //       .then((result) => {
+  //         console.log("Successfully registered for basic plan");
+  //         ICOState.contracts.worTokenContract.methods
+  //           .balanceOf(ICOState.currentAccount)
+  //           .call()
+  //           .then(function (_balance) {
+  //             localStorage.setItem("user_balance", _balance);
+  //             setICOState((prev) => {
+  //               // localStorage.setItem(
+  //               //   "ICO",
+  //               //   JSON.stringify({ ...prev, currentBalance: _balance })
+  //               // );
+  //               return { ...prev, currentBalance: _balance };
+  //             });
+  //             // dispatch(setCurrentBalance(_balance));
+  //           });
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error...");
+  //       });
+  //   }
+  // };
+  // const plusPlan = (event) => {
+  //   if (ICOState.currentAccount.length === 0) {
+  //     event.preventDefault();
+  //     alert("Please connect to MetaMask");
+  //   } else {
+  //     event.preventDefault();
+  //     ICOState.contracts.worTokenContract.methods
+  //       .transfer(ICOState.admin, 3)
+  //       .send({
+  //         from: ICOState.currentAccount,
+  //       })
+  //       .then((result) => {
+  //         console.log("Successfully registered for plus plan");
+  //         ICOState.contracts.worTokenContract.methods
+  //           .balanceOf(ICOState.currentAccount)
+  //           .call()
+  //           .then(function (_balance) {
+  //             localStorage.setItem("user_balance", _balance);
+  //             setICOState((prev) => {
+  //               // localStorage.setItem(
+  //               //   "ICO",
+  //               //   JSON.stringify({ ...prev, currentBalance: _balance })
+  //               // );
+  //               return { ...prev, currentBalance: _balance };
+  //             });
+  //             // dispatch(setCurrentBalance(_balance));
+  //           });
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error...");
+  //       });
+  //   }
+  // };
 
-  const visionaryPlan = (event) => {
-    if (ICOState.currentAccount.length === 0) {
-      event.preventDefault();
-      alert("Please connect to MetaMask");
-    } else {
-      event.preventDefault();
-      ICOState.contracts.worTokenContract.methods
-        .transfer(ICOState.admin, 5)
-        .send({
-          from: ICOState.currentAccount,
-        })
-        .then((result) => {
-          console.log("Successfully registered for visionary plan");
-          ICOState.contracts.worTokenContract.methods
-            .balanceOf(ICOState.currentAccount)
-            .call()
-            .then(function (_balance) {
-              localStorage.setItem("user_balance", _balance);
-              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
-              dispatch(setCurrentBalance(_balance));
-            });
-        })
-        .catch((error) => {
-          console.log("Error...");
-        });
-    }
-  };
+  // const visionaryPlan = (event) => {
+  //   if (ICOState.currentAccount.length === 0) {
+  //     event.preventDefault();
+  //     alert("Please connect to MetaMask");
+  //   } else {
+  //     event.preventDefault();
+  //     ICOState.contracts.worTokenContract.methods
+  //       .transfer(ICOState.admin, 5)
+  //       .send({
+  //         from: ICOState.currentAccount,
+  //       })
+  //       .then((result) => {
+  //         console.log("Successfully registered for visionary plan");
+  //         ICOState.contracts.worTokenContract.methods
+  //           .balanceOf(ICOState.currentAccount)
+  //           .call()
+  //           .then(function (_balance) {
+  //             localStorage.setItem("user_balance", _balance);
+  //             setICOState((prev) => {
+  //               // localStorage.setItem(
+  //               //   "ICO",
+  //               //   JSON.stringify({ ...prev, currentBalance: _balance })
+  //               // );
+  //               return { ...prev, currentBalance: _balance };
+  //             });
+  //             // dispatch(setCurrentBalance(_balance));
+  //           });
+  //       })
+  //       .catch((error) => {
+  //         console.log("Error...");
+  //       });
+  //   }
+  // };
+  const [ETHtoUSDExchangeRate, setETHtoUSDExchangeRate] = useState(1);
+  const [BTCtoUSDExchangeRate, setBTCtoUSDExchangeRate] = useState(1);
+  console.log(BTCtoUSDExchangeRate, ETHtoUSDExchangeRate);
 
   useEffect(() => {
     ICO.init();
+    axios
+      .get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+      )
+      .then((res) => setETHtoUSDExchangeRate(res.data.ethereum.usd))
+      .catch((e) => console.log("ETH TO USD error"));
+
+    axios
+      .get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+      )
+      .then((res) => setBTCtoUSDExchangeRate(res.data.bitcoin.usd))
+      .catch((e) => console.log("BTC TO USD error"));
+
     axios
       .get(
         "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=0x5380bbaf10f886d38c3b33e9b90d835599c44cd3&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=6YCB5E1U3ITRC6R4JVD9E918ZGEU19VTSP"
@@ -752,7 +810,6 @@ function Token() {
           let tmpTransactions = response.data.result.map((e) => ({
             hash: e.hash,
             address: e.from,
-            // age: calculateTime(e.timeStamp),
             age: moment.unix(e.timeStamp).fromNow(),
             quantity: e.value.slice(0, e.value.length - 15),
           }));
@@ -864,18 +921,34 @@ function Token() {
       if (accounts.length === 0) {
         // MetaMask is locked or the user has not connected any accounts
         console.log("Please connect to MetaMask.");
-        localStorage.removeItem("ICO");
-        // setICOState((prev) => ({
-        //   ...prev,
-        //   currentAccount: "",
-        //   currentBalance: 0,
-        // }));
-        dispatch(setCurrentBalance(0));
-        dispatch(setCurrentAccount(""));
+        // localStorage.removeItem("ICO");
+        setICOState((prev) => {
+          // localStorage.setItem(
+          //   "ICO",
+          //   JSON.stringify({
+          //     ...prev,
+          //     currentAccount: "",
+          //     currentBalance: 0,
+          //   })
+          // );
+          return {
+            ...prev,
+            currentAccount: "",
+            currentBalance: 0,
+          };
+        });
+        // dispatch(setCurrentBalance(0));
+        // dispatch(setCurrentAccount(""));
         setIsConnected(false);
       } else if (accounts[0] !== ICOState.currentAccount) {
-        // setICOState((prev) => ({ ...prev, currentAccount: accounts[0] }));
-        dispatch(setCurrentAccount(accounts[0]));
+        setICOState((prev) => {
+          // localStorage.setItem(
+          //   "ICO",
+          //   JSON.stringify({ ...prev, currentAccount: accounts[0] })
+          // );
+          return { ...prev, currentAccount: accounts[0] };
+        });
+        // dispatch(setCurrentAccount(accounts[0]));
         // $("#after-connected").show();
         // $("#intro-price").hide();
         // if (ICOState.currentAccount !== "") {
@@ -885,8 +958,14 @@ function Token() {
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
-              dispatch(setCurrentBalance(_balance));
+              setICOState((prev) => {
+                // localStorage.setItem(
+                //   "ICO",
+                //   JSON.stringify({ ...prev, currentBalance: _balance })
+                // );
+                return { ...prev, currentBalance: _balance };
+              });
+              // dispatch(setCurrentBalance(_balance));
             });
         }
         setIsConnected(true);
@@ -948,8 +1027,14 @@ function Token() {
   }
 
   async function connectToAnotherAccount(ethereumButton) {
-    // setICOState((prev) => ({ ...prev, currentAccount: "" }));
-    dispatch(setCurrentAccount(""));
+    setICOState((prev) => {
+      // localStorage.setItem(
+      //   "ICO",
+      //   JSON.stringify({ ...prev, currentAccount: "" })
+      // );
+      return { ...prev, currentAccount: "" };
+    });
+    // dispatch(setCurrentAccount(""));
 
     const accounts = await window.ethereum
       .request({
@@ -966,8 +1051,14 @@ function Token() {
         })
       );
 
-    // setICOState((prev) => ({ ...prev, currentAccount: accounts[0] }));
-    dispatch(setCurrentAccount(accounts[0]));
+    setICOState((prev) => {
+      // localStorage.setItem(
+      //   "ICO",
+      //   JSON.stringify({ ...prev, currentAccount: accounts[0] })
+      // );
+      return { ...prev, currentAccount: accounts[0] };
+    });
+    // dispatch(setCurrentAccount(accounts[0]));
   }
 
   return (
@@ -1026,7 +1117,14 @@ function Token() {
                     Bitcoin is an invovate payment netword and a new kind of
                     money
                   </Typography>
-                  <Link href="#main_part" sx={{ textDecoration: "none" }}>
+                  <Link
+                    href="#main_part"
+                    sx={{
+                      textDecoration: "none",
+                      color: "#e2c497",
+                      "&:hover": { color: "white" },
+                    }}
+                  >
                     <Button
                       variant="outlined"
                       sx={{
@@ -1043,25 +1141,6 @@ function Token() {
                       }}
                     >
                       Get started
-                    </Button>
-                  </Link>
-                  <Link to="/profile" sx={{ textDecoration: "none" }}>
-                    <Button
-                      variant="outlined"
-                      sx={{
-                        color: "#e2c497 ",
-                        borderColor: "#e2c497",
-                        width: 145,
-                        height: 50,
-                        mt: 5,
-                        fontWeight: "bold",
-                        "&:hover": {
-                          backgroundColor: "#e2c497",
-                          color: "white",
-                        },
-                      }}
-                    >
-                      Profile
                     </Button>
                   </Link>
                 </Box>
@@ -1147,7 +1226,7 @@ function Token() {
                       <Typography variant="h6">
                         <span className="wor-balance">
                           {ICOState.currentBalance}
-                        </span>{" "}
+                        </span>
                         WOR
                       </Typography>
                     }
@@ -1167,15 +1246,45 @@ function Token() {
                   Your contribution in
                 </Typography>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography sx={{ textTransform: "uppercase" }}>
-                    USD
-                  </Typography>
-                  <Typography sx={{ textTransform: "uppercase" }}>
-                    ETH
-                  </Typography>
-                  <Typography sx={{ textTransform: "uppercase" }}>
-                    BTC
-                  </Typography>
+                  <Stack direction="column">
+                    <Typography>
+                      {Number.parseFloat(
+                        parseInt(ICOState.currentBalance) *
+                          parseFloat(ICOState.tokenPrice) *
+                          Math.pow(10, -18) *
+                          ETHtoUSDExchangeRate
+                      ).toFixed(0)}
+                    </Typography>
+                    <Typography sx={{ textTransform: "uppercase" }}>
+                      USD
+                    </Typography>
+                  </Stack>
+                  <Stack direction="column">
+                    <Typography>
+                      {Number.parseFloat(
+                        parseInt(ICOState.currentBalance) *
+                          parseFloat(ICOState.tokenPrice) *
+                          Math.pow(10, -18)
+                      ).toFixed(3)}
+                    </Typography>
+                    <Typography sx={{ textTransform: "uppercase" }}>
+                      ETH
+                    </Typography>
+                  </Stack>
+                  <Stack direction="column">
+                    <Typography>
+                      {Number.parseFloat(
+                        (parseInt(ICOState.currentBalance) *
+                          parseFloat(ICOState.tokenPrice) *
+                          Math.pow(10, -18) *
+                          ETHtoUSDExchangeRate) /
+                          BTCtoUSDExchangeRate
+                      ).toFixed(3)}
+                    </Typography>
+                    <Typography sx={{ textTransform: "uppercase" }}>
+                      BTC
+                    </Typography>
+                  </Stack>
                 </Stack>
               </Box>
             </Grid>
@@ -1203,7 +1312,8 @@ function Token() {
                     1 WOR = <span className="token-price"></span> ETH
                   </Typography>
                   <Typography variant="subtitle2">
-                    1 USD = 0.00002536 ETH
+                    1 USD =
+                    {Number.parseFloat(1 / ETHtoUSDExchangeRate).toFixed(8)} ETH
                   </Typography>
                 </div>
                 <form
