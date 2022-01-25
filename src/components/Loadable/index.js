@@ -1,30 +1,11 @@
 import { Suspense } from "react";
-import { CircularProgress, Box } from "@mui/material";
-import {
-  ChasingDots,
-  Circle,
-  CubeGrid,
-  DoubleBounce,
-  FadingCircle,
-  FoldingCube,
-  Pulse,
-  RotatingPlane,
-  ThreeBounce,
-  WanderingCubes,
-  Wave,
-} from "better-react-spinkit";
+import { Box } from "@mui/material";
+import { ThreeBounce } from "better-react-spinkit";
 
 const Loadable = (Component) => (props) =>
   (
     <Suspense
       fallback={
-        // <Wave
-        //   style={{
-        //     position: "absolute",
-        //     top: "50%",
-        //     left: "50%",
-        //   }}
-        // />
         <Box
           style={{
             position: "absolute",

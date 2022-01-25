@@ -7,7 +7,6 @@ import {
   Grid,
   Box,
   Stack,
-  Link,
   ListItem,
   ListItemAvatar,
   Avatar,
@@ -24,6 +23,7 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { styled } from "@mui/system";
+import { Link } from "react-router-dom";
 
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
@@ -31,6 +31,17 @@ import $ from "jquery";
 import Countdown from "./Countdown";
 import axios from "axios";
 import moment from "moment";
+
+import {
+  setContracts,
+  setTokenPrice,
+  setTokensSold,
+  setTokensAvailable,
+  setAdmin,
+  setCurrentAccount,
+  setCurrentBalance,
+} from "../../features/ICO/ICOSlice";
+import { useDispatch, useSelector } from "react-redux";
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -45,17 +56,11 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 function Token() {
+  const dispatch = useDispatch();
+  const ICOState = useSelector((state) => state.ICO);
+
   const [value, setValue] = useState(1);
   const [isConnected, setIsConnected] = useState(false);
-  const [ICOState, setICOState] = useState({
-    contracts: {},
-    tokenPrice: "1000000000000000",
-    tokensSold: 0,
-    tokensAvailable: 10000000,
-    admin: "",
-    currentAccount: "",
-    currentBalance: 0,
-  });
 
   const [transactions, setTransactions] = useState([]);
 
@@ -591,13 +596,15 @@ function Token() {
         .getOwner()
         .call()
         .then(function (owner) {
-          setICOState((prev) => ({ ...prev, admin: owner }));
+          // setICOState((prev) => ({ ...prev, admin: owner }));
+          dispatch(setAdmin(owner));
         });
       contractsTmp.tokenSaleContract.methods
         .tokenPrice()
         .call()
         .then(function (_tokenPrice) {
-          setICOState((prev) => ({ ...prev, tokenPrice: _tokenPrice }));
+          // setICOState((prev) => ({ ...prev, tokenPrice: _tokenPrice }));
+          dispatch(setTokenPrice(_tokenPrice));
           $(".token-price").html(
             web3.utils.fromWei(ICOState.tokenPrice, "ether")
           );
@@ -608,14 +615,15 @@ function Token() {
         .then(function (_tokenSold) {
           // console.log(_tokenSold);
           // $(".tokens-sold").html(_tokenSold + " WOR");
-          setICOState((prev) => ({ ...prev, tokensSold: _tokenSold }));
+          // setICOState((prev) => ({ ...prev, tokensSold: _tokenSold }));
+          dispatch(setTokensSold(_tokenSold));
           $(".tokens-available").html(ICOState.tokensAvailable + " WOR");
         });
 
-      setICOState((prev) => ({ ...prev, contracts: contractsTmp }));
+      // setICOState((prev) => ({ ...prev, contracts: contractsTmp }));
+      dispatch(setContracts(contractsTmp));
     },
   };
-  console.log(transactions);
   const buyTokens = (event) => {
     // $('#content').hide();
     // $('#loader').show();
@@ -641,7 +649,8 @@ function Token() {
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              dispatch(setCurrentBalance(_balance));
             });
         })
         .catch((eve) => {
@@ -667,7 +676,8 @@ function Token() {
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              dispatch(setCurrentBalance(_balance));
             });
         })
         .catch((error) => {
@@ -693,7 +703,8 @@ function Token() {
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              dispatch(setCurrentBalance(_balance));
             });
         })
         .catch((error) => {
@@ -720,7 +731,8 @@ function Token() {
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              dispatch(setCurrentBalance(_balance));
             });
         })
         .catch((error) => {
@@ -736,7 +748,6 @@ function Token() {
         "https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=0x5380bbaf10f886d38c3b33e9b90d835599c44cd3&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=6YCB5E1U3ITRC6R4JVD9E918ZGEU19VTSP"
       )
       .then((response) => {
-        console.log(response);
         if (response.data.status === "1") {
           let tmpTransactions = response.data.result.map((e) => ({
             hash: e.hash,
@@ -853,16 +864,18 @@ function Token() {
       if (accounts.length === 0) {
         // MetaMask is locked or the user has not connected any accounts
         console.log("Please connect to MetaMask.");
-        localStorage.removeItem("user_balance");
-        setICOState((prev) => ({
-          ...prev,
-          currentAccount: "",
-          currentBalance: 0,
-        }));
+        localStorage.removeItem("ICO");
+        // setICOState((prev) => ({
+        //   ...prev,
+        //   currentAccount: "",
+        //   currentBalance: 0,
+        // }));
+        dispatch(setCurrentBalance(0));
+        dispatch(setCurrentAccount(""));
         setIsConnected(false);
       } else if (accounts[0] !== ICOState.currentAccount) {
-        setICOState((prev) => ({ ...prev, currentAccount: accounts[0] }));
-
+        // setICOState((prev) => ({ ...prev, currentAccount: accounts[0] }));
+        dispatch(setCurrentAccount(accounts[0]));
         // $("#after-connected").show();
         // $("#intro-price").hide();
         // if (ICOState.currentAccount !== "") {
@@ -872,7 +885,8 @@ function Token() {
             .call()
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
-              setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              // setICOState((prev) => ({ ...prev, currentBalance: _balance }));
+              dispatch(setCurrentBalance(_balance));
             });
         }
         setIsConnected(true);
@@ -934,7 +948,8 @@ function Token() {
   }
 
   async function connectToAnotherAccount(ethereumButton) {
-    setICOState((prev) => ({ ...prev, currentAccount: "" }));
+    // setICOState((prev) => ({ ...prev, currentAccount: "" }));
+    dispatch(setCurrentAccount(""));
 
     const accounts = await window.ethereum
       .request({
@@ -951,7 +966,8 @@ function Token() {
         })
       );
 
-    setICOState((prev) => ({ ...prev, currentAccount: accounts[0] }));
+    // setICOState((prev) => ({ ...prev, currentAccount: accounts[0] }));
+    dispatch(setCurrentAccount(accounts[0]));
   }
 
   return (
@@ -1027,6 +1043,25 @@ function Token() {
                       }}
                     >
                       Get started
+                    </Button>
+                  </Link>
+                  <Link to="/profile" sx={{ textDecoration: "none" }}>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        color: "#e2c497 ",
+                        borderColor: "#e2c497",
+                        width: 145,
+                        height: 50,
+                        mt: 5,
+                        fontWeight: "bold",
+                        "&:hover": {
+                          backgroundColor: "#e2c497",
+                          color: "white",
+                        },
+                      }}
+                    >
+                      Profile
                     </Button>
                   </Link>
                 </Box>
@@ -1259,7 +1294,7 @@ function Token() {
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Hash</TableCell>
+                        <TableCell>Tracsaction Hash</TableCell>
                         <TableCell>Address</TableCell>
                         <TableCell>Age</TableCell>
                         <TableCell align="center">Quantity</TableCell>

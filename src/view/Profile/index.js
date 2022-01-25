@@ -10,8 +10,11 @@ import ChangeAvatarButton from "./ChangeAvatarButton/ChangeAvatarButton";
 import SimpleDialog from "./SimpleDialog";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import { useSelector } from "react-redux";
 
 function Profile() {
+  const ICOState = useSelector((state) => state.ICO);
+  console.log(ICOState);
   const history = useHistory();
   const [posts, setPosts] = useState([]);
   const [favoritesProduct, setFavoritesProduct] = useState([]);
