@@ -112,7 +112,7 @@ function Navigation({ index, setIndex }) {
         {useLocation().pathname === "/admin" && (
           <AdminTabs index={index} setIndex={setIndex} />
         )}
-        {useLocation().pathname !== "/admin" && (
+        {!isAdmin && (
           <CustomInput
             aria-label="Demo input"
             placeholder="Search..."

@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     marginBottom: "-150px",
   },
   banner: {
-    height: "450px",
+    height: "300px",
     width: "100%",
     backgroundColor: "#3b8767",
     padding: "30px 40px",
@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     width: "450px",
     zIndex: 2,
     position: "relative",
-    transform: "translateY(-250px)",
+    transform: "translateY(-100px)",
   },
   card: {
     padding: "50px 45px",
@@ -66,7 +66,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Login = (history) => {
+const Login = ({ history }) => {
   const classes = useStyles();
 
   return (
@@ -96,7 +96,7 @@ const Login = (history) => {
         </Box>
         <Box className={classes.form_container}>
           <Card className={classes.card} elevation={4}>
-            <Typography variant="h5" sx={{ fontWeight: "bold", mb: "30px" }}>
+            {/* <Typography variant="h5" sx={{ fontWeight: "bold", mb: "30px" }}>
               Sign In with
             </Typography>
 
@@ -118,7 +118,7 @@ const Login = (history) => {
 
             <Typography variant="subtitle1" sx={{ my: 2 }}>
               Sign In with Email Address
-            </Typography>
+            </Typography> */}
 
             <FormikFormLogin history={history} />
           </Card>

@@ -56,6 +56,7 @@ function PostCard({
   const [openPromotionDialog, setOpenPromotionDialog] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [openBackdrop, setOpenBackdrop] = useState(false);
+  const price = Math.floor(post.price * 100) / 100;
   return (
     <>
       <Card sx={{ maxWidth: 270 }}>
@@ -104,7 +105,7 @@ function PostCard({
                   noWrap
                 >
                   {post.price
-                    ? `${Math.round(post.price)}`
+                    ? `${parseFloat(price)}`
                     : post.price === 0
                     ? "0"
                     : "?"}

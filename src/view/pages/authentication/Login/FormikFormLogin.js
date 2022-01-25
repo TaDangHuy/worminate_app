@@ -60,13 +60,14 @@ function FormikForm({ history }) {
           localStorage.setItem("_id", res.data.user["_id"]);
           localStorage.setItem("email", res.data.user.email);
           localStorage.setItem("avatar", res.data.user.image.path);
-          history.history.push("/home");
+          if (res.data.user.admin) history.push("/admin");
+          else history.push("/home");
         }
       })
       .catch((error) => {
         actions.setSubmitting(false);
 
-        if (error.response.status === 404) {
+        if (error.response && error.response.status === 404) {
           setSnackbarProps(snackbarProps.error);
           setOpenSnackbar(true);
         }

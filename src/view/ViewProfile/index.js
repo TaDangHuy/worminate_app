@@ -5,11 +5,12 @@ import { Avatar, Button, Skeleton, Stack, Typography } from "@mui/material";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import PostPart from "./PostPart";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 
 function ViewProfile() {
+  const history = useHistory();
   let { idUser } = useParams();
   const [user, setUser] = useState(null);
 
@@ -118,13 +119,12 @@ function ViewProfile() {
           py: 2,
         }}
       >
-        <Button alignSelf="flex-start" sx={{ width: 100 }}>
-          <Link
-            to="/profile"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            Back
-          </Link>
+        <Button
+          alignSelf="flex-start"
+          onClick={history.goBack}
+          sx={{ width: 100 }}
+        >
+          Back
         </Button>
         <Stack direction="row" spacing={4}>
           <Box

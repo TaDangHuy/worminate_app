@@ -23,7 +23,7 @@ export default TeamSection;
 
 const teamItems = [
   {
-    image: require("../../../../assets/images/members/member-1.png").default,
+    image: require("../../../../assets/images/members/NVH.jpg").default,
     name: "Nguyen Viet Hoang",
     job: "Backend Developer",
     socialLinks: {
@@ -33,7 +33,7 @@ const teamItems = [
     },
   },
   {
-    image: require("../../../../assets/images/members/member-2.png").default,
+    image: require("../../../../assets/images/members/NTD.png").default,
     name: "Nguyen Tien Dung",
     job: "Backend Developer",
     socialLinks: {
@@ -53,7 +53,7 @@ const teamItems = [
     },
   },
   {
-    image: require("../../../../assets/images/members/THB.jpg").default,
+    image: require("../../../../assets/images/members/THB.png").default,
     name: "Tran Huu Binh",
     job: "Frontend Developer",
     socialLinks: {

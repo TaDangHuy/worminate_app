@@ -22,7 +22,8 @@ function TeamMember({ image, name, job, socialLinks }) {
         <CardMedia
           sx={{
             width: "100%",
-            height: 200,
+            height: 240,
+            pt: 2,
           }}
           image={image}
         ></CardMedia>

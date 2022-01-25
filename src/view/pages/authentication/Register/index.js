@@ -75,7 +75,7 @@ const Register = () => {
             className={classes.banner_title}
             sx={{ fontWeight: "bold", mb: "30px" }}
           >
-            Welcome
+            Welcome !
           </Typography>
           <Typography
             variant="h6"

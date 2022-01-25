@@ -57,11 +57,17 @@ function User({ userName, isAdmin, setUserNameProps }) {
   };
   return (
     <div className={classes.container}>
-      <Link to="/profile">
-        <IconButton color="primary" sx={{ mr: -1 }}>
+      {localStorage.getItem("isAdmin") ? (
+        <IconButton sx={{ mr: -1 }}>
           <Avatar alt={userName} src={localStorage.getItem("avatar")} />
         </IconButton>
-      </Link>
+      ) : (
+        <Link to="/profile">
+          <IconButton sx={{ mr: -1 }}>
+            <Avatar alt={userName} src={localStorage.getItem("avatar")} />
+          </IconButton>
+        </Link>
+      )}
 
       <div className={classes.user}>
         <Typography variant="body1" className={classes.typography}>
@@ -73,14 +79,12 @@ function User({ userName, isAdmin, setUserNameProps }) {
       </div>
 
       {!isLoggedIn ? (
-        <Button sx={{ height: 39, width: 80, mb: 0.5, mt: 1 }}>
-          <Link
-            to="/login"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
+        <Link to="/login" style={{ textDecoration: "none", color: "inherit" }}>
+          <Button sx={{ height: 39, width: 80, mb: 0.5, mt: 1 }}>
+            {" "}
             Sign in
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       ) : (
         <Button onClick={handleLogout} sx={{ height: 39, width: 100, ml: 0 }}>
           Sign out

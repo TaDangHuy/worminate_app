@@ -18,14 +18,17 @@ import {
   Stack,
 } from "@mui/material";
 
-import SimpleReactLightbox, {
-  SRLWrapper,
-  useLightbox,
-} from "simple-react-lightbox";
+import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
 
 import React, { useState } from "react";
 import Header from "../../components/Header";
-import { Route, Switch, useParams, useRouteMatch } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useHistory,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 import Footer from "../../components/Footer";
 import { useGetPostQuery } from "../../api/posts";
 import { useEffect } from "react";
@@ -50,6 +53,7 @@ import { FaMapMarkedAlt } from "react-icons/fa";
 import Menu from "./Menu";
 
 function Detail() {
+  const history = useHistory();
   let { url } = useRouteMatch();
   let { idPost } = useParams();
   const [status, setStatus] = useState(true);
@@ -65,13 +69,14 @@ function Detail() {
   const [state, setState] = useState(0);
   const [reviewId, setReviewId] = useState("");
   const [reviewsScore, setReviewsScore] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [delLoading, setDelLoading] = useState(false);
 
-  // const [skip, setSkip] = useState(false);
   const { data, isLoading } = useGetPostQuery(`posts/${idPost}`);
   const images = data ? data.post.images : [];
   let price;
   // const [authorId, setAuthorId] = useState("");
-  if (data) price = Math.floor((data.post.price * 100) / 100);
+  if (data) price = Math.floor(data.post.price * 100) / 100;
   const [image, setImage] = useState(
     "https://www.viet247.net/images/noimage_food_viet247.jpg"
   );
@@ -109,7 +114,6 @@ function Detail() {
   }, [data]);
 
   const [open, setOpen] = useState(false);
-  // const [selectedValue, setSelectedValue] = useState("");
   const handleClickOpen = (value) => {
     if (value === 1) setState(1);
     else if (value === 2) setState(2);
@@ -117,10 +121,7 @@ function Detail() {
   };
   const handleClose = () => {
     setOpen(false);
-    // setSelectedValue(value);
   };
-
-  const { openLightbox } = useLightbox();
 
   return (
     <>
@@ -149,17 +150,15 @@ function Detail() {
                 <Grid container>
                   <Grid item xs={1}>
                     <Box sx={{ mt: -0.3 }}>
-                      <Link to="/main">
-                        <IconButton>
-                          <ArrowBackIos
-                            sx={{
-                              ":hover": {
-                                color: "primary.main",
-                              },
-                            }}
-                          />
-                        </IconButton>
-                      </Link>
+                      <IconButton onClick={history.goBack}>
+                        <ArrowBackIos
+                          sx={{
+                            ":hover": {
+                              color: "primary.main",
+                            },
+                          }}
+                        />
+                      </IconButton>
                     </Box>
                   </Grid>
                   <Grid item xs={11} sx={{ ml: -4.4, pb: 2.2 }}>
@@ -274,6 +273,7 @@ function Detail() {
                       </Grid>
                       {/* <Grid item xs={2} sx={{ mt: 0.3 }}> */}
                       {token &&
+                        !localStorage.getItem("isAdmin") &&
                         !isLoading &&
                         localStorage.getItem("_id") !==
                           data.post.author._id && (
@@ -331,45 +331,73 @@ function Detail() {
                               token={token}
                               url={url}
                             />
-                            {/* <Stack spacing={0} sx={{ mt: 0 }} direction="row">
-                              <IconButton sx={{ height: 45 }}>
-                                <LocalAtm
-                                  sx={{
-                                    ":hover": {
-                                      color: "primary.main",
-                                    },
-                                  }}
-                                />
-                              </IconButton>
-                              <Link
-                                to={`${url}/edit`}
-                                style={{ textDecoration: "none" }}
-                              >
-                                {" "}
-                                <IconButton sx={{ height: 45 }}>
-                                  <Edit
-                                    sx={{
-                                      ":hover": {
-                                        color: "primary.main",
-                                      },
-                                    }}
-                                  />
-                                </IconButton>
-                              </Link>
-
-                              <IconButton sx={{ height: 45 }}>
-                                <Delete
-                                  sx={{
-                                    ":hover": {
-                                      color: "primary.main",
-                                    },
-                                  }}
-                                />
-                              </IconButton>
-                            </Stack> */}
                           </Grid>
                         )}
-                      {/* </Grid> */}
+                      {!isLoading && localStorage.getItem("isAdmin") && (
+                        <>
+                          <Grid item xs={1} sx={{ mt: -0.5, pl: 1 }}>
+                            <IconButton size="large">
+                              <Delete
+                                fontSize="inherit"
+                                sx={{
+                                  ":hover": {
+                                    color: "primary.main",
+                                  },
+                                }}
+                                onClick={() => {
+                                  setOpenDialog(true);
+                                }}
+                              />
+                            </IconButton>
+                          </Grid>
+                          <Dialog open={openDialog} sx={{ borderRadius: 3 }}>
+                            <DialogTitle>
+                              <Typography variant="h4" sx={{}}>
+                                Delete post
+                              </Typography>
+                            </DialogTitle>
+                            <DialogContent>
+                              <Typography variant="subtitle1" sx={{}}>
+                                Do you really want to delete this post?
+                              </Typography>
+                            </DialogContent>
+                            <DialogActions>
+                              {delLoading ? (
+                                <Box sx={{ px: 3, mt: 1 }}>
+                                  <CircularProgress size={20} />
+                                </Box>
+                              ) : (
+                                <>
+                                  <Button
+                                    onClick={() => {
+                                      setOpenDialog(false);
+                                    }}
+                                  >
+                                    No
+                                  </Button>
+                                  <Button
+                                    onClick={() => {
+                                      setDelLoading(true);
+                                      axios({
+                                        method: "DELETE",
+                                        url: `posts/${idPost}`,
+                                        headers: {
+                                          Authorization: `Bearer ${token}`,
+                                        },
+                                        data: {},
+                                      }).then((response) => {
+                                        history.goBack();
+                                      });
+                                    }}
+                                  >
+                                    Yes
+                                  </Button>
+                                </>
+                              )}
+                            </DialogActions>
+                          </Dialog>
+                        </>
+                      )}
                     </Grid>
                   </Grid>
                   <Grid item xs={8}>
@@ -641,6 +669,7 @@ function Detail() {
                         </Grid>
                         <Grid item sx={{ ml: 2, mt: 0.6 }}>
                           {token &&
+                            !localStorage.getItem("isAdmin") &&
                             data.post.author._id !==
                               localStorage.getItem("_id") &&
                             (following ? (
@@ -746,16 +775,20 @@ function Detail() {
                     <CircularProgress size={20} />
                   </Box>
                 )}
-                {token && !isLoading && !reviewed && !loading && (
-                  <IconButton
-                    color="primary"
-                    size="small"
-                    onClick={handleClickOpen}
-                    sx={{ ml: 3, mt: -1.3 }}
-                  >
-                    <Add sx={{}} />
-                  </IconButton>
-                )}
+                {token &&
+                  !localStorage.getItem("isAdmin") &&
+                  !isLoading &&
+                  !reviewed &&
+                  !loading && (
+                    <IconButton
+                      color="primary"
+                      size="small"
+                      onClick={handleClickOpen}
+                      sx={{ ml: 3, mt: -1.3 }}
+                    >
+                      <Add sx={{}} />
+                    </IconButton>
+                  )}
                 <Dialog
                   open={open}
                   onClose={handleClose}

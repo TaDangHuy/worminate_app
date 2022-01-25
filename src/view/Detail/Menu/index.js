@@ -5,10 +5,24 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { MoreHoriz } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { LocalAtm, Sell, Done, Delete, Edit } from "@mui/icons-material";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+
+import { useHistory } from "react-router-dom";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -60,8 +74,12 @@ export default function CustomizedMenus({
   token,
   url,
 }) {
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -93,18 +111,13 @@ export default function CustomizedMenus({
           setStatus(true);
         });
       } else if (value === 3) {
-        axios({
-          method: "DELETE",
-          url: `posts/${idPost}`,
-          headers: { Authorization: `Bearer ${token}` },
-          data: {},
-        }).then((response) => {});
+        setOpenDialog(true);
       }
     }
   };
 
   return (
-    <div>
+    <>
       <Tooltip title="Manage post" placement="left">
         <IconButton
           onClick={handleClick}
@@ -147,6 +160,50 @@ export default function CustomizedMenus({
           </MenuItem>
         )}
       </StyledMenu>
-    </div>
+      <Dialog open={openDialog} sx={{ borderRadius: 3 }}>
+        <DialogTitle>
+          <Typography variant="h4" sx={{}}>
+            Delete post
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="subtitle1" sx={{}}>
+            Do you really want to delete this post?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          {loading ? (
+            <Box sx={{ px: 3, mt: 1 }}>
+              <CircularProgress size={20} />
+            </Box>
+          ) : (
+            <>
+              <Button
+                onClick={() => {
+                  setOpenDialog(false);
+                }}
+              >
+                No
+              </Button>
+              <Button
+                onClick={() => {
+                  setLoading(true);
+                  axios({
+                    method: "DELETE",
+                    url: `posts/${idPost}`,
+                    headers: { Authorization: `Bearer ${token}` },
+                    data: {},
+                  }).then((response) => {
+                    history.push("/profile");
+                  });
+                }}
+              >
+                Yes
+              </Button>
+            </>
+          )}
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
