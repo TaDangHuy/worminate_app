@@ -8,7 +8,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 import axios from "axios";
 
-axios.defaults.baseURL = "https://shielded-sands-12116.herokuapp.com/api";
+axios.defaults.baseURL = "https://shrouded-taiga-91101.herokuapp.com/api";
 
 ReactDOM.render(
   <Provider store={store}>

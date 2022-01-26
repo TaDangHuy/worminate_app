@@ -42,7 +42,7 @@ function Navbar({ index, setIndex }) {
                 color: "primary.main",
               },
             }}
-            label="Products"
+            label="Posts"
             onClick={() => setIndex(2)}
           />
           <Tab

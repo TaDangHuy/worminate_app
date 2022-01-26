@@ -9,7 +9,7 @@ import { Box, Container, Grid, Pagination } from "@mui/material";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-function Products() {
+function Posts() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
@@ -100,8 +100,10 @@ function Products() {
         post.location,
         post.promotionalPlan,
         post.expirationDate
-          .split("T")[0]
-          .concat(", ", post.expirationDate.split("T")[1].split(".")[0]),
+          ? post.expirationDate
+              .split("T")[0]
+              .concat(", ", post.expirationDate.split("T")[1].split(".")[0])
+          : "None",
         Math.floor(post.postScore * 100) / 100,
         post.createdAt
           .split("T")[0]
@@ -141,4 +143,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default Posts;

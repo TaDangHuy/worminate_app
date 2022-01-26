@@ -20,9 +20,7 @@ function PostCard({ post }) {
           sx={{ width: 225, height: 170, objectFit: "cover" }}
           image={
             post.images.length > 0
-              ? post.images[0].path === ""
-                ? "https://onlinecrm.vn/media/default.jpg"
-                : post.images[0].path
+              ? post.images[0].path
               : "https://onlinecrm.vn/media/default.jpg"
           }
         />

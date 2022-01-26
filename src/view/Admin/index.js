@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Dashboard from "./Dashboard";
 import Users from "./Users";
-import Products from "./Products";
+import Posts from "./Posts";
 import { Box, Container } from "@mui/material";
 import Categories from "./Categories";
 
@@ -17,7 +17,7 @@ function Admin() {
       ) : index === 1 ? (
         <Users />
       ) : index === 2 ? (
-        <Products />
+        <Posts />
       ) : (
         <Categories />
       )}

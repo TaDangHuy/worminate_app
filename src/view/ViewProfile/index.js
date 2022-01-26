@@ -246,7 +246,7 @@ function ViewProfile() {
               )}
 
               {user ? (
-                <Typography variant="h6" sx={{ my: 1, color: "#629c94" }}>
+                <Typography variant="h6" sx={{ my: 3, color: "#3B8767" }}>
                   Contact: {user?.email}
                 </Typography>
               ) : (

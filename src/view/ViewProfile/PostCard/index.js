@@ -23,7 +23,11 @@ function PostCard({ post, id }) {
         <CardMedia
           component="img"
           sx={{ width: 270, height: 140 }}
-          image={post.images.length > 0 ? post.images[0].path : ""}
+          image={
+            post.images.length > 0
+              ? post.images[0].path
+              : "https://onlinecrm.vn/media/default.jpg"
+          }
           alt="post image"
         />
         <CardContent sx={{ height: 114 }}>

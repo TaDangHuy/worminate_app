@@ -59,9 +59,9 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
           >
             <Tab label={`All Posts(${posts.length})`} value="1" />
             <Tab label={`Recent Posts(${recentPosts.length})`} value="2" />
-            <Tab label={`Sold Post(${soldPosts.length})`} value="3" />
+            <Tab label={`Sold Posts(${soldPosts.length})`} value="3" />
             <Tab
-              label={`Favorite Post(${favoritesProduct.length})`}
+              label={`Favorite Posts(${favoritesProduct.length})`}
               value="4"
             />
           </TabList>
@@ -164,7 +164,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
             {recentPosts.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No recent posts</Typography>
+                  <Typography>No Recent Posts</Typography>
                 </Grid>
               </Grid>
             ) : (
@@ -223,7 +223,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
             {soldPosts.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No sold posts</Typography>
+                  <Typography>No Sold Posts</Typography>
                 </Grid>
               </Grid>
             ) : (
@@ -281,7 +281,7 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
             {favoritesProduct.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No favorite posts</Typography>
+                  <Typography>No Favorite Posts</Typography>
                 </Grid>
               </Grid>
             ) : (

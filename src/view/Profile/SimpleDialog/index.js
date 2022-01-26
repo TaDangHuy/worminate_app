@@ -39,7 +39,7 @@ export default function SimpleDialog(props) {
         fullWidth
         titleStyle={{ textAlign: "center" }}
       >
-        <DialogTitle>Following user</DialogTitle>
+        <DialogTitle>Following users</DialogTitle>
         <DialogContent>
           {data.length ? (
             <List sx={{ width: "100%", bgcolor: "background.paper" }}>

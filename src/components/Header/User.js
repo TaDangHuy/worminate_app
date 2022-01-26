@@ -2,7 +2,7 @@ import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -25,6 +25,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 function User({ userName, isAdmin, setUserNameProps }) {
+  const history = useHistory();
   const classes = useStyle();
 
   const [isLoggedIn, setisLoggedIn] = useState(false);
@@ -51,6 +52,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
 
       setUserNameProps("");
       setisLoggedIn(false);
+      history.push("/home");
     } catch (e) {
       console.log(e);
     }
