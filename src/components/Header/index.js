@@ -94,7 +94,7 @@ function Navigation({ index, setIndex }) {
             component="img"
             sx={{
               height: 46,
-              width: 36,
+              width: 41,
               marginRight: 1,
               marginLeft: 1,
               marginTop: -1,
