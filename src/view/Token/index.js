@@ -1078,7 +1078,7 @@ function Token() {
             position: "absolute",
             filter: "opacity(90%)",
           }}
-          src={require("../../assets/images/token/background.jpg").default}
+          src={require("../../assets/images/token/background2.jpg").default}
         />
         <Container sx={{ pt: 3, position: "relative" }}>
           <Box>
@@ -1096,7 +1096,11 @@ function Token() {
                   src={require("../../assets/images/logo.png").default}
                   alt="worminate-token"
                 />
-                <Typography variant="h5" component="div" sx={{ mr: "20px" }}>
+                <Typography
+                  variant="h5"
+                  component="div"
+                  sx={{ mr: "20px", color: "white" }}
+                >
                   WORMINATE
                 </Typography>
               </Stack>
@@ -1111,14 +1115,15 @@ function Token() {
                     sx={{
                       textTransform: "uppercase",
                       fontWeight: "800",
-                      color: "#454545",
+                      // color: "#454545",
+                      color: "white",
                     }}
                   >
                     Worminate Token
                   </Typography>
                   <Typography
                     variant="subtitle1"
-                    sx={{ fontSize: "30px", color: "#4d4a47", mt: 2 }}
+                    sx={{ fontSize: "30px", color: "white", mt: 2 }}
                   >
                     Worminate transforms access to blockchain technology and
                     enables it to be widely used in real economy
@@ -1159,7 +1164,7 @@ function Token() {
                     width: "446px",
                     mt: -10,
                   }}
-                  src={require("../../assets/images/logo.png").default}
+                  src={require("../../assets/images/token.png").default}
                 />
               </Grid>
             </Grid>
@@ -1212,7 +1217,7 @@ function Token() {
                     <Avatar
                       alt="Wor"
                       sx={{ width: "70px", height: "70px" }}
-                      src={require("../../assets/images/logo.png").default}
+                      src={require("../../assets/images/token.png").default}
                     />
                   </ListItemAvatar>
                   <ListItemText

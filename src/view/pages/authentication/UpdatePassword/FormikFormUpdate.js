@@ -1,27 +1,11 @@
 import { LoadingButton } from "@mui/lab";
 import * as Yup from "yup";
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { FormControl, TextField, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import SnackbarCustom from "../../../../components/SnackbarCustom";
-
-const useStyles = makeStyles({
-  link2: {
-    textDecoration: "none",
-    color: "blue",
-  },
-  submitButton: {},
-});
 
 const snackbarProps = {
   success: {
@@ -33,17 +17,18 @@ const snackbarProps = {
     message: "Something went wrong !!!",
   },
 };
+
 const intitialValues = {
   newPassword: "",
   confirmNewPassword: "",
 };
+
 const validationSchema = Yup.object().shape({
   newPassword: Yup.string().required("Required"),
   confirmNewPassword: Yup.string().required("Required"),
 });
-function FormikForm({ history }) {
-  const classes = useStyles();
 
+function FormikFormUpdate({ history }) {
   let { token } = useParams();
 
   const onSubmit = (values, actions) => {
@@ -55,7 +40,7 @@ function FormikForm({ history }) {
       .then((res) => {
         if (res) {
           localStorage.setItem("token", token);
-          history.push("/home");
+          history.push("/login");
         }
       })
       .catch((error) => {
@@ -88,7 +73,7 @@ function FormikForm({ history }) {
                 required
                 fullWidth
                 type="password"
-                name="password"
+                name="newPassword"
                 value={values.newPassword}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -100,7 +85,7 @@ function FormikForm({ history }) {
                 required
                 fullWidth
                 type="password"
-                name="password"
+                name="confirmNewPassword"
                 value={values.confirmNewPassword}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -117,7 +102,6 @@ function FormikForm({ history }) {
                 mb: 2,
                 backgroundColor: "#3b8767",
               }}
-              className={classes.submitButton}
             >
               Update
             </LoadingButton>
@@ -136,4 +120,4 @@ function FormikForm({ history }) {
   );
 }
 
-export default FormikForm;
+export default FormikFormUpdate;
