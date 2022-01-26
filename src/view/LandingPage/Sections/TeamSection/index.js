@@ -43,7 +43,7 @@ const teamItems = [
     },
   },
   {
-    image: require("../../../../assets/images/members/member-3.png").default,
+    image: require("../../../../assets/images/members/TDH.png").default,
     name: "Ta Dang Huy",
     job: "Frontend Developer",
     socialLinks: {

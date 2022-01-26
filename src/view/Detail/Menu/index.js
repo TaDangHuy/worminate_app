@@ -73,6 +73,7 @@ export default function CustomizedMenus({
   idPost,
   token,
   url,
+  setOpenPromotionDialog,
 }) {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -87,7 +88,8 @@ export default function CustomizedMenus({
   const handleClose = (value) => {
     setAnchorEl(null);
     if (value) {
-      if (value === 0) {
+      if (value === 4) {
+        setOpenPromotionDialog(true);
       } else if (value === 1) {
         axios({
           method: "POST",
@@ -142,7 +144,7 @@ export default function CustomizedMenus({
                 <Edit fontSize="large" sx={{ mb: 0.3 }} /> Edit post
               </MenuItem>
             </Link>
-            <MenuItem onClick={() => handleClose(0)} disableRipple>
+            <MenuItem onClick={() => handleClose(4)} disableRipple>
               <LocalAtm fontSize="large" sx={{ mb: 0.3 }} />
               Push post
             </MenuItem>

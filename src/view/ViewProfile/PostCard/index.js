@@ -1,5 +1,4 @@
 import {
-  IconButton,
   Card,
   CardActions,
   CardContent,
@@ -8,8 +7,6 @@ import {
   Stack,
 } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 function PostCard({ post, id }) {
   return (
@@ -22,7 +19,7 @@ function PostCard({ post, id }) {
         },
       }}
     >
-      <Card sx={{ maxWidth: 270 }}>
+      <Card sx={{ maxWidth: 270 }} elevation={4}>
         <CardMedia
           component="img"
           sx={{ width: 270, height: 140 }}

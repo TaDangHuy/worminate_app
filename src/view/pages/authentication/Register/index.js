@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/system";
-import { Typography, Card } from "@mui/material";
+import { Typography, Card, Stack } from "@mui/material";
 
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     height: "300px",
     width: "100%",
     backgroundColor: "#3b8767",
-    padding: "30px 40px",
+    padding: "10px 40px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -61,7 +61,7 @@ const Register = () => {
     <>
       <Box className={classes.container}>
         <Box className={classes.banner}>
-          <Typography
+          {/* <Typography
             variant="h5"
             className={classes.banner_logo}
             sx={{ mb: "50px" }}
@@ -69,7 +69,31 @@ const Register = () => {
             <Link to="/" className={classes.link1}>
               Worminate
             </Link>
-          </Typography>
+          </Typography> */}
+          <Box sx={{ alignSelf: "flex-start" }}>
+            <Link
+              to="/home"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <Stack direction="row" alignItems="center">
+                <Box
+                  component="img"
+                  sx={{
+                    height: 70,
+                    width: 65,
+                    marginRight: 1,
+                    marginLeft: 1,
+                    marginTop: -0.9,
+                  }}
+                  src={require("../../../../assets/images/logo.png").default}
+                  alt="worminate-token"
+                />
+                <Typography variant="h5" component="div" sx={{ mr: "20px" }}>
+                  WORMINATE
+                </Typography>
+              </Stack>
+            </Link>
+          </Box>
           <Typography
             variant="h3"
             className={classes.banner_title}

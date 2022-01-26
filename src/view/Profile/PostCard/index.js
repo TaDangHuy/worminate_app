@@ -21,7 +21,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Tooltip,
   SpeedDial,
   SpeedDialIcon,
   SpeedDialAction,
@@ -43,8 +42,8 @@ import detectEthereumProvider from "@metamask/detect-provider";
 import $ from "jquery";
 import SnackbarCustom from "../../../components/SnackbarCustom";
 
-function createData(name, calories, fat, carbs) {
-  return { name, calories, fat, carbs };
+function createData(a, b, c, d) {
+  return { a, b, c, d };
 }
 
 const rows = [
@@ -87,8 +86,6 @@ function PostCard({
     currentAccount: "",
     currentBalance: 0,
   });
-
-  if (ICOState.tokensSold) console.log(ICOState);
 
   const [isConnected, setIsConnected] = useState(false);
 
@@ -1358,15 +1355,15 @@ function PostCard({
               <TableBody>
                 {rows.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={row.a}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {row.a}
                     </TableCell>
-                    <TableCell align="center">{row.calories}</TableCell>
-                    <TableCell align="center">{row.fat}</TableCell>
-                    <TableCell align="center">{row.carbs}</TableCell>
+                    <TableCell align="center">{row.b}</TableCell>
+                    <TableCell align="center">{row.c}</TableCell>
+                    <TableCell align="center">{row.d}</TableCell>
                   </TableRow>
                 ))}
                 <TableRow
