@@ -57,8 +57,8 @@ function Posts() {
 
   const options = {
     search: true,
-    download: true,
-    print: true,
+    download: false,
+    print: false,
     viewColumns: true,
     filter: true,
     filterType: "dropdown",
