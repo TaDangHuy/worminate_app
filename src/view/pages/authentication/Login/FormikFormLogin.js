@@ -34,17 +34,17 @@ const snackbarProps = {
   },
 };
 
+const intitialValues = {
+  email: "",
+  password: "",
+};
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email format").required("Required"),
+  password: Yup.string().required("Required"),
+});
+
 function FormikForm({ history }) {
   const classes = useStyles();
-
-  const intitialValues = {
-    email: "",
-    password: "",
-  };
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email format").required("Required"),
-    password: Yup.string().required("Required"),
-  });
 
   const onSubmit = (values, actions) => {
     axios({

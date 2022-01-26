@@ -57,7 +57,7 @@ function User({ userName, isAdmin, setUserNameProps }) {
   };
   return (
     <div className={classes.container}>
-      {localStorage.getItem("isAdmin") ? (
+      {localStorage.getItem("isAdmin") === "true" ? (
         <IconButton sx={{ mr: -1 }}>
           <Avatar alt={userName} src={localStorage.getItem("avatar")} />
         </IconButton>

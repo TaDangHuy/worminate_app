@@ -15,7 +15,6 @@ const LandingPage = Loadable(lazy(() => import("../view/LandingPage")));
 const Home = Loadable(lazy(() => import("../view/Home")));
 const Profile = Loadable(lazy(() => import("../view/Profile")));
 const ViewProfile = Loadable(lazy(() => import("../view/ViewProfile")));
-const ForgotPassword = Loadable(lazy(() => import("../view/ForgotPassword")));
 const Main = Loadable(lazy(() => import("../view/Main")));
 const Detail = Loadable(lazy(() => import("../view/Detail")));
 const Create_Edit_Post = Loadable(
@@ -23,6 +22,9 @@ const Create_Edit_Post = Loadable(
 );
 const Login = Loadable(
   lazy(() => import("../view/pages/authentication/Login"))
+);
+const ForgotPassword = Loadable(
+  lazy(() => import("../view/pages/authentication/ForgotPassword"))
 );
 const Register = Loadable(
   lazy(() => import("../view/pages/authentication/Register"))

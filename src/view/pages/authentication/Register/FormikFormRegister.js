@@ -1,9 +1,7 @@
 import * as Yup from "yup";
 import {
   Button,
-  Checkbox,
   FormControl,
-  FormControlLabel,
   Grid,
   TextField,
   Typography,
