@@ -11,7 +11,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import { Form, Formik } from "formik";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import SnackbarCustom from "../../../../components/SnackbarCustom";
 
@@ -26,42 +26,36 @@ const useStyles = makeStyles({
 const snackbarProps = {
   success: {
     severity: "success",
-    message: "Upload success",
+    message: "Update password successfully",
   },
   error: {
     severity: "error",
-    message: "Username or password incorrect",
+    message: "Something went wrong !!!",
   },
 };
-
+const intitialValues = {
+  newPassword: "",
+  confirmNewPassword: "",
+};
+const validationSchema = Yup.object().shape({
+  newPassword: Yup.string().required("Required"),
+  confirmNewPassword: Yup.string().required("Required"),
+});
 function FormikForm({ history }) {
   const classes = useStyles();
 
-  const intitialValues = {
-    email: "",
-    password: "",
-  };
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email format").required("Required"),
-    password: Yup.string().required("Required"),
-  });
+  let { token } = useParams();
 
   const onSubmit = (values, actions) => {
     axios({
-      method: "post",
-      url: "/login",
-      data: values,
+      method: "PUT",
+      url: `/reset-password/${token}`,
+      data: { password: values.newPassword },
     })
       .then((res) => {
         if (res) {
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("UserName", res.data.user.fullName);
-          localStorage.setItem("isAdmin", res.data.user.admin);
-          localStorage.setItem("_id", res.data.user["_id"]);
-          localStorage.setItem("email", res.data.user.email);
-          localStorage.setItem("avatar", res.data.user.image.path);
-          if (res.data.user.admin) history.push("/admin");
-          else history.push("/home");
+          localStorage.setItem("token", token);
+          history.push("/home");
         }
       })
       .catch((error) => {
@@ -89,37 +83,29 @@ function FormikForm({ history }) {
         return (
           <Form>
             <FormControl fullWidth>
-              <Typography sx={{ mb: 1 }}>Email</Typography>
+              <Typography sx={{ mb: 1 }}>New Password</Typography>
               <TextField
-                // margin="normal"
-                required
-                fullWidth
-                type="email"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                // label="Email"
-              />
-            </FormControl>
-            <FormControl fullWidth sx={{ mt: 2 }}>
-              <Typography sx={{ mb: 1 }}>Password</Typography>
-              <TextField
-                // margin="normal"
                 required
                 fullWidth
                 type="password"
                 name="password"
-                value={values.password}
+                value={values.newPassword}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                // label="Password"
               />
             </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <Typography sx={{ mb: 1 }}>Confirm New Password</Typography>
+              <TextField
+                required
+                fullWidth
+                type="password"
+                name="password"
+                value={values.confirmNewPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </FormControl>
 
             <LoadingButton
               fullWidth
@@ -133,22 +119,8 @@ function FormikForm({ history }) {
               }}
               className={classes.submitButton}
             >
-              Sign In
+              Update
             </LoadingButton>
-            <Grid container>
-              <Grid item xs>
-                <Link to="/forgot-password" className={classes.link2}>
-                  <Typography color="primary">Forgot Password</Typography>
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link to="/register" className={classes.link2}>
-                  <Typography color="primary">
-                    Don't have an account? Sign Up
-                  </Typography>
-                </Link>
-              </Grid>
-            </Grid>
 
             <SnackbarCustom
               openSnackbarProp={openSnackbar}

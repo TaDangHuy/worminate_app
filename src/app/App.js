@@ -27,6 +27,10 @@ const Login = Loadable(
 const Register = Loadable(
   lazy(() => import("../view/pages/authentication/Register"))
 );
+
+const UpdatePassword = Loadable(
+  lazy(() => import("../view/pages/authentication/UpdatePassword"))
+);
 const Token = Loadable(lazy(() => import("../view/Token")));
 const Admin = Loadable(lazy(() => import("../view/Admin")));
 
@@ -46,6 +50,7 @@ function App() {
         <PrivateRoute path="/posts/new" component={Create_Edit_Post} />
         <Route path="/posts/:idPost" component={Detail} />
         <Route path="/login" component={Login} />
+        <Route path="/update-password/:token" component={UpdatePassword} />
         <Route path="/register" component={Register} />
         <Route path="/forgot-password" component={ForgotPassword} />
         <Route path="/token" render={() => <Token />} />

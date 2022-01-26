@@ -1,11 +1,10 @@
-import React from "react";
-import { Box } from "@mui/system";
-import { Typography, Card, Stack } from "@mui/material";
-
-import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import FormikFormRegister from "./FormikFormRegister";
+import { Box } from "@mui/system";
+import React from "react";
+import { Link } from "react-router-dom";
 import Footer from "../../../../components/Footer";
+import { Card, Stack, Typography } from "@mui/material";
+import FormikFormUpdate from "./FormikFormUpdate";
 
 const useStyles = makeStyles({
   container: {
@@ -13,7 +12,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginBottom: "-150px",
+    marginBottom: "-250px",
   },
   banner: {
     height: "300px",
@@ -49,32 +48,29 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
   },
+  signInWithButton: {
+    width: "75px",
+    height: "75px",
+    borderRadius: "20px",
+    "&:hover": {
+      backgroundColor: "#3b8767",
+    },
+  },
   link1: {
     textDecoration: "none",
     color: "white",
   },
 });
 
-const Register = () => {
+const UpdatePassword = ({ history }) => {
   const classes = useStyles();
+
   return (
     <>
       <Box className={classes.container}>
         <Box className={classes.banner}>
-          {/* <Typography
-            variant="h5"
-            className={classes.banner_logo}
-            sx={{ mb: "50px" }}
-          >
-            <Link to="/" className={classes.link1}>
-              Worminate
-            </Link>
-          </Typography> */}
           <Box sx={{ alignSelf: "flex-start" }}>
-            <Link
-              to="/home"
-              style={{ color: "inherit", textDecoration: "none" }}
-            >
+            <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
               <Stack direction="row" alignItems="center">
                 <Box
                   component="img"
@@ -109,10 +105,10 @@ const Register = () => {
         <Box className={classes.form_container}>
           <Card className={classes.card} elevation={4}>
             <Typography variant="h5" sx={{ fontWeight: "bold", mb: "30px" }}>
-              Register
+              Update password
             </Typography>
 
-            <FormikFormRegister />
+            <FormikFormUpdate history={history} />
           </Card>
         </Box>
       </Box>
@@ -121,4 +117,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default UpdatePassword;

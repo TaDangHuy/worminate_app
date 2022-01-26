@@ -140,10 +140,14 @@ function Profile() {
           py: 5,
         }}
       >
-        <Button sx={{ width: 100, alignSelf: "flex-start" }}>
-          <Link to="/home" style={{ textDecoration: "none", color: "inherit" }}>
-            Back
-          </Link>
+        <Button
+          alignSelf="flex-start"
+          sx={{ width: 100 }}
+          onClick={history.goBack}
+        >
+          {/* <Link to="/home" style={{ textDecoration: "none", color: "inherit" }}> */}
+          Back
+          {/* </Link> */}
         </Button>
         <Stack direction="row">
           <Box

@@ -19,7 +19,11 @@ import {
   TableCell,
   TableBody,
   Link,
+  TextField,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
+import { Link as Link2 } from "react-router-dom";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
@@ -651,6 +655,7 @@ function Token() {
       alert("Please connect to MetaMask");
     } else {
       event.preventDefault();
+      setOpenBackdrop(true);
       ICOState.contracts.tokenSaleContract.methods
         .buyTokens(numberOfTokens)
         .send({
@@ -667,10 +672,6 @@ function Token() {
             .then(function (_balance) {
               localStorage.setItem("user_balance", _balance);
               setICOState((prev) => {
-                // localStorage.setItem(
-                //   "ICO",
-                //   JSON.stringify({ ...prev, currentBalance: _balance })
-                // );
                 return { ...prev, currentBalance: _balance };
               });
               // dispatch(setCurrentBalance(_balance));
@@ -678,6 +679,9 @@ function Token() {
         })
         .catch((eve) => {
           console.log("Error...");
+        })
+        .finally(() => {
+          setOpenBackdrop(false);
         });
     }
   };
@@ -783,7 +787,7 @@ function Token() {
   // };
   const [ETHtoUSDExchangeRate, setETHtoUSDExchangeRate] = useState(1);
   const [BTCtoUSDExchangeRate, setBTCtoUSDExchangeRate] = useState(1);
-  console.log(BTCtoUSDExchangeRate, ETHtoUSDExchangeRate);
+  const [openBackdrop, setOpenBackdrop] = useState(false);
 
   useEffect(() => {
     ICO.init();
@@ -865,7 +869,7 @@ function Token() {
                     }
                   }
                 });
-            }, 30000);
+            }, 20000);
           }
         }
       );
@@ -1063,7 +1067,7 @@ function Token() {
 
   return (
     <div>
-      <Paper sx={{ height: "100vh" }}>
+      <Box sx={{ height: "100vh", boxSizing: "border-box" }}>
         <Box
           component="img"
           sx={{
@@ -1078,23 +1082,25 @@ function Token() {
         />
         <Container sx={{ pt: 3, position: "relative" }}>
           <Box>
-            <Stack direction="row" alignItems="center">
-              <Box
-                component="img"
-                sx={{
-                  height: 70,
-                  width: 65,
-                  marginRight: 1,
-                  marginLeft: 1,
-                  marginTop: -0.9,
-                }}
-                src={require("../../assets/images/logo.png").default}
-                alt="worminate-token"
-              />
-              <Typography variant="h5" component="div" sx={{ mr: "20px" }}>
-                WORMINATE
-              </Typography>
-            </Stack>
+            <Link2 to="/" style={{ color: "inherit", textDecoration: "none" }}>
+              <Stack direction="row" alignItems="center">
+                <Box
+                  component="img"
+                  sx={{
+                    height: 70,
+                    width: 65,
+                    marginRight: 1,
+                    marginLeft: 1,
+                    marginTop: -0.9,
+                  }}
+                  src={require("../../assets/images/logo.png").default}
+                  alt="worminate-token"
+                />
+                <Typography variant="h5" component="div" sx={{ mr: "20px" }}>
+                  WORMINATE
+                </Typography>
+              </Stack>
+            </Link2>
           </Box>
           <Box sx={{ marginTop: "170px" }}>
             <Grid container maxWidth="lg">
@@ -1159,15 +1165,15 @@ function Token() {
             </Grid>
           </Box>
         </Container>
-      </Paper>
-      <div id="main_part"></div>
+      </Box>
       <div
+        id="main_part"
         style={{
-          width: "100vw",
+          width: "98.8vw",
           minHeight: "100vh",
           background: "#f5f8fb",
-          padding: "20px",
           boxSizing: "border-box",
+          padding: "20px",
         }}
       >
         <Box
@@ -1176,6 +1182,7 @@ function Token() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            px: 4,
           }}
         >
           <Typography
@@ -1187,14 +1194,14 @@ function Token() {
               mb: 5,
             }}
           >
-            WORMINATE TOKENS SALE
+            WORMINATE TOKEN SALE
           </Typography>
           <Grid container spacing={4}>
-            <Grid item xs={4}>
+            <Grid item xs={3.5}>
               <Box
                 sx={{
                   p: 3,
-                  pr: 20,
+                  pr: 15,
                   background: "linear-gradient(to right, #8e2de2, #4a00e0)",
                   color: "white",
                   minHeight: 220,
@@ -1227,7 +1234,7 @@ function Token() {
                         <span className="wor-balance">
                           {ICOState.currentBalance}
                         </span>
-                        WOR
+                        {" WOR"}
                       </Typography>
                     }
                   />
@@ -1288,11 +1295,11 @@ function Token() {
                 </Stack>
               </Box>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3.5}>
               <Box
                 sx={{
                   p: 3,
-                  pr: 20,
+                  pr: 5,
                   background: "white",
                   textTransform: "uppercase",
                   minHeight: 220,
@@ -1312,7 +1319,7 @@ function Token() {
                     1 WOR = <span className="token-price"></span> ETH
                   </Typography>
                   <Typography variant="subtitle2">
-                    1 USD =
+                    {"1 USD = "}
                     {Number.parseFloat(1 / ETHtoUSDExchangeRate).toFixed(8)} ETH
                   </Typography>
                 </div>
@@ -1324,8 +1331,8 @@ function Token() {
                   name="buyForm"
                 >
                   <div className="form-group">
-                    <div className="input-group">
-                      <input
+                    <Stack direction="row" alignItems="center">
+                      {/* <input
                         type="number"
                         id="numberOfTokens"
                         name="number"
@@ -1333,21 +1340,29 @@ function Token() {
                         min={1}
                         pattern="[0-9]"
                         onChange={(e) => setValue(e.target.value)}
+                      /> */}
+                      <TextField
+                        id="numberOfTokens"
+                        type="number"
+                        name="number"
+                        value={value}
+                        min={1}
+                        onChange={(e) => setValue(e.target.value)}
+                        sx={{ p: 0 }}
                       />
-                      <span className="input-group-btn">
-                        <button
-                          className="btn btn-primary btn-lg"
-                          type="submit"
-                        >
-                          Buy Tokens
-                        </button>
-                      </span>
-                    </div>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{ height: "60px", mt: "-4px" }}
+                      >
+                        Buy Tokens
+                      </Button>
+                    </Stack>
                   </div>
                 </form>
               </Box>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={5}>
               <Box
                 sx={{
                   p: 3,
@@ -1485,7 +1500,7 @@ function Token() {
                       variant="body1"
                       sx={{ fontSize: "14px", fontWeight: "500" }}
                     >
-                      Total Token
+                      Total Tokens
                     </Typography>
                     <Typography
                       variant="body1"
@@ -1508,6 +1523,9 @@ function Token() {
           </Grid>
         </Box>
       </div>
+      <Backdrop sx={{ color: "#fff", zIndex: 9999 }} open={openBackdrop}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }

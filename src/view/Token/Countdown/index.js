@@ -4,7 +4,7 @@ import { Paper, Stack } from "@mui/material";
 
 const Countdown = () => {
   const [unixEndDate, setUnixEndDate] = useState(
-    Number(moment(`03 10 2022 03:50 am`, "MM-DD-YYYY hh:mm A").format("X"))
+    Number(moment(`03 15 2022 12:00 am`, "MM-DD-YYYY hh:mm A").format("X"))
   );
   const initialCountdownTimer = {
     days: "",

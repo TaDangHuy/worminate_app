@@ -5,10 +5,24 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { MoreHoriz } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { LocalAtm, Sell, Done, Delete, Edit } from "@mui/icons-material";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+
+import { useHistory } from "react-router-dom";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -59,9 +73,14 @@ export default function CustomizedMenus({
   idPost,
   token,
   url,
+  setOpenPromotionDialog,
 }) {
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,8 +88,9 @@ export default function CustomizedMenus({
   const handleClose = (value) => {
     setAnchorEl(null);
     if (value) {
-      if (value === 0) {
-      } else if (value === 2) {
+      if (value === 4) {
+        setOpenPromotionDialog(true);
+      } else if (value === 1) {
         axios({
           method: "POST",
           url: `posts/${idPost}/sale`,
@@ -81,7 +101,7 @@ export default function CustomizedMenus({
         }).then((response) => {
           setStatus(false);
         });
-      } else if (value === 3) {
+      } else if (value === 2) {
         axios({
           method: "POST",
           url: `posts/${idPost}/sale`,
@@ -92,13 +112,14 @@ export default function CustomizedMenus({
         }).then((response) => {
           setStatus(true);
         });
-      } else if (value === 4) {
+      } else if (value === 3) {
+        setOpenDialog(true);
       }
     }
   };
 
   return (
-    <div>
+    <>
       <Tooltip title="Manage post" placement="left">
         <IconButton
           onClick={handleClick}
@@ -119,28 +140,72 @@ export default function CustomizedMenus({
               to={`${url}/edit`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <MenuItem onClick={() => handleClose(0)} disableRipple>
+              <MenuItem onClick={() => handleClose()} disableRipple>
                 <Edit fontSize="large" sx={{ mb: 0.3 }} /> Edit post
               </MenuItem>
             </Link>
-            <MenuItem onClick={() => handleClose(1)} disableRipple>
+            <MenuItem onClick={() => handleClose(4)} disableRipple>
               <LocalAtm fontSize="large" sx={{ mb: 0.3 }} />
               Push post
             </MenuItem>
-            <MenuItem onClick={() => handleClose(2)} disableRipple>
+            <MenuItem onClick={() => handleClose(1)} disableRipple>
               <Done fontSize="large" sx={{ mb: 0.3 }} /> Mark as sold
             </MenuItem>
-            <MenuItem onClick={() => handleClose(4)} disableRipple>
+            <MenuItem onClick={() => handleClose(3)} disableRipple>
               <Delete fontSize="large" sx={{ mb: 0.3 }} />
               Delete post
             </MenuItem>
           </>
         ) : (
-          <MenuItem onClick={() => handleClose(3)} disableRipple>
+          <MenuItem onClick={() => handleClose(2)} disableRipple>
             <Sell fontSize="large" sx={{ mb: 0.3 }} /> Mark as for sale
           </MenuItem>
         )}
       </StyledMenu>
-    </div>
+      <Dialog open={openDialog} sx={{ borderRadius: 3 }}>
+        <DialogTitle>
+          <Typography variant="h4" sx={{}}>
+            Delete post
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="subtitle1" sx={{}}>
+            Do you really want to delete this post?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          {loading ? (
+            <Box sx={{ px: 3, mt: 1 }}>
+              <CircularProgress size={20} />
+            </Box>
+          ) : (
+            <>
+              <Button
+                onClick={() => {
+                  setOpenDialog(false);
+                }}
+              >
+                No
+              </Button>
+              <Button
+                onClick={() => {
+                  setLoading(true);
+                  axios({
+                    method: "DELETE",
+                    url: `posts/${idPost}`,
+                    headers: { Authorization: `Bearer ${token}` },
+                    data: {},
+                  }).then((response) => {
+                    history.push("/profile");
+                  });
+                }}
+              >
+                Yes
+              </Button>
+            </>
+          )}
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
