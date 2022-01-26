@@ -273,52 +273,60 @@ function Detail() {
                       </Grid>
                       {/* <Grid item xs={2} sx={{ mt: 0.3 }}> */}
                       {token &&
-                        !localStorage.getItem("isAdmin") &&
+                        localStorage.getItem("isAdmin") === "false" &&
                         !isLoading &&
                         localStorage.getItem("_id") !==
                           data.post.author._id && (
-                          <Box
-                            sx={{
-                              position: "absolute",
-                              top: "14.6%",
-                              left: "81.1%",
-                            }}
-                          >
-                            <Heart
-                              isClick={isHeartClicked}
-                              onClick={() => {
-                                const id = data.post._id;
-                                if (isHeartClicked) {
-                                  axios({
-                                    method: "DELETE",
-                                    url: `posts/favorite`,
-                                    headers: {
-                                      Authorization: `Bearer ${token}`,
-                                    },
-                                    data: {
-                                      id,
-                                    },
-                                  })
-                                    .then((response) => {})
-                                    .catch((err) => console.log(err));
-                                } else {
-                                  axios({
-                                    method: "POST",
-                                    url: `posts/favorite`,
-                                    headers: {
-                                      Authorization: `Bearer ${token}`,
-                                    },
-                                    data: {
-                                      id,
-                                    },
-                                  })
-                                    .then((response) => {})
-                                    .catch((err) => console.log(err));
-                                }
-                                setIsHeartClicked(!isHeartClicked);
+                          // <Box
+                          //   sx={{
+                          //     position: "absolute",
+                          //     top: "14.6%",
+                          //     left: "81.1%",
+                          //   }}
+                          // >
+                          <Grid item xs={1} sx={{ pl: 2 }}>
+                            <div
+                              style={{
+                                marginTop: -33,
+                                marginLeft: -35,
                               }}
-                            />
-                          </Box>
+                            >
+                              <Heart
+                                isClick={isHeartClicked}
+                                onClick={() => {
+                                  const id = data.post._id;
+                                  if (isHeartClicked) {
+                                    axios({
+                                      method: "DELETE",
+                                      url: `posts/favorite`,
+                                      headers: {
+                                        Authorization: `Bearer ${token}`,
+                                      },
+                                      data: {
+                                        id,
+                                      },
+                                    })
+                                      .then((response) => {})
+                                      .catch((err) => console.log(err));
+                                  } else {
+                                    axios({
+                                      method: "POST",
+                                      url: `posts/favorite`,
+                                      headers: {
+                                        Authorization: `Bearer ${token}`,
+                                      },
+                                      data: {
+                                        id,
+                                      },
+                                    })
+                                      .then((response) => {})
+                                      .catch((err) => console.log(err));
+                                  }
+                                  setIsHeartClicked(!isHeartClicked);
+                                }}
+                              />
+                            </div>
+                          </Grid>
                         )}
                       {!isLoading &&
                         localStorage.getItem("_id") ===
@@ -333,71 +341,72 @@ function Detail() {
                             />
                           </Grid>
                         )}
-                      {!isLoading && localStorage.getItem("isAdmin") && (
-                        <>
-                          <Grid item xs={1} sx={{ mt: -0.5, pl: 1 }}>
-                            <IconButton size="large">
-                              <Delete
-                                fontSize="inherit"
-                                sx={{
-                                  ":hover": {
-                                    color: "primary.main",
-                                  },
-                                }}
-                                onClick={() => {
-                                  setOpenDialog(true);
-                                }}
-                              />
-                            </IconButton>
-                          </Grid>
-                          <Dialog open={openDialog} sx={{ borderRadius: 3 }}>
-                            <DialogTitle>
-                              <Typography variant="h4" sx={{}}>
-                                Delete post
-                              </Typography>
-                            </DialogTitle>
-                            <DialogContent>
-                              <Typography variant="subtitle1" sx={{}}>
-                                Do you really want to delete this post?
-                              </Typography>
-                            </DialogContent>
-                            <DialogActions>
-                              {delLoading ? (
-                                <Box sx={{ px: 3, mt: 1 }}>
-                                  <CircularProgress size={20} />
-                                </Box>
-                              ) : (
-                                <>
-                                  <Button
-                                    onClick={() => {
-                                      setOpenDialog(false);
-                                    }}
-                                  >
-                                    No
-                                  </Button>
-                                  <Button
-                                    onClick={() => {
-                                      setDelLoading(true);
-                                      axios({
-                                        method: "DELETE",
-                                        url: `posts/${idPost}`,
-                                        headers: {
-                                          Authorization: `Bearer ${token}`,
-                                        },
-                                        data: {},
-                                      }).then((response) => {
-                                        history.goBack();
-                                      });
-                                    }}
-                                  >
-                                    Yes
-                                  </Button>
-                                </>
-                              )}
-                            </DialogActions>
-                          </Dialog>
-                        </>
-                      )}
+                      {!isLoading &&
+                        localStorage.getItem("isAdmin") === "true" && (
+                          <>
+                            <Grid item xs={1} sx={{ mt: -0.5, pl: 1 }}>
+                              <IconButton size="large">
+                                <Delete
+                                  fontSize="inherit"
+                                  sx={{
+                                    ":hover": {
+                                      color: "primary.main",
+                                    },
+                                  }}
+                                  onClick={() => {
+                                    setOpenDialog(true);
+                                  }}
+                                />
+                              </IconButton>
+                            </Grid>
+                            <Dialog open={openDialog} sx={{ borderRadius: 3 }}>
+                              <DialogTitle>
+                                <Typography variant="h4" sx={{}}>
+                                  Delete post
+                                </Typography>
+                              </DialogTitle>
+                              <DialogContent>
+                                <Typography variant="subtitle1" sx={{}}>
+                                  Do you really want to delete this post?
+                                </Typography>
+                              </DialogContent>
+                              <DialogActions>
+                                {delLoading ? (
+                                  <Box sx={{ px: 3, mt: 1 }}>
+                                    <CircularProgress size={20} />
+                                  </Box>
+                                ) : (
+                                  <>
+                                    <Button
+                                      onClick={() => {
+                                        setOpenDialog(false);
+                                      }}
+                                    >
+                                      No
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        setDelLoading(true);
+                                        axios({
+                                          method: "DELETE",
+                                          url: `posts/${idPost}`,
+                                          headers: {
+                                            Authorization: `Bearer ${token}`,
+                                          },
+                                          data: {},
+                                        }).then((response) => {
+                                          history.goBack();
+                                        });
+                                      }}
+                                    >
+                                      Yes
+                                    </Button>
+                                  </>
+                                )}
+                              </DialogActions>
+                            </Dialog>
+                          </>
+                        )}
                     </Grid>
                   </Grid>
                   <Grid item xs={8}>
@@ -667,9 +676,9 @@ function Detail() {
                             {data.post.author.fullName}
                           </Typography>
                         </Grid>
-                        <Grid item sx={{ ml: 2, mt: 0.6 }}>
+                        <Grid item sx={{ ml: 2, mt: 0.4 }}>
                           {token &&
-                            !localStorage.getItem("isAdmin") &&
+                            localStorage.getItem("isAdmin") === "false" &&
                             data.post.author._id !==
                               localStorage.getItem("_id") &&
                             (following ? (
@@ -776,7 +785,7 @@ function Detail() {
                   </Box>
                 )}
                 {token &&
-                  !localStorage.getItem("isAdmin") &&
+                  localStorage.getItem("isAdmin") === "false" &&
                   !isLoading &&
                   !reviewed &&
                   !loading && (

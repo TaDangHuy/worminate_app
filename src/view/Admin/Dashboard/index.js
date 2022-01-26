@@ -5,11 +5,12 @@ import {
   Title,
 } from "@devexpress/dx-react-chart-material-ui";
 import { Animation } from "@devexpress/dx-react-chart";
-import { Grid, Paper } from "@mui/material";
+import { Container, Grid, Paper, Typography } from "@mui/material";
+import { People } from "@mui/icons-material";
 
 const data = [
   { country: "Russia", area: 12 },
-  { country: "Canada", area: 7 },
+  { country: "Canada", area: 75 },
   { country: "USA", area: 7 },
   { country: "China", area: 7 },
   { country: "Brazil", area: 6 },
@@ -20,44 +21,75 @@ const data = [
 
 function Dashboard() {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <Paper>
-          <Chart data={data}>
-            <PieSeries valueField="area" argumentField="country" />
-            <Title text="Promotional Plan" />
-            <Animation />
-          </Chart>
-        </Paper>
+    <Container maxWidth="lg">
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
+          <Paper elevation={4}>
+            <People />
+            <Typography variant="h3">12345</Typography>
+
+            <Typography variant="h6">new users today</Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={3}>
+          {" "}
+          <Paper elevation={4}>
+            <Typography variant="h3">12345</Typography>
+            <Typography>new users today</Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={3}>
+          {" "}
+          <Paper elevation={4}>
+            <Typography variant="h3">12345</Typography>
+            <Typography>new users today</Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={3}>
+          {" "}
+          <Paper elevation={4}>
+            <Typography variant="h3">12345</Typography>
+            <Typography>new users today</Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper elevation={4}>
+            <Chart data={data}>
+              <PieSeries valueField="area" argumentField="country" />
+              <Title text="Promotional Plan" />
+              <Animation />
+            </Chart>
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper elevation={4}>
+            <Chart data={data}>
+              <PieSeries valueField="area" argumentField="country" />
+              <Title text="Promotional Plan" />
+              <Animation />
+            </Chart>
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper elevation={4}>
+            <Chart data={data}>
+              <PieSeries valueField="area" argumentField="country" />
+              <Title text="Promotional Plan" />
+              <Animation />
+            </Chart>
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper elevation={4}>
+            <Chart data={data}>
+              <PieSeries valueField="area" argumentField="country" />
+              <Title text="Promotional Plan" />
+              <Animation />
+            </Chart>
+          </Paper>
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        <Paper>
-          <Chart data={data}>
-            <PieSeries valueField="area" argumentField="country" />
-            <Title text="Promotional Plan" />
-            <Animation />
-          </Chart>
-        </Paper>
-      </Grid>
-      <Grid item xs={6}>
-        <Paper>
-          <Chart data={data}>
-            <PieSeries valueField="area" argumentField="country" />
-            <Title text="Promotional Plan" />
-            <Animation />
-          </Chart>
-        </Paper>
-      </Grid>
-      <Grid item xs={6}>
-        <Paper>
-          <Chart data={data}>
-            <PieSeries valueField="area" argumentField="country" />
-            <Title text="Promotional Plan" />
-            <Animation />
-          </Chart>
-        </Paper>
-      </Grid>
-    </Grid>
+    </Container>
   );
 }
 

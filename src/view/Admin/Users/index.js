@@ -3,9 +3,10 @@ import MUIDataTable from "mui-datatables";
 
 import { useEffect } from "react";
 
-import { Box, Container, Grid, Pagination } from "@mui/material";
+import { Box, Container, Grid, IconButton, Pagination } from "@mui/material";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import Block from "@mui/icons-material/Block";
 
 function Users() {
   const history = useHistory();
@@ -49,15 +50,16 @@ function Users() {
     "Used Tokens",
     "User Rank",
     "Score",
+    "Status",
   ];
 
   const options = {
+    filter: true,
     search: true,
     download: true,
     print: true,
     viewColumns: true,
-    filter: true,
-    filterType: "dropdown",
+    filterType: "textField",
     count: total,
     pagination: false,
     responsive: "vertical",
@@ -85,6 +87,15 @@ function Users() {
     ) => {
       history.push(`/profile/${users[rowMeta.dataIndex]._id}`);
     },
+    customToolbarSelect: (selectedRows, displayData, setSelectedRows) => {
+      return (
+        <Grid>
+          <IconButton>
+            <Block />
+          </IconButton>
+        </Grid>
+      );
+    },
   };
 
   const rows = users
@@ -100,14 +111,11 @@ function Users() {
         user.userRank,
 
         Math.floor(user.userScore * 100) / 100,
+        user.active ? "Normal" : "Blocked",
       ])
     : "";
 
   return (
-    // <Container
-    //   //maxWidth="lg"
-
-    // >
     <Box sx={{ mx: 5 }}>
       <MUIDataTable
         title={"Product list"}
@@ -131,7 +139,6 @@ function Users() {
         </Grid>
       </Grid>
     </Box>
-    // </Container>
   );
 }
 

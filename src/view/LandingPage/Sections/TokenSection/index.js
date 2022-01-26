@@ -112,7 +112,7 @@ function TokenSection() {
                 <Grid item xs={12} mt={-1.5}>
                   <Typography variant="h5">ICO ends in:</Typography>
                   <Typography variant="h3">
-                    <Countdown date={new Date(2022, 3, 15)} />
+                    <Countdown date={new Date("2022-3-15")} />
                   </Typography>
                   <Box sx={{ mt: -1.5 }}>
                     <Typography sx={{ ml: 0 }} variant="body1" component="span">
@@ -129,7 +129,7 @@ function TokenSection() {
                     </Typography>
                   </Box>
                   <Box mt={2}>
-                    <Link to="/token">
+                    <Link to="/token" style={{ textDecoration: "none" }}>
                       <Button variant="contained" size="large" color="primary">
                         Buy now
                       </Button>

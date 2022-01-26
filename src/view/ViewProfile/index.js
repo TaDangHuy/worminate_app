@@ -97,6 +97,7 @@ function ViewProfile() {
         );
     }
   }
+
   return (
     <div
       style={{
@@ -109,7 +110,7 @@ function ViewProfile() {
     >
       <Box
         sx={{
-          width: 1240,
+          width: 1380,
           boxSizing: "border-box",
           m: "auto",
           display: "flex",
@@ -120,20 +121,20 @@ function ViewProfile() {
         }}
       >
         <Button
-          alignSelf="flex-start"
+          // alignSelf="flex-start"
           onClick={history.goBack}
-          sx={{ width: 100 }}
+          sx={{ width: 100, mt: 0 }}
         >
           Back
         </Button>
         <Stack direction="row" spacing={4}>
           <Box
             sx={{
-              width: 300,
-              height: 450,
+              width: 370,
+              height: 500,
               background: "white",
               position: "sticky",
-              top: 100,
+              top: 20,
               bottom: 20,
               borderRadius: "10px",
               overflow: "hidden",
@@ -146,7 +147,7 @@ function ViewProfile() {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 height: 200,
-                width: 400,
+                width: 370,
               }}
               src={require("../../assets/images/backgroundProfile.jpg").default}
             />
