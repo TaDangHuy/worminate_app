@@ -33,15 +33,15 @@ export default function PostPart({ posts }) {
     <Box
       sx={{
         background: "white",
-        width: "950px",
+        width: "980px",
         minHeight: "995px",
         boxSizing: "border-box",
         pl: "40px",
         borderRadius: "10px",
       }}
     >
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <TabContext value={value} sx={{}}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", ml: -4.9 }}>
           <TabList
             onChange={(event, newValue) => {
               setValue(newValue);
@@ -50,7 +50,7 @@ export default function PostPart({ posts }) {
           >
             <Tab label={`All Posts(${posts.length})`} value="1" />
             <Tab label={`Recent Posts(${recentPosts.length})`} value="2" />
-            <Tab label={`Sold Post(${soldPosts.length})`} value="3" />
+            <Tab label={`Sold Posts(${soldPosts.length})`} value="3" />
           </TabList>
         </Box>
         <TabPanel value="1">
@@ -58,7 +58,7 @@ export default function PostPart({ posts }) {
             {posts.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No posts</Typography>
+                  <Typography>No Posts</Typography>
                 </Grid>
               </Grid>
             ) : (
@@ -106,7 +106,7 @@ export default function PostPart({ posts }) {
             {recentPosts.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No recentPosts</Typography>
+                  <Typography>No Recent Posts</Typography>
                 </Grid>
               </Grid>
             ) : (
@@ -154,7 +154,7 @@ export default function PostPart({ posts }) {
             {soldPosts.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No soldPosts</Typography>
+                  <Typography>No Sold Posts</Typography>
                 </Grid>
               </Grid>
             ) : (

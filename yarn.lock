@@ -1187,11 +1187,14 @@
   "resolved" "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   "version" "0.2.3"
 
+<<<<<<< HEAD
+=======
 "@brainhubeu/react-carousel@^2.0.4":
   "integrity" "sha512-FeN4IL0xg2Ld2YC7zk2asnIbECfsaV9ryiHE3KaDRy3VRPKhAdwAcsrUR4u0lzFMghzGIwtrnIfMnYjczwjAdg=="
   "resolved" "https://registry.npmjs.org/@brainhubeu/react-carousel/-/react-carousel-2.0.4.tgz"
   "version" "2.0.4"
 
+>>>>>>> 88080ebcd8f72a316a893fd38e7415534512e61f
 "@camwiegert/typical@^0.1.1":
   "integrity" "sha512-4xAtH3F3uJ8boe9IPahdYFCBELmyOBwHGAn0rDO6C1rx0TuZb5f4UqfuiOQF7YiMJGCOsUIW7LyucMNnVQYsRg=="
   "resolved" "https://registry.npmjs.org/@camwiegert/typical/-/typical-0.1.1.tgz"

@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Paper, Button, Container, Typography, Grid, Box } from "@mui/material";
 import Home from "@mui/icons-material/HomeRounded";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import TypeAnimation from "react-type-animation";
+import axios from "axios";
 
 function HeroSection() {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `/user`,
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }).then((response) => {
+      setIsAdmin(response.data.user.admin);
+    });
+  });
+
+  const history = useHistory();
   return (
     <Paper
       sx={{
@@ -75,19 +89,17 @@ function HeroSection() {
               </Typography>
             </Box>
             <Box my={2} sx={{ textAlign: "center" }}>
-              <Link
-                to="/home"
-                style={{ textDecoration: "none", color: "white" }}
+              <Button
+                startIcon={<Home sx={{ mb: 0.5 }} />}
+                variant="contained"
+                color="primary"
+                sx={{ pt: 1.1 }}
+                onClick={() => {
+                  isAdmin ? history.push("/admin") : history.push("/home");
+                }}
               >
-                <Button
-                  startIcon={<Home sx={{ mb: 0.5 }} />}
-                  variant="contained"
-                  color="primary"
-                  sx={{ pt: 1.1 }}
-                >
-                  Home
-                </Button>
-              </Link>
+                Home
+              </Button>
             </Box>
           </Grid>
         </Grid>

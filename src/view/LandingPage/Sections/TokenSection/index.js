@@ -129,7 +129,7 @@ function TokenSection() {
                     </Typography>
                   </Box>
                   <Box mt={2}>
-                    <Link to="/token">
+                    <Link to="/token" style={{ textDecoration: "none" }}>
                       <Button variant="contained" size="large" color="primary">
                         Buy now
                       </Button>

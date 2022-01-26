@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@brainhubeu/react-carousel": "^2.0.4",
     "@devexpress/dx-core": "^2.7.6",
     "@devexpress/dx-react-chart": "^2.7.6",
     "@devexpress/dx-react-chart-material-ui": "^2.7.6",

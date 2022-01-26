@@ -23,7 +23,6 @@ function Navbar({ index, setIndex }) {
               },
             }}
             label="Dashboard"
-            // href="#dashboard"
             onClick={() => setIndex(0)}
           />
           <Tab
@@ -34,7 +33,6 @@ function Navbar({ index, setIndex }) {
               },
             }}
             label="Users"
-            // href="#users"
             onClick={() => setIndex(1)}
           />
           <Tab
@@ -45,8 +43,17 @@ function Navbar({ index, setIndex }) {
               },
             }}
             label="Products"
-            // href="#products"
             onClick={() => setIndex(2)}
+          />
+          <Tab
+            sx={{
+              color: "#111",
+              ":hover": {
+                color: "primary.main",
+              },
+            }}
+            label="Categories"
+            onClick={() => setIndex(3)}
           />
         </Tabs>
       </Toolbar>
