@@ -56,7 +56,7 @@ const CustomInput = React.forwardRef(function CustomInput(props, ref) {
 
 function Navigation({ index, setIndex }) {
   const [userName, setUserName] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState("false");
   useEffect(() => {
     setUserName(localStorage.getItem("UserName"));
     setIsAdmin(localStorage.getItem("isAdmin"));
@@ -112,7 +112,7 @@ function Navigation({ index, setIndex }) {
         {useLocation().pathname === "/admin" && (
           <AdminTabs index={index} setIndex={setIndex} />
         )}
-        {!isAdmin && (
+        {localStorage.getItem("isAdmin") !== "true" && (
           <CustomInput
             aria-label="Demo input"
             placeholder="Search..."
