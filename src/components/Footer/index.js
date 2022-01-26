@@ -30,7 +30,7 @@ function Footer() {
         >
           <Grid xs={4} item>
             <Typography variant="h6" color="#fff" sx={{ ml: 0.3 }}>
-              Worminate Team
+              Worminate
             </Typography>
             <Typography variant="body1" color="#fff" sx={{ mt: 1 }}>
               <LocationOn sx={{ mb: 0.4, mr: 0.4 }} /> 01 Dai Co Viet, Hai Ba
