@@ -4,7 +4,6 @@ import Home from "@mui/icons-material/HomeRounded";
 import { useHistory } from "react-router-dom";
 import TypeAnimation from "react-type-animation";
 import axios from "axios";
-import background from "../../../../assets/images/background.jpg";
 
 function HeroSection() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -37,7 +36,7 @@ function HeroSection() {
           position: "absolute",
           filter: "opacity(100%)",
         }}
-        src={background}
+        src={require("../../../../assets/images/background.jpg").default}
       />
       <Container
         sx={{
