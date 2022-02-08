@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Container, Typography, Grid } from "@mui/material";
+import { Paper, Container, Typography, Grid, Box, Stack } from "@mui/material";
 import {
   Facebook,
   LinkedIn,
@@ -29,9 +29,23 @@ function Footer() {
           sx={{ mt: 2 }}
         >
           <Grid xs={4} item>
-            <Typography variant="h6" color="#fff" sx={{ ml: 0.3 }}>
-              Worminate
-            </Typography>
+            <Stack direction="row" sx={{ ml: -2 }}>
+              <Box
+                component="img"
+                sx={{
+                  height: 46,
+                  width: 41,
+                  marginRight: 1,
+                  marginLeft: 1,
+                  marginTop: -1,
+                }}
+                src={require("../../assets/images/logo.png").default}
+                alt="worminate-token"
+              />
+              <Typography variant="h6" color="#fff" sx={{ ml: 0.3 }}>
+                Worminate
+              </Typography>
+            </Stack>
             <Typography variant="body1" color="#fff" sx={{ mt: 1 }}>
               <LocationOn sx={{ mb: 0.4, mr: 0.4 }} /> 01 Dai Co Viet, Hai Ba
               Trung, Ha Noi

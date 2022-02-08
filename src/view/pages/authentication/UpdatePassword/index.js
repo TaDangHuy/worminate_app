@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginBottom: "-250px",
+    marginBottom: "-170px",
   },
   banner: {
     height: "300px",

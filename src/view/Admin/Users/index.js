@@ -56,8 +56,8 @@ function Users() {
   const options = {
     filter: true,
     search: true,
-    download: true,
-    print: true,
+    download: false,
+    print: false,
     viewColumns: true,
     filterType: "textField",
     count: total,
