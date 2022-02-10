@@ -23,10 +23,9 @@ function Footer() {
     >
       <Container maxWidth="lg">
         <Grid
-          sx={{ height: "16vh" }}
+          sx={{ height: "16vh", mt: 2 }}
           container
           //</Container>alignItems="center"
-          sx={{ mt: 2 }}
         >
           <Grid xs={4} item>
             <Stack direction="row" sx={{ ml: -2 }}>

@@ -10,6 +10,7 @@ function areEqual(prevProps, nextProps) {
 }
 
 function Map({ height, posts, location, zoom }) {
+  console.log({ posts });
   let longitude, latitude;
   if (typeof location === "object") {
     longitude = location[0];

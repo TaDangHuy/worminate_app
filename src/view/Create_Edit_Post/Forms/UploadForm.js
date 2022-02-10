@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Field, useField } from "formik";
 import UploadField from "../FormFields/UploadField";
 import Thumb from "../common/Thumb";
-import { Button, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 import axios from "axios";
@@ -89,32 +89,52 @@ const ImageForm = (props) => {
         {selectedImages.length > 0 &&
           selectedImages.map((image, i) => (
             <Grid item>
-              <div style={{ position: "relative" }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  "&:hover": {
+                    "& .overlay": {
+                      background: "rgba(0, 0, 0, 0.45)",
+                      zIndex: 100,
+                      opacity: "0.7",
+                    },
+                  },
+                }}
+              >
+                <Box
+                  className="overlay"
+                  sx={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    opacity: "0",
+                    transition: ".5s ease",
+                  }}
+                >
+                  <IconButton
+                    color="error"
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                    }}
+                    onClick={() => {
+                      setSelectedImages((oldState) => [
+                        ...oldState.filter(
+                          (element) => element.path !== image.path
+                        ),
+                      ]);
+                      setDeleteImages(image);
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
                 <Thumb
                   fileName={image.fileName || "no name"}
                   src={image.path}
                 />
-
-                <IconButton
-                  color="error"
-                  sx={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    transform: `translate(${50}%, ${-50}%)`,
-                  }}
-                  onClick={() => {
-                    setSelectedImages((oldState) => [
-                      ...oldState.filter(
-                        (element) => element.path !== image.path
-                      ),
-                    ]);
-                    setDeleteImages(image);
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </div>
+              </Box>
             </Grid>
           ))}
       </Grid>

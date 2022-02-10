@@ -2,16 +2,34 @@ import * as Yup from "yup";
 import {
   Button,
   FormControl,
+  FormHelperText,
   Grid,
+  IconButton,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
 import { useModal } from "react-hooks-use-modal";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
+const initialValues = {
+  fullName: "",
+  email: "",
+  password: "",
+};
+const validationSchema = Yup.object().shape({
+  fullName: Yup.string().required("Required!"),
+  email: Yup.string().email("Invalid email!").required("Required!"),
+  password: Yup.string()
+    .required("Required!")
+    .min(8, "Password should be of minimum 8 characters length"),
+});
 
 function FormikFormRegister() {
   const [Modal, open, close, isOpen] = useModal("root", {
@@ -19,16 +37,8 @@ function FormikFormRegister() {
     closeOnOverlayClick: false,
   });
 
-  const initialValues = {
-    fullName: "",
-    email: "",
-    password: "",
-  };
-  const validationSchema = Yup.object().shape({
-    fullName: Yup.string().required("Required"),
-    email: Yup.string().email("Invalid email format").required("Required"),
-    password: Yup.string().required("Required"),
-  });
+  const [showPassword, setShowPassword] = useState(false);
+
   const onSubmit = (values) => {
     axios({
       method: "post",
@@ -50,51 +60,82 @@ function FormikFormRegister() {
       onSubmit={onSubmit}
     >
       {(formikProps) => {
-        const { values, handleChange, handleBlur } = formikProps;
+        const { values, errors, touched, handleChange, handleBlur } =
+          formikProps;
         return (
           <Form sx={{ mt: 2 }}>
             <FormControl fullWidth>
               <Typography sx={{ mb: -1 }}>Full Name</Typography>
               <TextField
                 margin="normal"
-                required
                 fullWidth
                 type="text"
                 name="fullName"
+                aria-describedby="fullName_helper_text"
                 value={values.fullName}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                // label="Full Name"
+                error={touched.fullName && Boolean(errors.fullName)}
               />
+              <FormHelperText error id="fullName_helper_text">
+                {touched.fullName && errors.fullName}
+              </FormHelperText>
             </FormControl>
 
             <FormControl fullWidth>
-              <Typography sx={{ mb: -1 }}>Email</Typography>
+              <Typography sx={{ mb: 1 }}>Email</Typography>
               <TextField
-                margin="normal"
-                required
                 fullWidth
-                type="text"
+                type="email"
                 name="email"
+                aria-describedby="email_helper_text"
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                // label="Email"
+                error={touched.email && Boolean(errors.email)}
               />
+              <FormHelperText error id="email_helper_text">
+                {touched.email && errors.email}
+              </FormHelperText>
             </FormControl>
 
-            <FormControl fullWidth>
-              <Typography sx={{ mb: -1 }}>Password</Typography>
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <Typography sx={{ mb: 1 }}>Password</Typography>
               <TextField
-                required
-                margin="normal"
-                type="password"
+                fullWidth
+                aria-describedby="password_helper_text"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                // label="Password"
+                error={touched.password && Boolean(errors.password)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => {
+                          setShowPassword((prev) => !prev);
+                        }}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        edge="end"
+                      >
+                        {showPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
+              <FormHelperText error id="password_helper_text">
+                {touched.password && errors.password}
+              </FormHelperText>
             </FormControl>
 
             <Button
