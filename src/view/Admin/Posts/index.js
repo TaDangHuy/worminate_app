@@ -123,6 +123,7 @@ function Posts() {
         columns={columns}
         options={options}
       />
+      {posts.length === 0 && <Box sx={{ height: "14.8vh" }} />}
       <Grid container justifyContent="space-around">
         <Grid item>
           <Pagination

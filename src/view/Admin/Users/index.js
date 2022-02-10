@@ -50,6 +50,7 @@ function Users() {
     "Used Tokens",
     "User Rank",
     "Score",
+    "Reported",
     "Status",
   ];
 
@@ -89,11 +90,10 @@ function Users() {
     },
     customToolbarSelect: (selectedRows, displayData, setSelectedRows) => {
       return (
-        <Grid>
-          <IconButton>
-            <Block />
-          </IconButton>
-        </Grid>
+        // <Grid>
+        <IconButton sx={{ mr: 3, mt: 0 }}>
+          <Block />
+        </IconButton>
       );
     },
   };
@@ -111,6 +111,7 @@ function Users() {
         user.userRank,
 
         Math.floor(user.userScore * 100) / 100,
+        user.reported,
         user.active ? "Normal" : "Blocked",
       ])
     : "";
@@ -123,6 +124,7 @@ function Users() {
         columns={columns}
         options={options}
       />
+      {users.length === 0 && <Box sx={{ height: "14.8vh" }} />}
       <Grid container justifyContent="space-around">
         <Grid item>
           <Pagination

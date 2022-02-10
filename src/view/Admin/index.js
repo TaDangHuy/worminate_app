@@ -21,6 +21,7 @@ function Admin() {
       ) : (
         <Categories />
       )}
+
       <Footer />
     </Box>
   );

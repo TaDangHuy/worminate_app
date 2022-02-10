@@ -8,7 +8,7 @@ function SnackbarCustom({
 }) {
   return (
     <Snackbar
-      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
       open={openSnackbarProp}
       autoHideDuration={4000}
       onClose={(event, reason) => {
@@ -21,6 +21,7 @@ function SnackbarCustom({
       <Alert
         // sx={{ width: "280px" }}
         severity={snackbarprops?.severity}
+        variant="filled"
         onClose={(event, reason) => {
           if (reason === "clickaway") {
             return;
