@@ -35,6 +35,11 @@ function RightContent() {
       sx={{
         ml: 11,
         mt: 1.9,
+        minHeight: "540px",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       {/* <Scrollbars
@@ -90,21 +95,23 @@ function RightContent() {
             </Grid>
           ))}
       </Grid>
-      <Grid container sx={{ mt: 1, justifyContent: "space-around" }}>
-        <Grid item>
-          <Pagination
-            color="primary"
-            count={maxPageIndex}
-            siblingCount={2}
-            boundaryCount={2}
-            page={search.pageIndex}
-            onChange={(event, newPageIndex) => {
-              updatePosts(newPageIndex);
-            }}
-            sx={{ mt: 1, ml: -4.4 }}
-          />
+      {maxPageIndex > 1 && (
+        <Grid container sx={{ mt: 1, justifyContent: "space-around" }}>
+          <Grid item>
+            <Pagination
+              color="primary"
+              count={maxPageIndex}
+              siblingCount={2}
+              boundaryCount={2}
+              page={search.pageIndex}
+              onChange={(event, newPageIndex) => {
+                updatePosts(newPageIndex);
+              }}
+              sx={{ mt: 1, ml: -4.4 }}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      )}
       {/* </Scrollbars> */}
     </Box>
   );

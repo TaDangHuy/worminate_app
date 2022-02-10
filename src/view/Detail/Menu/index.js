@@ -196,7 +196,7 @@ export default function CustomizedMenus({
                     headers: { Authorization: `Bearer ${token}` },
                     data: {},
                   }).then((response) => {
-                    history.push("/profile");
+                    history.push("/main");
                   });
                 }}
               >

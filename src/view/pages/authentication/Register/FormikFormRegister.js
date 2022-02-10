@@ -1,6 +1,11 @@
 import * as Yup from "yup";
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   FormHelperText,
   Grid,
@@ -14,7 +19,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
-import { useModal } from "react-hooks-use-modal";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
@@ -32,12 +36,8 @@ const validationSchema = Yup.object().shape({
 });
 
 function FormikFormRegister() {
-  const [Modal, open, close, isOpen] = useModal("root", {
-    preventScroll: true,
-    closeOnOverlayClick: false,
-  });
-
   const [showPassword, setShowPassword] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const onSubmit = (values) => {
     axios({
@@ -47,7 +47,7 @@ function FormikFormRegister() {
     })
       .then((res) => {
         console.log({ res });
-        open();
+        setOpenDialog(true);
       })
       .catch((error) => {
         console.log({ error });
@@ -159,24 +159,29 @@ function FormikFormRegister() {
                 </Link>
               </Grid>
             </Grid>
-
-            {/* Modal */}
-            <Modal>
-              <div
-                style={{
-                  backgroundColor: "white",
-                  height: "300px",
-                  width: "450px",
-                  borderRadius: "20px",
-                  padding: "20px",
-                }}
-              >
-                <p>
-                  Please check your email and click{" "}
-                  <Link to="/login">here</Link> to login
-                </p>
-              </div>
-            </Modal>
+            <Dialog
+              open={openDialog}
+              onClose={() => setOpenDialog(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                Register successfully
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Please check your email and click Login
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Link
+                  to="/login"
+                  sx={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <Button>Login</Button>
+                </Link>
+              </DialogActions>
+            </Dialog>
           </Form>
         );
       }}

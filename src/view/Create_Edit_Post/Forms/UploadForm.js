@@ -112,7 +112,7 @@ const ImageForm = (props) => {
                   }}
                 >
                   <IconButton
-                    color="error"
+                    color="primary"
                     sx={{
                       position: "absolute",
                       top: 0,

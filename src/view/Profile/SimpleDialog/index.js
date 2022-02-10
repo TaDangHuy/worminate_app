@@ -108,7 +108,7 @@ export default function SimpleDialog(props) {
         }}
       >
         <Alert severity="success" sx={{ width: "100%" }}>
-          Bo theo doi thanh cong
+          Unfollowed successfully
         </Alert>
       </Snackbar>
     </>

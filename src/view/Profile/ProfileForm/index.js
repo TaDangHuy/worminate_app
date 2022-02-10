@@ -49,11 +49,11 @@ const id = localStorage.getItem("_id");
 const snackbarProps = {
   success: {
     severity: "success",
-    message: "Upload success",
+    message: "Updated successfully",
   },
   error: {
     severity: "error",
-    message: "Cannot update password, password is invalid",
+    message: "Incorrect password",
   },
 };
 function ProfileForm({

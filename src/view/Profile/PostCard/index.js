@@ -26,6 +26,7 @@ import {
   SpeedDialAction,
   Chip,
   Box,
+  Avatar,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -76,6 +77,11 @@ function PostCard({
   const [openDialog, setOpenDialog] = useState(false);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const price = Math.floor(post.price * 100) / 100;
+  // const [promptionalPlan, setPromptionalPlan] = useState(post?.promptionalPlan);
+
+  // useEffect(() => {
+  //   setPromptionalPlan(post?.promptionalPlan);
+  // }, [post.promptionalPlan]);
 
   const [ICOState, setICOState] = useState({
     contracts: {},
@@ -1031,116 +1037,6 @@ function PostCard({
           </CardContent>
         </a>
         <CardActions>
-          {/* <Stack
-            sx={{ width: "100%" }}
-            direction="row"
-            justifyContent="space-between"
-          >
-            {type === "recent" && (
-              <Tooltip title="Mark as sold">
-                <IconButton
-                  color="primary"
-                  // variant="outlined"
-                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-                  onClick={() => {
-                    axios({
-                      method: "POST",
-                      url: `/posts/${post["_id"]}/sale`,
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "token"
-                        )}`,
-                      },
-                      data: {
-                        sale: "false",
-                      },
-                    })
-                      .then((res) => {
-                        setRecentPostsProp((oldRecent) => [
-                          ...oldRecent.filter((e) => e !== post),
-                        ]);
-                        setSoldPostsProp((oldSold) => [...oldSold, post]);
-                      })
-                      .catch((err) => console.log(err));
-                  }}
-                >
-                  <DoneIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            {type === "recent" && (
-              <Tooltip title="Delete post">
-                <IconButton
-                  color="primary"
-                  // variant="outlined"
-                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-                  onClick={() => {
-                    setOpenDialog(true);
-                  }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-
-            {type === "recent" && (
-              <Tooltip title="Push post">
-                <Button
-                  onClick={() => setOpenPromotionDialog(true)}
-                  color="primary"
-                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-                >
-                  <LocalAtmIcon />
-                </Button>
-              </Tooltip>
-            )}
-
-            {type === "sold" && (
-              <Tooltip title="Mark as for sale">
-                <IconButton
-                  color="primary"
-                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-                  onClick={() => {
-                    axios({
-                      method: "POST",
-                      url: `/posts/${post["_id"]}/sale`,
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "token"
-                        )}`,
-                      },
-                      data: {
-                        sale: "true",
-                      },
-                    })
-                      .then((res) => {
-                        setSoldPostsProp((oldSold) => [
-                          ...oldSold.filter((e) => e !== post),
-                        ]);
-                        setRecentPostsProp((oldRecent) => [...oldRecent, post]);
-                      })
-                      .catch((err) => console.log(err));
-                  }}
-                >
-                  <SellIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-
-            {type !== "favorite" && (
-              <Tooltip title="Edit post">
-                <IconButton
-                  color="secondary"
-                  variant="outlined"
-                  component={Link}
-                  to={`/posts/${post["_id"]}/edit`}
-                  sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
-                >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-          </Stack> */}
           {type !== "favorite" && type !== "all" && (
             <SpeedDial
               ariaLabel="SpeedDial menu"
@@ -1155,11 +1051,16 @@ function PostCard({
                   key={1}
                   icon={
                     <IconButton
-                      color="secondary"
+                      color="primary"
                       variant="outlined"
                       component={Link}
                       to={`/posts/${post["_id"]}/edit`}
-                      sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "#f5f8fb",
+                          color: "primary",
+                        },
+                      }}
                     >
                       <EditIcon />
                     </IconButton>
@@ -1229,11 +1130,34 @@ function PostCard({
                       onClick={() => setOpenPromotionDialog(true)}
                       color="primary"
                       sx={{ "&:hover": { backgroundColor: "#f5f8fb" } }}
+                      disabled={post?.promotionalPlan}
                     >
-                      <LocalAtmIcon />
+                      {post?.promotionalPlan ? (
+                        post.promotionalPlan === 1 ? (
+                          <Avatar sx={{ bgcolor: "orange" }}>B</Avatar>
+                        ) : post.promotionalPlan === 2 ? (
+                          <Avatar sx={{ bgcolor: "orange" }}>P</Avatar>
+                        ) : post.promotionalPlan === 3 ? (
+                          <Avatar sx={{ bgcolor: "orange" }}>V</Avatar>
+                        ) : (
+                          ""
+                        )
+                      ) : (
+                        <LocalAtmIcon />
+                      )}
                     </Button>
                   }
-                  tooltipTitle={"Push post"}
+                  tooltipTitle={
+                    post?.promotionalPlan
+                      ? post.promotionalPlan === 1
+                        ? "Basic Plan"
+                        : post.promotionalPlan === 2
+                        ? "Plus Plan"
+                        : post.promotionalPlan === 3
+                        ? "Visionary Plan"
+                        : ""
+                      : "Push Post"
+                  }
                 />
               )}
               {type === "sold" && (

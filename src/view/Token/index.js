@@ -22,6 +22,8 @@ import {
   TextField,
   Backdrop,
   CircularProgress,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { Link as Link2 } from "react-router-dom";
 import LinearProgress, {
@@ -665,6 +667,7 @@ function Token() {
         })
         .then((eve) => {
           console.log("Tokens bought...");
+          console.log({ eve });
           // $(".wor-balance").html(numberOfTokens);
           ICOState.contracts.worTokenContract.methods
             .balanceOf(ICOState.currentAccount)
@@ -674,7 +677,13 @@ function Token() {
               setICOState((prev) => {
                 return { ...prev, currentBalance: _balance };
               });
-              // dispatch(setCurrentBalance(_balance));
+              setTableParameters({
+                transactionHash: eve.transactionHash,
+                address: eve.from,
+                age: "a few second ago",
+                quantity: numberOfTokens,
+              });
+              setOpenSnackbar(true);
             });
         })
         .catch((eve) => {
@@ -1065,6 +1074,9 @@ function Token() {
     // dispatch(setCurrentAccount(accounts[0]));
   }
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [tableParameters, setTableParameters] = useState(undefined);
+
   return (
     <div>
       <Box sx={{ height: "100vh", boxSizing: "border-box" }}>
@@ -1437,7 +1449,9 @@ function Token() {
                             <TableCell>
                               <a
                                 style={{ textDecoration: "none" }}
+                                target="_blank"
                                 href={`https://rinkeby.etherscan.io/tx/${e.hash}`}
+                                rel="noreferrer"
                               >
                                 {e.hash.substr(0, 19) + "..."}
                               </a>
@@ -1445,7 +1459,9 @@ function Token() {
                             <TableCell>
                               <a
                                 style={{ textDecoration: "none" }}
+                                target="_blank"
                                 href={`https://rinkeby.etherscan.io/address/${e.address}`}
+                                rel="noreferrer"
                               >
                                 {e.address.substr(0, 19) + "..."}
                               </a>
@@ -1531,6 +1547,74 @@ function Token() {
       <Backdrop sx={{ color: "#fff", zIndex: 9999 }} open={openBackdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openSnackbar}
+        autoHideDuration={4000}
+        message="Da bo theo doi"
+        onClose={(event, reason) => {
+          if (reason === "clickaway") {
+            return;
+          }
+
+          setOpenSnackbar(false);
+        }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          {tableParameters && (
+            <Table sx={{ minWidth: 650 }} aria-label="simple table2">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Tracsaction Hash</TableCell>
+                  <TableCell>Address</TableCell>
+                  <TableCell>Age</TableCell>
+                  <TableCell align="center">Quantity</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {tableParameters.transactionHash}
+                  </TableCell>
+                  <TableCell align="right">{tableParameters.address}</TableCell>
+                  <TableCell align="right">{tableParameters.age}</TableCell>
+                  <TableCell align="right">
+                    {tableParameters.quantity}
+                  </TableCell>
+                </TableRow> */}
+                <TableRow>
+                  <TableCell>
+                    <a
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                      href={`https://rinkeby.etherscan.io/tx/${tableParameters.transactionHash}`}
+                      rel="noreferrer"
+                    >
+                      {tableParameters.transactionHash.substr(0, 19) + "..."}
+                    </a>
+                  </TableCell>
+                  <TableCell>
+                    <a
+                      style={{ textDecoration: "none" }}
+                      target="_blank"
+                      href={`https://rinkeby.etherscan.io/address/${tableParameters.address}`}
+                      rel="noreferrer"
+                    >
+                      {tableParameters.address.substr(0, 19) + "..."}
+                    </a>
+                  </TableCell>
+                  <TableCell>{tableParameters.age}</TableCell>
+                  <TableCell align="center">
+                    {tableParameters.quantity}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          )}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
