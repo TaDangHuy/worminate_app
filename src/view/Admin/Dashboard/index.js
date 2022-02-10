@@ -60,7 +60,7 @@ function Dashboard() {
                 variant="h6"
                 sx={{ display: "inline" }}
               >
-                Average accesses in 30 days
+                Average views in 30 days
               </Typography>
             </Paper>
           </Grid>
