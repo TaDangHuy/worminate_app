@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 const snackbarProps = {
   error: {
     severity: "error",
-    message: "Username or password incorrect",
+    message: "Incorrect username or password",
   },
 };
 
@@ -196,7 +196,7 @@ function FormikForm({ history }) {
               setOpenSnackbarProp={(value) => {
                 setOpenSnackbar(value);
               }}
-              snackbarProps={snackbarProps}
+              snackbarprops={snackbarprops}
             />
           </Form>
         );
