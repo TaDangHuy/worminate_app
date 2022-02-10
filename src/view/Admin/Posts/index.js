@@ -8,6 +8,19 @@ import { setPageIndex } from "../../../features/search/searchSlice";
 import { Box, Container, Grid, Pagination } from "@mui/material";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  CircularProgress,
+  Tooltip,
+  Typography,
+  Button,
+  IconButton,
+} from "@mui/material";
+import SnackbarCustom from "../../../components/SnackbarCustom";
+import { Delete } from "@mui/icons-material";
 
 function Posts() {
   const history = useHistory();
@@ -17,6 +30,12 @@ function Posts() {
   const [maxPageIndex, setMaxPageIndex] = useState(1);
   const [posts, setPosts] = useState([]);
   const [search, setSearch] = useState("");
+  const [numberOfRows, setNumberOfRows] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarprops, setSnackbarProps] = useState({});
+  const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
     axios({
@@ -24,7 +43,6 @@ function Posts() {
       url: `/admin/posts`,
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     }).then((response) => {
-      //dispatch(setPosts(response.data.posts.docs));
       setPosts(response.data.posts.docs);
       setMaxPageIndex(response.data.posts.pages);
       setTotal(response.data.posts.total);
@@ -89,6 +107,22 @@ function Posts() {
     ) => {
       history.push(`/posts/${posts[rowMeta.dataIndex]._id}`);
     },
+    customToolbarSelect: (selectedRows) => {
+      return (
+        <Tooltip title="Delete post">
+          <IconButton sx={{ mr: 4, mt: 0 }}>
+            <Delete
+              onClick={() => {
+                setNumberOfRows(selectedRows.data.length);
+                console.log(numberOfRows);
+                setSelectedRows(selectedRows.data);
+                setOpenDialog(true);
+              }}
+            />
+          </IconButton>
+        </Tooltip>
+      );
+    },
   };
 
   const rows = posts
@@ -139,6 +173,101 @@ function Posts() {
           />
         </Grid>
       </Grid>
+      <Dialog open={openDialog} sx={{ borderRadius: 3 }}>
+        <DialogTitle>
+          <Typography variant="h4" sx={{}}>
+            Delete post
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="subtitle1" sx={{}}>
+            Do you really want to delete selected posts?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          {loading ? (
+            <Box sx={{ px: 3, mt: 1 }}>
+              <CircularProgress size={20} />
+            </Box>
+          ) : (
+            <>
+              <Button
+                onClick={() => {
+                  setOpenDialog(false);
+                }}
+              >
+                No
+              </Button>
+              <Button
+                onClick={() => {
+                  let count = 0;
+                  console.log(numberOfRows);
+                  setLoading(true);
+                  selectedRows.forEach((row) => {
+                    axios({
+                      method: "DELETE",
+                      url: `/admin/posts`,
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                      data: {
+                        id: posts[row.index]._id,
+                      },
+                    })
+                      .then((response) => {
+                        count++;
+                        console.log(count);
+                        if (count === numberOfRows) {
+                          setLoading(false);
+                          setOpenDialog(false);
+                          setSnackbarProps({
+                            severity: "success",
+                            message: "Deleted all posts successfully",
+                          });
+                          setOpenSnackbar(true);
+                          axios({
+                            method: "GET",
+                            url: `/admin/posts`,
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem(
+                                "token"
+                              )}`,
+                            },
+                          }).then((response) => {
+                            setPosts(response.data.posts.docs);
+                            setMaxPageIndex(response.data.posts.pages);
+                            setTotal(response.data.posts.total);
+                          });
+                        }
+                      })
+                      .catch((error) => {
+                        setLoading(false);
+                        setOpenDialog(false);
+                        setSnackbarProps({
+                          severity: "error",
+                          message: "Could not delete all posts",
+                        });
+                        setOpenSnackbar(true);
+                      });
+                  });
+                }}
+              >
+                Yes
+              </Button>
+            </>
+          )}
+        </DialogActions>
+      </Dialog>
+
+      <SnackbarCustom
+        openSnackbarProp={openSnackbar}
+        setOpenSnackbarProp={(value) => {
+          setOpenSnackbar(value);
+        }}
+        snackbarprops={snackbarprops}
+      />
     </Box>
     // </Container>
   );

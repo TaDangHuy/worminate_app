@@ -195,6 +195,7 @@ function FormikForm({ history }) {
                 setOpenSnackbar(value);
               }}
               snackbarprops={snackbarprops}
+              width="320px"
             />
           </Form>
         );

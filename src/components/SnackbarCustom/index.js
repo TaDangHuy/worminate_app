@@ -5,6 +5,7 @@ function SnackbarCustom({
   openSnackbarProp,
   setOpenSnackbarProp,
   snackbarprops,
+  width,
 }) {
   return (
     <Snackbar
@@ -19,7 +20,7 @@ function SnackbarCustom({
       }}
     >
       <Alert
-        // sx={{ width: "280px" }}
+        sx={{ width: { width } }}
         severity={snackbarprops?.severity}
         variant="filled"
         onClose={(event, reason) => {

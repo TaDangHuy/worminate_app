@@ -90,6 +90,7 @@ function RightContent() {
             </Grid>
           ))}
       </Grid>
+      {/* {posts.length < 4 && <Box sx={{ height: "16vh" }} />} */}
       <Grid container sx={{ mt: 1, justifyContent: "space-around" }}>
         <Grid item>
           <Pagination

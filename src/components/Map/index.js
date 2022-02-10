@@ -25,7 +25,7 @@ function Map({ height, posts, location, zoom }) {
   useEffect(() => {
     var map = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/mapbox/streets-v10",
+      style: "mapbox://styles/mapbox/streets-v11",
       center: [longitude, latitude], // center of map
       zoom: zoom,
     });

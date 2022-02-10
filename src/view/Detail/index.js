@@ -88,6 +88,9 @@ const snackbarProps = {
 
 function Detail() {
   const history = useHistory();
+  {
+    console.log(history.location.pathname);
+  }
   let { url } = useRouteMatch();
   let { idPost } = useParams();
   const [status, setStatus] = useState(true);

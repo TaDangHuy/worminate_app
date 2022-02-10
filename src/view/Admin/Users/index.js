@@ -3,10 +3,26 @@ import MUIDataTable from "mui-datatables";
 
 import { useEffect } from "react";
 
-import { Box, Container, Grid, IconButton, Pagination } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Grid,
+  IconButton,
+  Pagination,
+  Tooltip,
+} from "@mui/material";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import Block from "@mui/icons-material/Block";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  CircularProgress,
+} from "@mui/material";
+import SnackbarCustom from "../../../components/SnackbarCustom";
+import { Autorenew } from "@mui/icons-material";
 
 function Users() {
   const history = useHistory();
@@ -16,6 +32,12 @@ function Users() {
   const [maxPageIndex, setMaxPageIndex] = useState(1);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [numberOfRows, setNumberOfRows] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarprops, setSnackbarProps] = useState({});
+  const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
     axios({
@@ -70,11 +92,11 @@ function Users() {
       console.log(action);
       console.dir(state);
     },
-    onChangePage: (number) => {
-      console.log(number);
+    onChangePage: (numberOfRowsber) => {
+      console.log(numberOfRowsber);
       axios({
         method: "GET",
-        url: `/admin/users?page=${number}`,
+        url: `/admin/users?page=${numberOfRowsber}`,
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       }).then((response) => {
         setUsers(response.data.users.docs);
@@ -84,16 +106,24 @@ function Users() {
       rowData,
       rowMeta
       // rowData: string[],
-      // rowMeta: { dataIndex: number, rowIndex: number }
+      // rowMeta: { dataIndex: numberOfRowsber, rowIndex: numberOfRowsber }
     ) => {
       history.push(`/profile/${users[rowMeta.dataIndex]._id}`);
     },
-    customToolbarSelect: (selectedRows, displayData, setSelectedRows) => {
+    customToolbarSelect: (selectedRows) => {
       return (
-        // <Grid>
-        <IconButton sx={{ mr: 3, mt: 0 }}>
-          <Block />
-        </IconButton>
+        <Tooltip title="Change status">
+          <IconButton sx={{ mr: 4, mt: 0 }}>
+            <Autorenew
+              onClick={() => {
+                setNumberOfRows(selectedRows.data.length);
+                console.log(numberOfRows);
+                setSelectedRows(selectedRows.data);
+                setOpenDialog(true);
+              }}
+            />
+          </IconButton>
+        </Tooltip>
       );
     },
   };
@@ -119,7 +149,7 @@ function Users() {
   return (
     <Box sx={{ mx: 5 }}>
       <MUIDataTable
-        title={"Product list"}
+        title={"User list"}
         data={rows}
         columns={columns}
         options={options}
@@ -140,6 +170,102 @@ function Users() {
           />
         </Grid>
       </Grid>
+      <Dialog open={openDialog} sx={{ borderRadius: 3 }}>
+        <DialogTitle>
+          <Typography variant="h4" sx={{}}>
+            Change status
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="subtitle1" sx={{}}>
+            Do you really want to change statuses of selected accounts?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          {loading ? (
+            <Box sx={{ px: 3, mt: 1 }}>
+              <CircularProgress size={20} />
+            </Box>
+          ) : (
+            <>
+              <Button
+                onClick={() => {
+                  setOpenDialog(false);
+                }}
+              >
+                No
+              </Button>
+              <Button
+                onClick={() => {
+                  let count = 0;
+                  console.log(numberOfRows);
+                  setLoading(true);
+                  selectedRows.forEach((row) => {
+                    axios({
+                      method: "PUT",
+                      url: `/admin/users`,
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                      data: {
+                        id: users[row.index]._id,
+                        active: !users[row.index].active,
+                      },
+                    })
+                      .then((response) => {
+                        count++;
+                        console.log(count);
+                        if (count === numberOfRows) {
+                          setLoading(false);
+                          setOpenDialog(false);
+                          setSnackbarProps({
+                            severity: "success",
+                            message: "Changed all statuses successfully",
+                          });
+                          setOpenSnackbar(true);
+                          axios({
+                            method: "GET",
+                            url: `/admin/users`,
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem(
+                                "token"
+                              )}`,
+                            },
+                          }).then((response) => {
+                            setUsers(response.data.users.docs);
+                            setMaxPageIndex(response.data.users.pages);
+                            setTotal(response.data.users.total);
+                          });
+                        }
+                      })
+                      .catch((error) => {
+                        setLoading(false);
+                        setOpenDialog(false);
+                        setSnackbarProps({
+                          severity: "error",
+                          message: "Could not change all statuses",
+                        });
+                        setOpenSnackbar(true);
+                      });
+                  });
+                }}
+              >
+                Yes
+              </Button>
+            </>
+          )}
+        </DialogActions>
+      </Dialog>
+
+      <SnackbarCustom
+        openSnackbarProp={openSnackbar}
+        setOpenSnackbarProp={(value) => {
+          setOpenSnackbar(value);
+        }}
+        snackbarprops={snackbarprops}
+      />
     </Box>
   );
 }
