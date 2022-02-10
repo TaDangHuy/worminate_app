@@ -1,0 +1,23 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,300,500);
+
+.not_found_container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #3b8767;
+  color: #fff;
+  font-size: 100%;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+}
+
+p {
+  font-size: 2em;
+  text-align: center;
+  font-weight: 100;
+}
+
+h1 {
+  text-align: center;
+  font-size: 15em;
+  font-weight: 100;
+}

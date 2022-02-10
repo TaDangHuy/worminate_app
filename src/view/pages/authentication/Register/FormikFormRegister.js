@@ -65,7 +65,9 @@ function FormikFormRegister() {
         return (
           <Form sx={{ mt: 2 }}>
             <FormControl fullWidth>
-              <Typography sx={{ mb: -1 }}>Full Name</Typography>
+              <Typography sx={{ mb: -1, textAlign: "left" }}>
+                Full Name
+              </Typography>
               <TextField
                 margin="normal"
                 fullWidth
@@ -83,7 +85,7 @@ function FormikFormRegister() {
             </FormControl>
 
             <FormControl fullWidth>
-              <Typography sx={{ mb: 1 }}>Email</Typography>
+              <Typography sx={{ mb: 1, textAlign: "left" }}>Email</Typography>
               <TextField
                 fullWidth
                 type="email"
@@ -100,7 +102,9 @@ function FormikFormRegister() {
             </FormControl>
 
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <Typography sx={{ mb: 1 }}>Password</Typography>
+              <Typography sx={{ mb: 1, textAlign: "left" }}>
+                Password
+              </Typography>
               <TextField
                 fullWidth
                 aria-describedby="password_helper_text"

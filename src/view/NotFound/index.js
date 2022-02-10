@@ -1,15 +1,20 @@
+import { Button } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
 import React from "react";
 import { Link } from "react-router-dom";
+import "./Notfound.css";
 
 const NotFound = () => (
-  <div className="not-found">
-    <img
-      src="https://www.pngitem.com/pimgs/m/561-5616833_image-not-found-png-not-found-404-png.png"
-      alt="not-found"
-    />
-    <Link to="/" className="link-home">
-      Go Home
-    </Link>
+  <div className="not_found_container">
+    <h1>404</h1>
+    <p>Oops! Page not found.</p>
+    <div style={{ margin: "auto", width: "90px" }}>
+      <Link to="/home">
+        <Button startIcon={<HomeIcon />} sx={{ color: "white" }} size="large">
+          Home
+        </Button>
+      </Link>
+    </div>
   </div>
 );
 
