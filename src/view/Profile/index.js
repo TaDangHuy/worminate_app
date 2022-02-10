@@ -10,6 +10,7 @@ import ChangeAvatarButton from "./ChangeAvatarButton/ChangeAvatarButton";
 import SimpleDialog from "./SimpleDialog";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function Profile() {
   const history = useHistory();
@@ -143,6 +144,7 @@ function Profile() {
         <Button
           alignSelf="flex-start"
           sx={{ width: 100 }}
+          startIcon={<ArrowBackIcon />}
           onClick={history.goBack}
         >
           {/* <Link to="/home" style={{ textDecoration: "none", color: "inherit" }}> */}

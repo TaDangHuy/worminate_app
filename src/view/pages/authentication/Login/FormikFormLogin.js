@@ -4,15 +4,22 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   Grid,
+  IconButton,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import { makeStyles } from "@mui/styles";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+
 import SnackbarCustom from "../../../../components/SnackbarCustom";
 
 const useStyles = makeStyles({
@@ -20,14 +27,9 @@ const useStyles = makeStyles({
     textDecoration: "none",
     color: "blue",
   },
-  submitButton: {},
 });
 
 const snackbarProps = {
-  success: {
-    severity: "success",
-    message: "Upload success",
-  },
   error: {
     severity: "error",
     message: "Username or password incorrect",
@@ -39,8 +41,10 @@ const intitialValues = {
   password: "",
 };
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email format").required("Required"),
-  password: Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email!").required("Required"),
+  password: Yup.string()
+    .required("Required")
+    .min(8, "Password should be of minimum 8 characters length"),
 });
 
 function FormikForm({ history }) {
@@ -74,9 +78,11 @@ function FormikForm({ history }) {
       });
   };
 
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const [snackbarprops, setSnackbarProps] = React.useState({});
+  const [snackbarprops, setSnackbarProps] = useState({});
+
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Formik
@@ -85,36 +91,69 @@ function FormikForm({ history }) {
       onSubmit={onSubmit}
     >
       {(formikProps) => {
-        const { values, handleChange, handleBlur, isSubmitting } = formikProps;
+        const {
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          isSubmitting,
+        } = formikProps;
         return (
           <Form>
             <FormControl fullWidth>
               <Typography sx={{ mb: 1 }}>Email</Typography>
               <TextField
-                // margin="normal"
-                required
                 fullWidth
                 type="email"
                 name="email"
+                aria-describedby="email_helper_text"
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                // label="Email"
+                error={touched.email && Boolean(errors.email)}
               />
+              <FormHelperText error id="email_helper_text">
+                {touched.email && errors.email}
+              </FormHelperText>
             </FormControl>
             <FormControl fullWidth sx={{ mt: 2 }}>
               <Typography sx={{ mb: 1 }}>Password</Typography>
               <TextField
-                // margin="normal"
-                required
                 fullWidth
-                type="password"
+                aria-describedby="password_helper_text"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                // label="Password"
+                error={touched.password && Boolean(errors.password)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => {
+                          setShowPassword((prev) => !prev);
+                        }}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        edge="end"
+                      >
+                        {showPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
+              <FormHelperText error id="password_helper_text">
+                {touched.password && errors.password}
+              </FormHelperText>
             </FormControl>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

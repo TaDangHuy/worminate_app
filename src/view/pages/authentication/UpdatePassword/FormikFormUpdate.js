@@ -1,8 +1,19 @@
 import { LoadingButton } from "@mui/lab";
 import * as Yup from "yup";
-import { FormControl, TextField, Typography } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
+
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import SnackbarCustom from "../../../../components/SnackbarCustom";
@@ -24,8 +35,16 @@ const intitialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  newPassword: Yup.string().required("Required"),
-  confirmNewPassword: Yup.string().required("Required"),
+  newPassword: Yup.string()
+    .required("New Password is required")
+    .min(8, "Password should be of minimum 8 characters length"),
+  confirmNewPassword: Yup.string()
+    .required("Confirm new Password is required")
+    .oneOf(
+      [Yup.ref("newPassword"), null],
+      "Confirm password must match with new password"
+    )
+    .min(8, "Password should be of minimum 8 characters length"),
 });
 
 function FormikFormUpdate({ history }) {
@@ -53,6 +72,11 @@ function FormikFormUpdate({ history }) {
       });
   };
 
+  const [showPassword, setShowPassword] = useState({
+    newPassword: false,
+    confirmPassword: false,
+  });
+
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
   const [snackbarprops, setSnackbarProps] = React.useState({});
@@ -64,32 +88,100 @@ function FormikFormUpdate({ history }) {
       onSubmit={onSubmit}
     >
       {(formikProps) => {
-        const { values, handleChange, handleBlur, isSubmitting } = formikProps;
+        const {
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          isSubmitting,
+        } = formikProps;
         return (
           <Form>
             <FormControl fullWidth>
               <Typography sx={{ mb: 1 }}>New Password</Typography>
               <TextField
-                required
                 fullWidth
-                type="password"
+                aria-describedby="newPassword_helper_text"
+                type={showPassword.newPassword ? "text" : "password"}
                 name="newPassword"
                 value={values.newPassword}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                error={touched.newPassword && Boolean(errors.newPassword)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => {
+                          setShowPassword((prev) => ({
+                            ...prev,
+                            newPassword: !prev.newPassword,
+                          }));
+                        }}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        edge="end"
+                      >
+                        {showPassword.newPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
+              <FormHelperText error id="password_helper_text">
+                {touched.newPassword && errors.newPassword}
+              </FormHelperText>
             </FormControl>
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <Typography sx={{ mb: 1 }}>Confirm New Password</Typography>
+              <Typography sx={{ mb: 1 }}>Confirm new Password</Typography>
               <TextField
-                required
                 fullWidth
-                type="password"
+                aria-describedby="confirmNewPassword_helper_text"
+                type={showPassword.confirmNewPassword ? "text" : "password"}
                 name="confirmNewPassword"
                 value={values.confirmNewPassword}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                error={
+                  touched.confirmNewPassword &&
+                  Boolean(errors.confirmNewPassword)
+                }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => {
+                          setShowPassword((prev) => ({
+                            ...prev,
+                            confirmNewPassword: !prev.confirmNewPassword,
+                          }));
+                        }}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        edge="end"
+                      >
+                        {showPassword.confirmNewPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
+              <FormHelperText error id="password_helper_text">
+                {touched.confirmNewPassword && errors.confirmNewPassword}
+              </FormHelperText>
             </FormControl>
 
             <LoadingButton

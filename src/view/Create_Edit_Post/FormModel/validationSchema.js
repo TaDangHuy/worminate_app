@@ -11,19 +11,25 @@ const {
 const validationSchema = [
   Yup.object().shape({
     // Client info
-    [title.name]: Yup.string().required(`${title.requiredErrorMsg}`),
+    [title.name]: Yup.string()
+      .required(`${title.requiredErrorMsg}`)
+      .test(
+        "len",
+        "Must be from 3 to 25 characters",
+        (val) => val?.length && val.length > 2 && val.length < 26
+      ),
     [location.name]: Yup.string().required(`${location.requiredErrorMsg}`),
     [description.name]: Yup.string().required(
       `${description.requiredErrorMsg}`
     ),
-    [category.name]: Yup.string()
-      .nullable()
-      .required(`${category.requiredErrorMsg}`),
-    [price.name]: Yup.number().required(`${price.requiredErrorMsg}`),
+    [category.name]: Yup.string().required(`${category.requiredErrorMsg}`),
+    [price.name]: Yup.number("Price must be a number").required(
+      `${price.requiredErrorMsg}`
+    ),
   }),
   // Upload
   Yup.object().shape({
-    [images.name]: Yup.array().nullable(),
+    [images.name]: Yup.array(),
     // .test(
     //   "fileSize",
     //   "File too large",

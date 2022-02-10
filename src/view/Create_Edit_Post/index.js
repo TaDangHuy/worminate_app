@@ -75,7 +75,7 @@ function Create_Edit_Post({ post }) {
   const [formInitialValues, setFormInitialValues] = useState({});
   useEffect(() => {
     setFormInitialValues({
-      [title.name]: post?.title || "",
+      [title.name]: post ? post.title : "",
       [location.name]: post?.location || "",
       [description.name]: post?.description,
       [price.name]: post?.price || null,
@@ -212,18 +212,19 @@ function Create_Edit_Post({ post }) {
           mb: "30px",
         }}
       >
+        {/* <Link
+          to="/profile"
+          style={{ textDecoration: "none", color: "inherit" }}
+        > */}
         <Button
           alignSelf="flex-start"
           sx={{ width: 100 }}
           startIcon={<ArrowBackIcon />}
+          onClick={history.goBack}
         >
-          <Link
-            to="/profile"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            Back
-          </Link>
+          Back
         </Button>
+        {/* </Link> */}
         <Stepper activeStep={activeStep}>
           {steps.map((label) => (
             <Step key={label}>

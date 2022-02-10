@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { styled } from "@mui/system";
 import {
+  Backdrop,
   Button,
+  CircularProgress,
   FormControl,
+  FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
   Typography,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -17,54 +18,29 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import axios from "axios";
 import SnackbarCustom from "../../../components/SnackbarCustom";
+import CustomInput from "../../../components/CustomInput";
 
 const validationSchema = yup.object({
   fullName: yup.string("Full Name").required("Name is required"),
   password: yup
     .string("Current Password")
-    .required("Current Password is required"),
+    .required("Current Password is required")
+    .min(8, "Password should be of minimum 8 characters length"),
   newPassword: yup
     .string("New Password")
-    .min(6, "Password should be of minimum 8 characters length"),
+    .notOneOf(
+      [yup.ref("password")],
+      "New Password must not match with Current Password"
+    )
+    .min(8, "Password should be of minimum 8 characters length"),
   confirmPassword: yup
     .string("Confirm Password")
-    .min(6, "Passsword should be of minimum 8 characters length"),
+    .oneOf(
+      [yup.ref("newPassword"), null],
+      "Confirm password must match with new password"
+    )
+    .min(8, "Passsword should be of minimum 8 characters length"),
 });
-
-const CustomInput = styled(OutlinedInput)(({ theme }) => ({
-  "label + &": {
-    marginTop: theme.spacing(4),
-  },
-  "& .MuiInputBase-input": {
-    borderRadius: 6,
-    position: "relative",
-    backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
-    fontSize: 16,
-    width: "100%",
-    padding: "10px 12px",
-    transition: theme.transitions.create([
-      "border-color",
-      "background-color",
-      "box-shadow",
-    ]),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Nunito Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      borderColor: theme.palette.primary.main,
-    },
-  },
-}));
 
 const email = localStorage.getItem("email");
 const token = localStorage.getItem("token");
@@ -89,12 +65,13 @@ function ProfileForm({
   const formik = useFormik({
     initialValues: {
       fullName: fullName,
-      password: null,
-      newPassword: null,
-      confirmPassword: null,
+      password: undefined,
+      newPassword: undefined,
+      confirmPassword: undefined,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      setOpenBackdrop(true);
       let { confirmPassword, ...data } = values;
       data = { ...data, image: avatar };
       axios({
@@ -109,28 +86,27 @@ function ProfileForm({
           // setIsChangedAvatarProp(true);
           setFullNameProp(response.data.user.fullName);
           setSnackbarProps(snackbarProps.success);
-          setOpenSnackbar(true);
         })
         .catch((error) => {
           setSnackbarProps(snackbarProps.error);
+        })
+        .finally(() => {
           setOpenSnackbar(true);
+          setOpenBackdrop(false);
         });
     },
   });
 
-  const [showPassword, setShowPassword] = React.useState({
+  const [showPassword, setShowPassword] = useState({
     password: false,
     newPassword: false,
     confirmPassword: false,
   });
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openBackdrop, setOpenBackdrop] = useState(false);
 
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
-
-  const [snackbarprops, setSnackbarProps] = React.useState({});
+  const [snackbarprops, setSnackbarProps] = useState({});
 
   return (
     <div>
@@ -173,14 +149,14 @@ function ProfileForm({
               </InputLabel>
               <CustomInput
                 id="password"
+                aria-describedby="password_helper_text"
                 type={showPassword.password ? "text" : "password"}
                 value={formik.values.password}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
-                // helperText={formik.touched.password && formik.errors.password}
-                helperText={"fff"}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -191,7 +167,9 @@ function ProfileForm({
                           password: !showPassword.password,
                         });
                       }}
-                      onMouseDown={handleMouseDownPassword}
+                      onMouseDown={(event) => {
+                        event.preventDefault();
+                      }}
                       edge="end"
                     >
                       {showPassword.password ? (
@@ -203,6 +181,9 @@ function ProfileForm({
                   </InputAdornment>
                 }
               />
+              <FormHelperText error id="password_helper_text">
+                {formik.touched.password && formik.errors.password}
+              </FormHelperText>
             </FormControl>
           </Grid>
           <Grid item xs={6}>
@@ -214,16 +195,15 @@ function ProfileForm({
               </InputLabel>
               <CustomInput
                 id="newPassword"
+                aria-describedby="newPassword_helper_text"
                 type={showPassword.newPassword ? "text" : "password"}
                 value={formik.values.newPassword}
                 onChange={formik.handleChange}
-                // error={
-                //   // formik.touched.newPassword &&
-                //   Boolean(formik.errors.newPassword)
-                // }
-                // helperText={
-                //   formik.touched.newPassword && formik.errors.newPassword
-                // }
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.newPassword &&
+                  Boolean(formik.errors.newPassword)
+                }
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -234,7 +214,9 @@ function ProfileForm({
                           newPassword: !showPassword.newPassword,
                         });
                       }}
-                      onMouseDown={handleMouseDownPassword}
+                      onMouseDown={(event) => {
+                        event.preventDefault();
+                      }}
                       edge="end"
                     >
                       {showPassword.newPassword ? (
@@ -246,6 +228,9 @@ function ProfileForm({
                   </InputAdornment>
                 }
               />
+              <FormHelperText error id="newPassword_helper_text">
+                {formik.touched.newPassword && formik.errors.newPassword}
+              </FormHelperText>
             </FormControl>
           </Grid>
           <Grid item xs={6}>
@@ -257,17 +242,15 @@ function ProfileForm({
               </InputLabel>
               <CustomInput
                 id="confirmPassword"
+                aria-describedby="confirmPassword_helper_text"
                 type={showPassword.confirmPassword ? "text" : "password"}
                 value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
-                // error={
-                //   // formik.touched.confirmPassword &&
-                //   Boolean(formik.errors.confirmPassword)
-                // }
-                // helperText={
-                //   formik.touched.confirmPassword &&
-                //   formik.errors.confirmPassword
-                // }
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.confirmPassword &&
+                  Boolean(formik.errors.confirmPassword)
+                }
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -278,7 +261,9 @@ function ProfileForm({
                           confirmPassword: !showPassword.confirmPassword,
                         });
                       }}
-                      onMouseDown={handleMouseDownPassword}
+                      onMouseDown={(event) => {
+                        event.preventDefault();
+                      }}
                       edge="end"
                     >
                       {showPassword.confirmPassword ? (
@@ -290,6 +275,10 @@ function ProfileForm({
                   </InputAdornment>
                 }
               />
+              <FormHelperText error id="confirmPassword_helper_text">
+                {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword}
+              </FormHelperText>
             </FormControl>
           </Grid>
           <Grid item xs={12} sx={{ mt: 2 }}>
@@ -306,6 +295,9 @@ function ProfileForm({
           }}
           snackbarprops={snackbarprops}
         />
+        <Backdrop sx={{ color: "#fff", zIndex: 9999 }} open={openBackdrop}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </form>
     </div>
   );

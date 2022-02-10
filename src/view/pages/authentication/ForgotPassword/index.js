@@ -1,8 +1,18 @@
-import { Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import SnackbarCustom from "../../../../components/SnackbarCustom";
+import CustomInput from "../../../../components/CustomInput";
+import * as yup from "yup";
+import { useFormik } from "formik";
 
 const snackbarProps = {
   success: {
@@ -16,11 +26,38 @@ const snackbarProps = {
 };
 
 function ForgotPassWord({ history }) {
-  const [value, setValue] = useState("");
-
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
   const [snackbarprops, setSnackbarProps] = React.useState({});
+
+  const formik = useFormik({
+    initialValues: {
+      email: undefined,
+    },
+    validationSchema: yup.object({
+      email: yup
+        .string()
+        .email("Invalid email!")
+        .required("Email is required!"),
+    }),
+    onSubmit: (values) => {
+      axios({
+        method: "POST",
+        url: `/forgot-password`,
+        data: { email: values.email },
+      })
+        .then((res) => {
+          setSnackbarProps(snackbarProps.success);
+          setOpenSnackbar(true);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            setSnackbarProps(snackbarProps.error);
+            setOpenSnackbar(true);
+          }
+        });
+    },
+  });
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -34,45 +71,34 @@ function ForgotPassWord({ history }) {
         <Typography variant="h4" sx={{ mt: 2 }}>
           Forgot Password
         </Typography>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{ mt: 1, alignSelf: "flex-start" }}
-          onClick={() => {
-            axios({
-              method: "POST",
-              url: `/forgot-password`,
-              // headers: {
-              //   // Authorization: `Bearer ${localStorage.getItem("token")}`,
-              // },
-              data: { email: value },
-            })
-              .then((res) => {
-                setSnackbarProps(snackbarProps.success);
-                setOpenSnackbar(true);
-              })
-              .catch((error) => {
-                if (error.response && error.response.status === 404) {
-                  setSnackbarProps(snackbarProps.error);
-                  setOpenSnackbar(true);
-                }
-              });
-          }}
-        >
-          Reset Password
-        </Button>
+        <form onSubmit={formik.handleSubmit}>
+          <FormControl variant="standard" fullWidth>
+            <InputLabel shrink htmlFor="email">
+              <Typography variant="h5" color="textSecondary">
+                Email
+              </Typography>
+            </InputLabel>
+            <CustomInput
+              type="email"
+              id="email"
+              aria-describedby="email_helper_text"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+            />
+            <FormHelperText error id="email_helper_text">
+              {formik.touched.email && formik.errors.email}
+            </FormHelperText>
+          </FormControl>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ mt: 1, alignSelf: "flex-start" }}
+          >
+            Reset Password
+          </Button>
+        </form>
       </Box>
       <SnackbarCustom
         openSnackbarProp={openSnackbar}

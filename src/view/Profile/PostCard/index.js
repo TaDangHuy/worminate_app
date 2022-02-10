@@ -25,13 +25,13 @@ import {
   SpeedDialIcon,
   SpeedDialAction,
   Chip,
+  Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { BiDollar } from "react-icons/bi";
-import { Box } from "@mui/lab/node_modules/@mui/system";
 import DoneIcon from "@mui/icons-material/Done";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SellIcon from "@mui/icons-material/Sell";

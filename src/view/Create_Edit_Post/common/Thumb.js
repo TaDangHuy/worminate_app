@@ -15,7 +15,6 @@ const Thumb = (props) => {
         minWidth: "50px",
         padding: "1px",
         backgroundColor: "gray",
-        marginLeft: "20px",
         maxHeight: 1000,
       }}
     />
