@@ -155,7 +155,7 @@ function FormikForm({ history }) {
               setOpenSnackbarProp={(value) => {
                 setOpenSnackbar(value);
               }}
-              snackbarprops={snackbarprops}
+              snackbarProps={snackbarProps}
             />
           </Form>
         );

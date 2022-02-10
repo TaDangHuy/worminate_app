@@ -1549,9 +1549,11 @@ function Detail() {
                               localStorage.getItem("_id") &&
                             (following ? (
                               <Button
-                                startIcon={<PersonRemoveAlt1 />}
+                                startIcon={
+                                  <PersonRemoveAlt1 sx={{ mb: 0.5 }} />
+                                }
                                 variant="outlined"
-                                color="primary"
+                                color="error"
                                 size="small"
                                 sx={{ mt: 1 }}
                                 onClick={() => {
@@ -1571,7 +1573,7 @@ function Detail() {
                               </Button>
                             ) : (
                               <Button
-                                startIcon={<PersonAddAlt1 />}
+                                startIcon={<PersonAddAlt1 sx={{ mb: 0.5 }} />}
                                 variant="outlined"
                                 color="primary"
                                 size="small"

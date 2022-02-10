@@ -8,11 +8,28 @@ import axios from "axios";
 import { Link, useHistory, useParams } from "react-router-dom";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import { Report } from "@mui/icons-material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  CircularProgress,
+} from "@mui/material";
+import SnackbarCustom from "../../components/SnackbarCustom";
 
 function ViewProfile() {
   const history = useHistory();
   let { idUser } = useParams();
+  const token = localStorage.getItem("token");
+
   const [user, setUser] = useState(null);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarprops, setSnackbarProps] = useState({});
 
   useEffect(() => {
     axios({
@@ -131,7 +148,7 @@ function ViewProfile() {
           <Box
             sx={{
               width: 370,
-              height: 500,
+              height: 530,
               background: "white",
               position: "sticky",
               top: 20,
@@ -253,6 +270,95 @@ function ViewProfile() {
                 <Skeleton width={150} />
               )}
 
+              {token ? (
+                user ? (
+                  <Button
+                    startIcon={<Report sx={{ mb: 0.2 }} />}
+                    variant="outlined"
+                    color="error"
+                    // size="small"
+                    sx={{ mt: 0 }}
+                    onClick={() => {
+                      setOpenDialog(true);
+                    }}
+                  >
+                    Report
+                  </Button>
+                ) : (
+                  <Skeleton width={150} />
+                )
+              ) : (
+                ""
+              )}
+
+              <Dialog open={openDialog} sx={{ borderRadius: 3 }}>
+                <DialogTitle>
+                  <Typography variant="h4" sx={{}}>
+                    Report user
+                  </Typography>
+                </DialogTitle>
+                <DialogContent>
+                  <Typography variant="subtitle1" sx={{}}>
+                    Do you really want to report this user?
+                  </Typography>
+                </DialogContent>
+                <DialogActions>
+                  {loading ? (
+                    <Box sx={{ px: 3, mt: 1 }}>
+                      <CircularProgress size={20} />
+                    </Box>
+                  ) : (
+                    <>
+                      <Button
+                        onClick={() => {
+                          setOpenDialog(false);
+                        }}
+                      >
+                        No
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setLoading(true);
+                          axios({
+                            method: "POST",
+                            url: `user/report`,
+                            headers: { Authorization: `Bearer ${token}` },
+                            data: { userId: idUser },
+                          })
+                            .then((response) => {
+                              setLoading(false);
+                              setOpenDialog(false);
+                              setSnackbarProps({
+                                severity: "success",
+                                message: "User was reported successfully",
+                              });
+                              setOpenSnackbar(true);
+                            })
+                            .catch((error) => {
+                              setLoading(false);
+                              setOpenDialog(false);
+                              setSnackbarProps({
+                                severity: "error",
+                                message: "Failed to report user",
+                              });
+                              setOpenSnackbar(true);
+                            });
+                        }}
+                      >
+                        Yes
+                      </Button>
+                    </>
+                  )}
+                </DialogActions>
+              </Dialog>
+
+              <SnackbarCustom
+                openSnackbarProp={openSnackbar}
+                setOpenSnackbarProp={(value) => {
+                  setOpenSnackbar(value);
+                }}
+                snackbarprops={snackbarprops}
+              />
               {/* <Box sx={{ mt: "30px", display: "flex", alignItems: "center" }}>
                 {user ? (
                   <></>
