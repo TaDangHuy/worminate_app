@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Paper, Button, Container, Typography, Grid, Box } from "@mui/material";
 import Home from "@mui/icons-material/HomeRounded";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import TypeAnimation from "react-type-animation";
 import axios from "axios";
 
