@@ -138,7 +138,15 @@ function Users() {
         user.postList.length,
         user.salesHistory,
         user.usedTokens,
-        user.userRank,
+        user.userRank === "S"
+          ? "Legendary"
+          : user.userRank === "A"
+          ? "Master"
+          : user.userRank === "B"
+          ? "Pro"
+          : user.userRank === "C"
+          ? "Elite"
+          : "Rookie",
 
         Math.floor(user.userScore * 100) / 100,
         user.reported,

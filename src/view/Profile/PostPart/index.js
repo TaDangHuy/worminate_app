@@ -71,7 +71,27 @@ export default function PostPart({ posts, favoritesProduct, setPostsProp }) {
             {posts.length === 0 ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Typography>No posts</Typography>
+                  <Button
+                    component={Link}
+                    to="/posts/new"
+                    variant="outlined"
+                    sx={{ width: 305, height: 350 }}
+                  >
+                    <Stack
+                      spacing={1}
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <AddIcon />
+                      <Typography
+                        variant="subtitle1"
+                        color="text.secondary"
+                        fontWeight="700"
+                      >
+                        Create a new post
+                      </Typography>
+                    </Stack>
+                  </Button>
                 </Grid>
               </Grid>
             ) : (

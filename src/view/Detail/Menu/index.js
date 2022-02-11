@@ -74,6 +74,7 @@ export default function CustomizedMenus({
   token,
   url,
   setOpenPromotionDialog,
+  promotionalPlan,
 }) {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -144,10 +145,12 @@ export default function CustomizedMenus({
                 <Edit fontSize="large" sx={{ mb: 0.3 }} /> Edit post
               </MenuItem>
             </Link>
-            <MenuItem onClick={() => handleClose(4)} disableRipple>
-              <LocalAtm fontSize="large" sx={{ mb: 0.3 }} />
-              Push post
-            </MenuItem>
+            {promotionalPlan === 0 && (
+              <MenuItem onClick={() => handleClose(4)} disableRipple>
+                <LocalAtm fontSize="large" sx={{ mb: 0.3 }} />
+                Push post
+              </MenuItem>
+            )}
             <MenuItem onClick={() => handleClose(1)} disableRipple>
               <Done fontSize="large" sx={{ mb: 0.3 }} /> Mark as sold
             </MenuItem>
@@ -196,7 +199,7 @@ export default function CustomizedMenus({
                     headers: { Authorization: `Bearer ${token}` },
                     data: {},
                   }).then((response) => {
-                    history.push("/profile");
+                    history.push("/main");
                   });
                 }}
               >

@@ -17,12 +17,14 @@ import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import SnackbarCustom from "../../../components/SnackbarCustom";
 
 export default function SimpleDialog(props) {
   const history = useHistory();
   const { onClose, open, data, removeFollowingByID } = props;
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarprops, setSnackbarProps] = useState(null);
 
   const handleClose = () => {
     onClose();
@@ -63,7 +65,10 @@ export default function SimpleDialog(props) {
                               },
                             })
                             .then((res) => {
-                              console.log(res);
+                              setSnackbarProps({
+                                severity: "success",
+                                message: "Unfollowed successfully",
+                              });
                               setOpenSnackbar(true);
                               removeFollowingByID(user["_id"]);
                             });
@@ -95,22 +100,13 @@ export default function SimpleDialog(props) {
           )}
         </DialogContent>
       </Dialog>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={2000}
-        message="Da bo theo doi"
-        onClose={(event, reason) => {
-          if (reason === "clickaway") {
-            return;
-          }
-
-          setOpenSnackbar(false);
+      <SnackbarCustom
+        openSnackbarProp={openSnackbar}
+        setOpenSnackbarProp={(value) => {
+          setOpenSnackbar(value);
         }}
-      >
-        <Alert severity="success" sx={{ width: "100%" }}>
-          Bo theo doi thanh cong
-        </Alert>
-      </Snackbar>
+        snackbarprops={snackbarprops}
+      />
     </>
   );
 }

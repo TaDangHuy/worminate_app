@@ -170,7 +170,9 @@ function Create_Edit_Post({ post }) {
         setSnackbarProps(snackbarProps.success);
         setOpenSnackbar(true);
         const idPost = response.data.post["_id"];
+
         history.push(`/posts/${idPost}`);
+        window.location.reload();
       })
       .catch((err) => console.log(err));
   }

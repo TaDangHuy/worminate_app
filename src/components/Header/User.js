@@ -18,6 +18,7 @@ const useStyle = makeStyles((theme) => ({
   typography: {
     lineHeight: "25px",
     fontSize: "22px",
+    color: "black",
   },
   select: {
     outline: "none",
@@ -71,14 +72,21 @@ function User({ userName, isAdmin, setUserNameProps }) {
         </Link>
       )}
 
-      <div className={classes.user}>
-        <Typography variant="body1" className={classes.typography}>
-          {userName ? userName : "Guest"}
-        </Typography>
-        {/* <Typography variant="subtitle1" className={classes.typography}>
-          {isAdmin === "true" ? "admin" : "user"}
-        </Typography> */}
-      </div>
+      {localStorage.getItem("isAdmin") === "true" ? (
+        <div className={classes.user}>
+          <Typography variant="body1" className={classes.typography}>
+            {userName ? userName : "Guest"}
+          </Typography>
+        </div>
+      ) : (
+        <Link to="/profile" style={{ textDecoration: "none" }}>
+          <div className={classes.user}>
+            <Typography variant="body1" className={classes.typography}>
+              {userName ? userName : "Guest"}
+            </Typography>
+          </div>
+        </Link>
+      )}
 
       {!isLoggedIn ? (
         <Link to="/login" style={{ textDecoration: "none", color: "inherit" }}>

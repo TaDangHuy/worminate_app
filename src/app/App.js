@@ -5,7 +5,7 @@ import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 
 import { PrivateRoute } from "../components/PrivateRoute";
 import { lazy } from "react";
-import FileNotFound from "../view/FileNotFound";
+import NotFound from "../view/NotFound";
 
 import ThemeConfig from "../theme";
 import ScrollToTop from "../components/ScrollToTop";
@@ -58,7 +58,7 @@ function App() {
         <Route path="/token" render={() => <Token />} />
         <Route path="/admin" component={Admin} />
         <Route path="*">
-          <FileNotFound />
+          <NotFound />
         </Route>
       </Switch>
     </ThemeConfig>

@@ -89,7 +89,7 @@ function Navigation({ index, setIndex }) {
       sx={{ bgcolor: "#fff", mb: 2 }}
     >
       <Toolbar>
-        <Link to="/">
+        {localStorage.getItem("isAdmin") === "true" ? (
           <Box
             component="img"
             sx={{
@@ -102,13 +102,34 @@ function Navigation({ index, setIndex }) {
             src={require("../../assets/images/logo.png").default}
             alt="worminate-token"
           />
-        </Link>
-
-        <Link to="/home" style={{ textDecoration: "none", color: "black" }}>
+        ) : (
+          <Link to="/">
+            <Box
+              component="img"
+              sx={{
+                height: 46,
+                width: 41,
+                marginRight: 1,
+                marginLeft: 1,
+                marginTop: -1,
+              }}
+              src={require("../../assets/images/logo.png").default}
+              alt="worminate-token"
+            />
+          </Link>
+        )}
+        {localStorage.getItem("isAdmin") === "true" ? (
           <Typography variant="h6" component="div" sx={{ mr: "20px" }}>
             WORMINATE
           </Typography>
-        </Link>
+        ) : (
+          <Link to="/home" style={{ textDecoration: "none", color: "black" }}>
+            <Typography variant="h6" component="div" sx={{ mr: "20px" }}>
+              WORMINATE
+            </Typography>
+          </Link>
+        )}
+
         {useLocation().pathname === "/admin" && (
           <AdminTabs index={index} setIndex={setIndex} />
         )}

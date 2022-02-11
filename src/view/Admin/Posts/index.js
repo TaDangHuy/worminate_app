@@ -132,7 +132,13 @@ function Posts() {
         Math.floor(post.price * 100) / 100,
         post.category.name,
         post.location,
-        post.promotionalPlan,
+        post.promotionalPlan === 0
+          ? "None"
+          : post.promotionalPlan === 1
+          ? "Basic"
+          : post.promotionalPlan === 2
+          ? "Plus"
+          : "Visionary",
         post.expirationDate
           ? post.expirationDate
               .split("T")[0]

@@ -78,19 +78,16 @@ const rows = [
 const snackbarProps = {
   success: {
     severity: "success",
-    message: "Push Post successfully. Thank you",
+    message: "Post was pushed successfully. Thank you",
   },
   error: {
     severity: "error",
-    message: "Opps! Something went wrong!!",
+    message: "Oops! Something went wrong!",
   },
 };
 
 function Detail() {
   const history = useHistory();
-  {
-    console.log(history.location.pathname);
-  }
   let { url } = useRouteMatch();
   let { idPost } = useParams();
   const [status, setStatus] = useState(true);
@@ -110,18 +107,17 @@ function Detail() {
   const [delLoading, setDelLoading] = useState(false);
 
   const { data, isLoading } = useGetPostQuery(`posts/${idPost}`);
-  const images = data ? data.post.images : [];
+  const images = data?.post.images.length
+    ? data.post.images
+    : [{ path: "https://www.viet247.net/images/noimage_food_viet247.jpg" }];
   let price;
   // const [authorId, setAuthorId] = useState("");
   if (data) price = Math.floor(data.post.price * 100) / 100;
-  const [image, setImage] = useState(
-    "https://www.viet247.net/images/noimage_food_viet247.jpg"
-  );
 
   useEffect(() => {
-    if (data && data.post.images.length > 0) {
-      setImage(data.post.images[0].path);
-    }
+    // if (data && data.post.images.length > 0) {
+    //   setImage(data.post.images[0].path);
+    // }
     if (data) {
       axios({
         method: "GET",
@@ -1051,31 +1047,52 @@ function Detail() {
                             </Grid>
                             <Grid item>
                               {data.post.author._id ===
-                              localStorage.getItem("_id") ? (
-                                status ? (
-                                  <Button
-                                    sx={{ mb: 0.5, ml: -3, mt: 0.1 }}
-                                    variant="outlined"
-                                    disableRipple
-                                    disableElevation
-                                    disableFocusRipple
-                                  >
-                                    For sale
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    sx={{ mb: 0.5, ml: 0.8, mt: 0.1 }}
-                                    variant="outlined"
-                                    disableRipple
-                                    disableElevation
-                                    disableFocusRipple
-                                    color="error"
-                                  >
-                                    Sold
-                                  </Button>
-                                )
-                              ) : (
-                                ""
+                                localStorage.getItem("_id") && (
+                                <>
+                                  {data.post.promotionalPlan > 0 && (
+                                    <Button
+                                      sx={{ mb: 0.5, ml: -14, mr: 2, mt: 0.1 }}
+                                      variant="outlined"
+                                      disableRipple
+                                      disableElevation
+                                      disableFocusRipple
+                                      color="info"
+                                    >
+                                      {data.post.promotionalPlan === 1
+                                        ? "Basic"
+                                        : data.post.promotionalPlan === 2
+                                        ? "Plus"
+                                        : "Visionary"}
+                                    </Button>
+                                  )}
+                                  {status ? (
+                                    <Button
+                                      sx={{
+                                        mb: 0.5,
+                                        ml: 0,
+                                        mt: 0.1,
+                                        width: "90px",
+                                      }}
+                                      variant="outlined"
+                                      disableRipple
+                                      disableElevation
+                                      disableFocusRipple
+                                    >
+                                      For sale
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      sx={{ mb: 0.5, ml: 0.8, mt: 0.1 }}
+                                      variant="outlined"
+                                      disableRipple
+                                      disableElevation
+                                      disableFocusRipple
+                                      color="error"
+                                    >
+                                      Sold
+                                    </Button>
+                                  )}
+                                </>
                               )}
                             </Grid>
                           </Grid>
@@ -1174,8 +1191,22 @@ function Detail() {
                                         id,
                                       },
                                     })
-                                      .then((response) => {})
-                                      .catch((err) => console.log(err));
+                                      .then((response) => {
+                                        setSnackbarProps({
+                                          severity: "success",
+                                          message:
+                                            "Deleted from favorite posts",
+                                        });
+                                        setOpenSnackbar(true);
+                                      })
+                                      .catch((err) => {
+                                        setSnackbarProps({
+                                          severity: "error",
+                                          message:
+                                            "Failed to delete from favorite posts",
+                                        });
+                                        setOpenSnackbar(true);
+                                      });
                                   } else {
                                     axios({
                                       method: "POST",
@@ -1187,8 +1218,21 @@ function Detail() {
                                         id,
                                       },
                                     })
-                                      .then((response) => {})
-                                      .catch((err) => console.log(err));
+                                      .then((response) => {
+                                        setSnackbarProps({
+                                          severity: "success",
+                                          message: "Saved to favorite posts",
+                                        });
+                                        setOpenSnackbar(true);
+                                      })
+                                      .catch((err) => {
+                                        setSnackbarProps({
+                                          severity: "error",
+                                          message:
+                                            "Failed to save to favorite posts",
+                                        });
+                                        setOpenSnackbar(true);
+                                      });
                                   }
                                   setIsHeartClicked(!isHeartClicked);
                                 }}
@@ -1207,6 +1251,7 @@ function Detail() {
                               token={token}
                               url={url}
                               setOpenPromotionDialog={setOpenPromotionDialog}
+                              promotionalPlan={data.post.promotionalPlan}
                             />
                           </Grid>
                         )}
@@ -1258,11 +1303,11 @@ function Detail() {
                                         setDelLoading(true);
                                         axios({
                                           method: "DELETE",
-                                          url: `posts/${idPost}`,
+                                          url: `admin/posts`,
                                           headers: {
                                             Authorization: `Bearer ${token}`,
                                           },
-                                          data: {},
+                                          data: { id: idPost },
                                         }).then((response) => {
                                           history.goBack();
                                         });
@@ -1298,42 +1343,55 @@ function Detail() {
                       <Box sx={{ ml: 6, mt: -1 }}>
                         <SimpleReactLightbox>
                           <SRLWrapper>
-                            <Splide
-                              options={{
-                                width: 610,
-                                height: 400,
-                                perPage: 1,
-                                pagination: false,
-                                // focus: "center",
-                              }}
-                            >
-                              {" "}
-                              {images.map((image, i) => (
-                                <SplideSlide>
-                                  {" "}
-                                  <Box
-                                    sx={{
-                                      width: 600,
-                                      height: 388,
-                                      ml: 0.7,
-                                      mr: 1.8,
-                                      borderRadius: 3,
-                                      objectFit: "cover",
-                                      boxShadow:
-                                        "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)",
-                                    }}
-                                    component="img"
-                                    src={
-                                      image.path
-                                        ? image.path
-                                        : "https://onlinecrm.vn/media/default.jpg"
-                                    }
-                                    alt=""
-                                    onClick={() => setImage(image.path)}
-                                  />
-                                </SplideSlide>
-                              ))}
-                            </Splide>
+                            {images.length > 1 ? (
+                              <Splide
+                                options={{
+                                  width: 610,
+                                  height: 400,
+                                  perPage: 1,
+                                  pagination: false,
+                                  // focus: "center",
+                                }}
+                              >
+                                {images.map((image, i) => (
+                                  <SplideSlide>
+                                    {" "}
+                                    <Box
+                                      sx={{
+                                        width: 600,
+                                        height: 388,
+                                        ml: 0.7,
+                                        mr: 1.8,
+                                        borderRadius: 3,
+                                        objectFit: "cover",
+                                        boxShadow:
+                                          "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)",
+                                      }}
+                                      component="img"
+                                      src={image.path}
+                                      alt=""
+                                      // onClick={() => setImage(image.path)}
+                                    />
+                                  </SplideSlide>
+                                ))}
+                              </Splide>
+                            ) : (
+                              <Box
+                                sx={{
+                                  width: 600,
+                                  height: 388,
+                                  ml: 0.7,
+                                  mr: 1.8,
+                                  borderRadius: 3,
+                                  objectFit: "cover",
+                                  boxShadow:
+                                    "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)",
+                                }}
+                                component="img"
+                                src={images[0].path}
+                                alt=""
+                              />
+                            )}
                           </SRLWrapper>
                         </SimpleReactLightbox>
                       </Box>
@@ -1461,10 +1519,9 @@ function Detail() {
                                 height: 80,
                                 perPage: 5,
                                 pagination: false,
-                                // focus: "center",
+                                focus: "center",
                               }}
                             >
-                              {" "}
                               {images.map((image, i) => (
                                 <SplideSlide>
                                   {" "}
@@ -1480,13 +1537,9 @@ function Detail() {
                                         "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)",
                                     }}
                                     component="img"
-                                    src={
-                                      image.path
-                                        ? image.path
-                                        : "https://onlinecrm.vn/media/default.jpg"
-                                    }
+                                    src={image.path}
                                     alt=""
-                                    onClick={() => setImage(image.path)}
+                                    // onClick={() => setImage(image.path)}
                                   />
                                 </SplideSlide>
                               ))}
@@ -1567,9 +1620,22 @@ function Detail() {
                                       Authorization: `Bearer ${token}`,
                                     },
                                     data: { userId: data.post.author._id },
-                                  }).then(() => {
-                                    setFollowing(false);
-                                  });
+                                  })
+                                    .then(() => {
+                                      setFollowing(false);
+                                      setSnackbarProps({
+                                        severity: "success",
+                                        message: "Unfollowed user successfully",
+                                      });
+                                      setOpenSnackbar(true);
+                                    })
+                                    .catch(() => {
+                                      setSnackbarProps({
+                                        severity: "error",
+                                        message: "Failed to unfollow user",
+                                      });
+                                      setOpenSnackbar(true);
+                                    });
                                 }}
                               >
                                 Unfollow
@@ -1589,9 +1655,22 @@ function Detail() {
                                       Authorization: `Bearer ${token}`,
                                     },
                                     data: { userId: data.post.author._id },
-                                  }).then(() => {
-                                    setFollowing(true);
-                                  });
+                                  })
+                                    .then(() => {
+                                      setFollowing(true);
+                                      setSnackbarProps({
+                                        severity: "success",
+                                        message: "Followed user successfully",
+                                      });
+                                      setOpenSnackbar(true);
+                                    })
+                                    .catch(() => {
+                                      setSnackbarProps({
+                                        severity: "error",
+                                        message: "Failed to follow user",
+                                      });
+                                      setOpenSnackbar(true);
+                                    });
                                 }}
                               >
                                 Follow
@@ -1646,15 +1725,17 @@ function Detail() {
               >
                 <Typography
                   variant="h6"
-                  sx={{ mb: 1, ml: 6.8, display: "inline" }}
+                  sx={{ mb: 1, ml: 7.2, display: "inline" }}
                 >
                   Reviews
                 </Typography>
+
                 {loading && (
                   <Box sx={{ px: 3, mt: 1 }} component="span">
                     <CircularProgress size={20} />
                   </Box>
                 )}
+
                 {token &&
                   localStorage.getItem("isAdmin") === "false" &&
                   !isLoading &&
@@ -1669,6 +1750,12 @@ function Detail() {
                       <Add sx={{}} />
                     </IconButton>
                   )}
+                {!isLoading && !reviewed && data.post.reviews.length === 0 && (
+                  <Typography variant="body1" sx={{ mt: 3, mb: -3, ml: 7.25 }}>
+                    No Reviews
+                  </Typography>
+                )}
+
                 <Dialog
                   open={open}
                   onClose={handleClose}
@@ -1736,8 +1823,20 @@ function Detail() {
                                   setReviewId(data.id);
                                   setReviewsScore(data.reviewsScore);
                                   setReviewed(true);
+                                  setSnackbarProps({
+                                    severity: "success",
+                                    message: "Added review successfully",
+                                  });
+                                  setOpenSnackbar(true);
                                 })
-                                .catch((err) => console.log(err));
+                                .catch((err) => {
+                                  setLoading(false);
+                                  setSnackbarProps({
+                                    severity: "error",
+                                    message: "Failed to add review",
+                                  });
+                                  setOpenSnackbar(true);
+                                });
                             }}
                           >
                             Add
@@ -1766,8 +1865,20 @@ function Detail() {
                                   setComment(newComment);
 
                                   setReviewsScore(data.reviewsScore);
+                                  setSnackbarProps({
+                                    severity: "success",
+                                    message: "Edited review successfully",
+                                  });
+                                  setOpenSnackbar(true);
                                 })
-                                .catch((err) => console.log(err));
+                                .catch((err) => {
+                                  setLoading(false);
+                                  setSnackbarProps({
+                                    severity: "error",
+                                    message: "Failed to edit review",
+                                  });
+                                  setOpenSnackbar(true);
+                                });
                             }}
                           >
                             Edit
@@ -1793,8 +1904,20 @@ function Detail() {
                                   setNewComment("");
                                   setReviewsScore(data.reviewsScore);
                                   setReviewed(false);
+                                  setSnackbarProps({
+                                    severity: "success",
+                                    message: "Deleted review successfully",
+                                  });
+                                  setOpenSnackbar(true);
                                 })
-                                .catch((err) => console.log(err));
+                                .catch((err) => {
+                                  setLoading(false);
+                                  setSnackbarProps({
+                                    severity: "error",
+                                    message: "Failed to delete review",
+                                  });
+                                  setOpenSnackbar(true);
+                                });
                             }}
                           >
                             Delete
@@ -1969,6 +2092,13 @@ function Detail() {
                       height="300px"
                     />
                   </Box>
+                ) : !isLoading && data.relatedPost.length === 0 ? (
+                  <Typography
+                    variant="body1"
+                    sx={{ pb: 4.6, ml: 7.5, mt: 2.5 }}
+                  >
+                    No Related Posts
+                  </Typography>
                 ) : (
                   <Box sx={{ pb: 5, mx: 6, mt: 2.5 }}>
                     <Splide
@@ -1987,7 +2117,7 @@ function Detail() {
                           </Box>
                         </SplideSlide>
                       ))}
-                    </Splide>
+                    </Splide>{" "}
                   </Box>
                 )}
               </Paper>

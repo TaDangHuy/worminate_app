@@ -257,7 +257,7 @@ function ViewProfile() {
                 </Stack>
               ) : (
                 <Stack sx={{ mt: 2 }}>
-                  <Skeleton width={100} />
+                  <Skeleton width={200} />
                   <Skeleton width={200} />
                 </Stack>
               )}
