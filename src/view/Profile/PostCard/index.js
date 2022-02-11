@@ -48,10 +48,10 @@ function createData(a, b, c, d) {
 }
 
 const rows = [
-  createData("1st Month Management Cost", 100, 300, 500),
-  createData("Following Month", 300, 700, 900),
-  createData("Delivery Time frame", 1, 3, 5),
-  createData("Certificate", "No", "Yes", "Yes"),
+  createData("1st Month Management Cost", "1 WOR", "3 WOR", "5 WOR"),
+  // createData("Following Month", 300, 700, 900),
+  createData("Get Closer To User", "30%", "50%", "70%"),
+  // createData("Certificate", "No", "Yes", "Yes"),
 ];
 
 const snackbarProps = {
